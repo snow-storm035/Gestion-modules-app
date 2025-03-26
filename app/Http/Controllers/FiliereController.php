@@ -13,6 +13,8 @@ class FiliereController extends Controller
     public function index()
     {
         //
+
+        $filieres = Filiere::all();
     }
 
     /**
