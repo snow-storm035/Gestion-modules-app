@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Services;
+
+use Error;
 use Illuminate\Http\Request;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Exception;
@@ -17,7 +19,7 @@ class ExcelServices {
         "type_formation",
         "creneau",
 
-        "groupe",
+        "code_groupe",
         "effectif_groupe",
         "sous_groupe",
         "status_sousgroupe",
@@ -72,10 +74,10 @@ class ExcelServices {
     ];
 
 
-    public function convertExcelToJson(Request $request) {
+    public static function convertExcelToJson(Request $request) {
 
         try{
-
+            
             $path = $request->file('excelfile');
             $spreadsheet = IOFactory::load($path);
             
@@ -83,16 +85,20 @@ class ExcelServices {
             $data = $sheet->toArray();
             
             $jsonData = [];
+
+            array_shift($data);
             
             foreach ($data as $row) {
+                // dd(count(ExcelServices::FILE_HEADERS));
                 $jsonData[] = array_combine(ExcelServices::FILE_HEADERS, $row);
             }
             $json = json_encode($jsonData);
             return $json;
 
-
         }catch(Exception $e){
-            return response()->json(["error" => "failed to convert excel file"]);
+            return $e->getMessage();
+            
+            // return response()->json(["error" => "failed to convert excel file"]);
         }
     }
 }

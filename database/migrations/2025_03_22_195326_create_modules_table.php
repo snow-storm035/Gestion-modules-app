@@ -13,15 +13,35 @@ return new class extends Migration
     {
         Schema::disableForeignKeyConstraints();
         Schema::create('modules', function (Blueprint $table) {
-            $table->string('code_module')->primary(true);
-            $table->string('libelle_module')->unique();
-            $table->float('nbh_p'); // nombre heures en presentiel
-            $table->float('nbh_sync'); // nombre heures en synchrone
-            $table->float('nbh_async'); // nombre heures en asynchrone
-            $table->float('nbh_total'); // nombre heures total
-            // $table->integer('nbcc');
+            $table->id();
+            $table->string('code_module');
+            $table->string('libelle_module');
+            $table->string('code_filiere');
+            $table->enum('regional',['O','N']);
+            $table->string('status')->nullable();
+
+            $table->float('nbh_p_s1'); // nombre heures en presentiel
+            $table->float('nbh_sync_s1'); // nombre heures en synchrone
+            $table->float('nbh_async_s1'); // nombre heures en asynchrone
+            $table->float('nbh_total_s1'); // nombre heures total
             
-            $table->string('status');
+            $table->float('nbh_p_s2');
+            $table->float('nbh_sync_s2'); 
+            $table->float('nbh_async_s2'); 
+            $table->float('nbh_total_s2');
+
+            $table->float('nbh_p_total');
+            $table->float('nbh_sync_total'); 
+            $table->float('nbh_async_total'); 
+            $table->float('nbh_total_global');
+            // $table->integer('nbcc');
+
+            $table->foreign('code_filiere')
+            ->references('code_filiere')
+            ->on('filieres');
+
+
+            
             $table->timestamps();
         });
     }

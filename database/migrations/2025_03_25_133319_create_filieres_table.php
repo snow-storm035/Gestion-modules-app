@@ -15,6 +15,7 @@ return new class extends Migration
         Schema::create('filieres', function (Blueprint $table) {
             $table->string('code_filiere')->primary(true);
             $table->string('nom_filiere');
+            $table->string('type_formation');
             $table->string('secteur');
             $table->timestamps();
         });

@@ -15,6 +15,28 @@ class Module extends Model
     public $incrementing = false;
     protected $keyType = 'string';
 
+    protected $fillable = [
+        "code_module",
+        "libelle_module",
+        "code_filiere",
+        "regional",
+        "status",
+        
+        "nbh_p_s1",
+        "nbh_sync_s1",
+        "nbh_async_s1",
+        "nbh_total_s1",
+
+        "nbh_p_s2",
+        "nbh_sync_s2",
+        "nbh_async_s2",
+        "nbh_total_s2",
+
+        "nbh_p_total",
+        "nbh_sync_total",
+        "nbh_async_total",
+        "nbh_total_global",
+    ];
 
     public function formateurs() : BelongsToMany
     {

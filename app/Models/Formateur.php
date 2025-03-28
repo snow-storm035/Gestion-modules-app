@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Formateur extends Model
 {
     /** @use HasFactory<\Database\Factories\FormateurFactory> */
-    use HasFactory, BelongsToMany;
+    use HasFactory;
+
+    protected $fillable = ['code_formateur','nom_formateur'];
 
 
     protected $primaryKey = "code_formateur";

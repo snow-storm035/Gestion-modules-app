@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Module;
+use App\Services\ExcelServices;
 use Illuminate\Http\Request;
 
 class ModuleController extends Controller
@@ -29,6 +30,58 @@ class ModuleController extends Controller
     public function store(Request $request)
     {
         //
+
+        if($request->has('excelfile')){
+            $jsonData = ExcelServices::convertExcelToJson($request);
+    
+            
+            $data = json_decode($jsonData, true);
+    
+    
+            // dd($data);
+    
+            $modules = array_map(function($item){
+                return [
+                    'code_filiere' => $item['code_filiere'],
+                    'code_module' => $item['code_module'],
+                    'libelle_module' => $item['module'],
+                    'regional' => $item['regional'],
+
+                    'nbh_p_s1' => (float) $item['nbh_p_s1'],
+                    'nbh_sync_s1' => (float) $item['nbh_sync_s1'],
+                    'nbh_async_s1' => (float) $item['nbh_async_s1'],
+                    'nbh_total_s1' => (float) $item['nbh_total_s1'],
+
+                    'nbh_p_s2' => (float) $item['nbh_p_s2'],
+                    'nbh_sync_s2' => (float) $item['nbh_sync_s2'],
+                    'nbh_async_s2' => (float) $item['nbh_async_s2'],
+                    'nbh_total_s2' => (float) $item['nbh_total_s2'],
+
+                    'nbh_p_total' => (float) $item['nbh_p_total'],
+                    'nbh_sync_total' => (float) $item['nbh_sync_total'],
+                    'nbh_async_total' => (float) $item['nbh_async_total'],
+                    'nbh_total_global' => (float) $item['nbh_total_global'],
+                ];
+            },$data);
+
+            $modules_unique = array_unique($modules, SORT_REGULAR);
+
+            
+
+            // dd($modules_unique);
+
+
+            foreach($modules_unique as $module){
+                Module::create($module);
+            }
+        }
+
+
+
+
+
+        return response()->json(["success" => "inserted successfully"]);
+
     }
 
     /**

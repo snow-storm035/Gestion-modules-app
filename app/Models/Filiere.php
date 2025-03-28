@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Filiere extends Model
 {
     /** @use HasFactory<\Database\Factories\FiliereFactory> */
-    use HasFactory, HasMany;
+    use HasFactory;
+
+    protected $fillable = ["code_filiere","nom_filiere","type_formation","secteur"];
 
     protected $primaryKey = "code_filiere";
     public $incrementing = false;

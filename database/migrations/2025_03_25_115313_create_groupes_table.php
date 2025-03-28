@@ -15,6 +15,12 @@ return new class extends Migration
         Schema::create('groupes', function (Blueprint $table) {
             $table->string('code_filiere');
             $table->string('code_groupe')->primary(true);
+            $table->string('niveau');
+            $table->integer('effectif');
+            $table->integer('annee_formation');
+            $table->string('status_groupe');
+            $table->string('mode');
+            $table->string('creneau');
             $table->foreign('code_filiere')
                 ->references('code_filiere')
                 ->on('filieres')

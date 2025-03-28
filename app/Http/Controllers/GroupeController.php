@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Groupe;
+use App\Services\ExcelServices;
 use Illuminate\Http\Request;
 
 class GroupeController extends Controller
@@ -29,6 +30,41 @@ class GroupeController extends Controller
     public function store(Request $request)
     {
         //
+        if($request->has('excelfile')){
+            $jsonData = ExcelServices::convertExcelToJson($request);
+    
+            
+            $data = json_decode($jsonData, true);
+    
+    
+            // dd($data);
+    
+            $groupes = array_map(function($item){
+                return [
+                    'code_filiere' => $item['code_filiere'],
+                    'code_groupe' => $item['code_groupe'],
+                    'niveau' => $item['niveau'],
+                    'effectif' => $item['effectif_groupe'],
+                    'annee_formation' => $item['annee_formation'],
+                    'status_groupe' => $item['status_sousgroupe'],
+                    'mode' => $item['mode'],
+                    'creneau' => $item['creneau']
+                ];
+            },$data);
+
+            $groupes_unique = array_unique($groupes, SORT_REGULAR);
+
+            
+
+            // dd($groupes_unique);
+
+
+            foreach($groupes_unique as $groupe){
+                Groupe::create($groupe);
+            }
+
+            return response()->json(['success' => 'groupes inserted successfully']);
+        }
     }
 
     /**

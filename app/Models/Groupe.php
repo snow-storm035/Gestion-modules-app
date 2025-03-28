@@ -10,6 +10,20 @@ class Groupe extends Model
 {
     /** @use HasFactory<\Database\Factories\GroupeFactory> */
     use HasFactory;
+
+
+    protected $fillable = [
+        "code_filiere",
+        "code_groupe",
+        "niveau",
+        "effectif",
+        "annee_formation",
+        "status_groupe",
+        "mode",
+        "creneau"
+    ];
+
+
     protected $primaryKey = "code_groupe";
     public $incrementing = false;
     protected $keyType = 'string';

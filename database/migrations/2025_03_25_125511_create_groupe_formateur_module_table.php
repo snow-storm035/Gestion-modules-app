@@ -20,11 +20,16 @@ return new class extends Migration
 
 
 
-            $table->foreign("code_module")
-                ->references("code_module")
-                ->on('modules')
+            $table->foreignId('module_id')
+                ->default(null)
+                ->constrained()
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
+            // $table->foreign("code_module")
+            //     ->references("code_module")
+            //     ->on('modules')
+            //     ->onDelete('cascade')
+            //     ->onUpdate('cascade');
 
             $table->foreign("code_formateur")
                 ->references("code_formateur")

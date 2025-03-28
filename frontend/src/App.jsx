@@ -1,4 +1,4 @@
-import { useState } from 'react'
+// import { useState } from 'react'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 // import Menu from './Menu/Menu'
 // import Contenu from './Menu/Layout'
@@ -13,7 +13,7 @@ import Professeur from './Contenu/Professeur';
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  // const [count, setCount] = useState(0)
 
   return (
    <>

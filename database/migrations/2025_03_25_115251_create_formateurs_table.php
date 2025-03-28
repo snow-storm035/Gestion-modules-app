@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('formateurs', function (Blueprint $table) {
             $table->string('code_formateur')->primary(true);
             $table->string('nom_formateur');
-            $table->string('prenom_formateur');
+            // $table->string('prenom_formateur');
             $table->timestamps();
         });
     }
