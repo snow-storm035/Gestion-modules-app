@@ -14,6 +14,13 @@ class Avancement extends Model
     protected $table = "groupe_formateur_module";
 
     
+    protected $fillable = [
+        'code_module', 'code_formateur', 'code_groupe',
+        'nbh_par_semaine_realisee', 'nbhp_realisee', 'nbhsync_realisee',
+        'nbh_total_realisee', 'nbcc_realisee', 'efm_realise'
+    ];
 
+
+    
 
 }

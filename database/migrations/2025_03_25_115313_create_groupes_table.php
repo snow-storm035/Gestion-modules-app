@@ -13,10 +13,17 @@ return new class extends Migration
     {
         Schema::disableForeignKeyConstraints();
         Schema::create('groupes', function (Blueprint $table) {
-            $table->id();
-            $table->string('code_groupe')->unique();
-            $table->foreignId('filiere_id')
-                ->constrained()
+            $table->string('code_filiere');
+            $table->string('code_groupe')->primary(true);
+            $table->string('niveau');
+            $table->integer('effectif');
+            $table->integer('annee_formation');
+            $table->string('status_groupe');
+            $table->string('mode');
+            $table->string('creneau');
+            $table->foreign('code_filiere')
+                ->references('code_filiere')
+                ->on('filieres')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
             $table->timestamps();

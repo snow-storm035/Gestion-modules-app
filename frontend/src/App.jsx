@@ -16,6 +16,7 @@ import './App.css'
 import Register from './login/register';
 
 function App() {
+  // const [count, setCount] = useState(0)
 
   return (
    <>

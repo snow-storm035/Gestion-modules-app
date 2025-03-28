@@ -13,10 +13,9 @@ return new class extends Migration
     {
         Schema::disableForeignKeyConstraints();
         Schema::create('formateurs', function (Blueprint $table) {
-            $table->id();
-            $table->string('code_formateur');
+            $table->string('code_formateur')->primary(true);
             $table->string('nom_formateur');
-            $table->string('prenom_formateur');
+            // $table->string('prenom_formateur');
             $table->timestamps();
         });
     }

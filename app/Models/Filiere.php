@@ -4,9 +4,23 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\Relations\HasMany;
 class Filiere extends Model
 {
     /** @use HasFactory<\Database\Factories\FiliereFactory> */
     use HasFactory;
+
+    protected $fillable = ["code_filiere","nom_filiere","type_formation","secteur"];
+
+    protected $primaryKey = "code_filiere";
+    public $incrementing = false;
+    protected $keyType = 'string';
+
+    public function groupes() : HasMany
+    {
+        return $this->hasMany(Groupe::class);
+    }
+
+
+
 }
