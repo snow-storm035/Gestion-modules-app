@@ -6,10 +6,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHouse } from '@fortawesome/free-solid-svg-icons';
 import Logout from "./Logout";
 import DarkMode from "./DarkMode";
+// import { useState } from "react";
 const Layout = () => {
+//   const [darkmode,setDarkmode]=useState("");
+// function handeDarkMode(){}
+  
+
+
   return (
     <div className="countiner">
-  <div className="menu">
+     <div className="menu">
     {/* logo this is page dashbord  */}
     <div className="logo">
     <img src={LogoOfppt} alt="Office OFPPT" /> {/* Logo added */}
@@ -33,7 +39,6 @@ const Layout = () => {
    <div className="darkModeAndlogout">
     <Logout/>
     <DarkMode/>
-    <button className="darkmoude">Dark mode</button>
    </div>
    </div>
    {/* content  */}
