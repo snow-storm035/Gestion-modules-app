@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::disableForeignKeyConstraints();
         Schema::create('modules', function (Blueprint $table) {
-            $table->id();
+            // $table->id();
             $table->string('code_module');
             $table->string('libelle_module');
             $table->string('code_filiere');
@@ -40,6 +40,7 @@ return new class extends Migration
             ->references('code_filiere')
             ->on('filieres');
 
+            $table->primary(['code_filiere','code_module']);
 
             
             $table->timestamps();

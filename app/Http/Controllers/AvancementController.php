@@ -10,10 +10,39 @@ use App\Services\ExcelServices;
 class AvancementController extends Controller
 {
 
-    // public function calculerTauxAvancement(Request $request){
+    public function calculerTauxAvancement(Request $request){
 
-    //     $avancement = Avancement::where()->get();
-    // }
+        $avancements = Avancement::all();
+
+        $a = Module::firstOrFail()->pivot();
+        dd($a);
+        
+        // dd($avancements);
+        // foreach($avancements as $avancement){
+        //     dd($avancement['code_module']);
+        // }
+
+        $taux_realisation = array_map(function($item){ 
+            
+            // $module = Module::where('code_module',$item['code_module']);
+            $module = $item->module;
+            dd($module);
+
+            
+            return [
+
+            'taux_presentiel_realise' => $item['nbhp_realisee'] / $module['nbh_p_total'],
+            'taux_sync_realise' => $item['nbhsync_realisee'] / $module['nbh_sync_total'],
+            'taux_total_realise' => $item['nbh_total_realisee'] / $module['nbh_total_global'],
+
+            ];
+        },[...$avancements]);
+
+        dd($taux_realisation);
+
+        
+        
+    }
 
 
     /**
@@ -62,15 +91,17 @@ class AvancementController extends Controller
             $avancements = array_map(function($item){
                 return [
                     'code_module' => $item['code_module'],
+                    'code_filiere' => $item['code_filiere'],
                     'code_groupe' => $item['code_groupe'],
-                    'code_formateur' => $item['code_formateur_p_actif'],
+                    'code_formateur' => $item['code_formateur_p_actif'] !== "" ? $item['code_formateur_p_actif'] : "none",
+                    // 'code_formateur' => $item['code_formateur_p_actif'] ? $item['code_formateur_p_actif'] : "none" ,
                     // 'code_formateur_sync' => $item['code_formateur_sync_actif'],
 
-                    'nbhp_realisee' => $item['nbh_realisee_p'],
-                    'nbhsync_realisee' => $item['nbh_realisee_sync'],
-                    'nbh_total_realisee' => $item['nbh_realisee_global'],
+                    'nbhp_realisee' => (float) $item['nbh_realisee_p'],
+                    'nbhsync_realisee' => (float) $item['nbh_realisee_sync'],
+                    'nbh_total_realisee' => (float) $item['nbh_realisee_global'],
 
-                    'nbcc_realisee' => $item['nbcc'],
+                    'nbcc_realisee' => (int) $item['nbcc'],
                     'efm_realise' => $item['validation_efm']
                     // 'nbh_total_realisee' => $item['nbh_realisee_global'],
 
@@ -83,12 +114,13 @@ class AvancementController extends Controller
 
             // dd($avancements_unique);
 
+          
 
             foreach($avancements_unique as $avancement){
-                Avancement::create($avancement);
+                Avancement::firstOrCreate($avancement);
             }
 
-            return response(200)->json(['success' => 'avancement updated successfully']);
+            return response()->json(['success' => 'avancement updated successfully']);
         }
     }
 

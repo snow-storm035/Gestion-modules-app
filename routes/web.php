@@ -16,6 +16,7 @@ Route::get('/', function () {
 Route::withoutMiddleware([VerifyCsrfToken::class])->group(function(){
     Route::get('/index', [AvancementController::class, 'index']);
     Route::post('/store', [AvancementController::class, 'store']);
+    Route::get('/all', [AvancementController::class, 'calculerTauxAvancement']);
 
     Route::resource('/modules',ModuleController::class);
     Route::resource('/groupes',GroupeController::class);
@@ -23,6 +24,9 @@ Route::withoutMiddleware([VerifyCsrfToken::class])->group(function(){
     Route::resource('/filieres',FiliereController::class);
 
 });
+
+
+
 
 
 

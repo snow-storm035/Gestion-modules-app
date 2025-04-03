@@ -70,7 +70,12 @@ class FormateurController extends Controller
     
             $formateurs_unique = array_unique($formateurs, SORT_REGULAR);
             // dd($formateurs_unique);
-    
+            
+            Formateur::firstOrCreate([
+                'code_formateur' => 'none',
+                'nom_formateur' => 'none' 
+            ]);
+
             foreach($formateurs_unique as $formateur){
                 Formateur::firstOrCreate($formateur);
             }

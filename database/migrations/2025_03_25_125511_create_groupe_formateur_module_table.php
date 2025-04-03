@@ -14,28 +14,23 @@ return new class extends Migration
         Schema::disableForeignKeyConstraints();
         Schema::create('groupe_formateur_module', function (Blueprint $table) {
 
-            $table->string('code_module');
-            $table->string('code_formateur'); 
-            $table->string('code_groupe');
+            $table->string('code_module')->nullable();
+            $table->string('code_filiere')->nullable();
+            $table->string('code_formateur')->default("none")->nullable(); 
+            $table->string('code_groupe')->nullable();
 
-
-
-            $table->foreignId('module_id')
-                ->default(null)
-                ->constrained()
+            $table->foreign(["code_filiere","code_module"])
+                ->references(["code_filiere","code_module"])
+                ->on('modules')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
-            // $table->foreign("code_module")
-            //     ->references("code_module")
-            //     ->on('modules')
-            //     ->onDelete('cascade')
-            //     ->onUpdate('cascade');
 
             $table->foreign("code_formateur")
                 ->references("code_formateur")
                 ->on('formateurs')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
+                ->onDelete('restrict')
+                ->onUpdate('cascade')
+                ->nullable();
 
             $table->foreign("code_groupe")
                 ->references("code_groupe")
@@ -47,14 +42,14 @@ return new class extends Migration
 
 
 
-            $table->float('nbh_par_semaine_realisee');
+            $table->float('nbh_par_semaine_realisee')->default(2.5);
 
-            $table->float('nbhp_realisee');
-            $table->float('nbhsync_realisee');
-            $table->float('nbh_total_realisee');
-            $table->float('nbcc_realisee');
+            $table->float('nbhp_realisee')->default(0);
+            $table->float('nbhsync_realisee')->default(0);
+            $table->float('nbh_total_realisee')->default(0);
+            $table->integer('nbcc_realisee')->default(0);
 
-            $table->boolean('efm_realise');
+            $table->enum('efm_realise',['oui','non']);
             $table->timestamps();
         });
     }
