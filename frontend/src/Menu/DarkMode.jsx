@@ -1,6 +1,13 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMoon } from '@fortawesome/free-solid-svg-icons';
+
 export default function DarkMode(){
 
     return <>
-    <h1>darkmode</h1>
+   <div>
+    < FontAwesomeIcon icon={faMoon} style={{fontSize:"20px"}}/>
+      <button className="darkmode">Dark mode</button>
+
+   </div>
     </>
 }
