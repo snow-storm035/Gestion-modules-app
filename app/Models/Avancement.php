@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Avancement extends Model
 {
@@ -16,7 +17,7 @@ class Avancement extends Model
     
     protected $primaryKey = ['code_module', 'code_groupe', 'code_formateur'];
     public $incrementing = false;
-    protected $keyType = 'array';
+    protected $keyType = 'string';
 
     
     protected $fillable = [
@@ -26,5 +27,14 @@ class Avancement extends Model
     ];
 
 
+    public static function findWithCompositeKey(Array $query){  
+        Avancement::where($query)
+            ->first();
+    }
 
+    public static function updateWithCompositeKey(Array $query, Array $options) {
+        DB::table('groupe_formateur_module')
+        ->where($query)
+        ->update($options);
+    }
 }

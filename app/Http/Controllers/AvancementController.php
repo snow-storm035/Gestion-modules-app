@@ -11,50 +11,97 @@ class AvancementController extends Controller
 {
 
 
-    public function changerNbHeuresParSemaine(Request $request) {
+
+    public function makeAlert() {
+
+        // display an alert
+        // good : if the nbh/sem is sufficient
+        //    --> this means : between start and end dates the number of hours after this period will
+            // reach the total amount in the end 
+        // bad : if not
+
+
+        
+
+
+    }
+
+
+
+    public function changerNbHeuresParSemaine(Request $request)
+    {
 
         // dd($request['avancement']['code_module']);
 
-        $avancement = $request->has('avancement') ? 
-            Avancement::where('code_module',$request['avancement']['code_module'])
-            ->where('code_groupe',$request['avancement']['code_groupe'])
-            ->where('code_formateur',$request['avancement']['code_formateur'])
-            ->firstOrFail()
-        : null;
+        $codeModule = $request['avancement']['code_module'];
+        $codeGroupe = $request['avancement']['code_groupe'];
+        $codeFormateur = $request['avancement']['code_formateur'];
+
+        // dd($codeModule, $codeGroupe, $codeFormateur);
+
+        // $avancement = $request->has('avancement') ?
+        //     Avancement::findWithCompositeKey([
+        //         ['code_module','=',$codeModule],
+        //         ['code_groupe','=',$codeGroupe],
+        //         ['code_formateur','=',$codeFormateur]
+        //     ])
+        //     : null;
+
+        $avancement = $request->has('avancement') ?
+            Avancement::where('code_module', $codeModule)
+            ->where('code_groupe', $codeGroupe)
+            ->where('code_formateur', $codeFormateur)
+            ->first()
+            : null;
 
         // dd($avancement);
 
-        if($request->has('nbh_par_semaine') && $request->has('avancement')){
-            $avancement->update([
-                'nbh_par_semaine_realisee' => $request['nbh_par_semaine']
-            ]);
+
+
+        if ($request->has('nbh_par_semaine') && $avancement) {
+            Avancement::updateWithCompositeKey([
+                ['code_module','=',$codeModule],
+                ['code_groupe','=',$codeGroupe],
+                ['code_formateur','=',$codeFormateur],
+            ],['nbh_par_semaine_realisee' => $request['nbh_par_semaine']]);
+            // $avancement->update([
+            //     'nbh_par_semaine_realisee' => $request['nbh_par_semaine']
+            // ]);
+
+
             // $avancement['nbh_par_semaine_realisee'] = $request['nbh_par_semaine'];
 
             // $avancement->save();
 
+            $avancement = Avancement::where('code_module', $codeModule)
+            ->where('code_groupe', $codeGroupe)
+            ->where('code_formateur', $codeFormateur)
+            ->first();
+
             dd($avancement['nbh_par_semaine_realisee']);
 
-            return response(200)->json(['success' => 'data has been updated successfully']);
-        }else{
-            return response(400)->json(['error' => 'all fields are required']);
+            return response()->json(['success' => 'data has been updated successfully'],200);
+        } else {
+            return response()->json(['error' => 'all fields are required'],400);
         }
     }
 
-    public function calculerTauxAvancement(Request $request){
+    public function calculerTauxAvancement(Request $request)
+    {
 
         $avancements = Avancement::all();
 
-        $a = Module::firstOrFail();
+        // $a = Module::firstOrFail();
         // dd($a['nbh_p_total']);
-        
+
         // dd($avancements);
         // foreach($avancements as $avancement){
         //     dd($avancement['code_module']);
         // }
 
-        $taux_realisation = array_map(function($item){ 
-            
-            $module = Module::where('code_module',$item['code_module'])->firstOrFail();
+        $taux_realisation = array_map(function ($item) {
+
+            $module = Module::where('code_module', $item['code_module'])->firstOrFail();
             // $module = $item->module;
             // dd($module['nbh_p_total']);
 
@@ -71,12 +118,9 @@ class AvancementController extends Controller
                 'taux_total_realise' => $module['nbh_total_global'] != 0 ? ($item['nbh_total_realisee'] / ($module['nbh_p_total'] + $module['nbh_sync_total'])) * 100 : 0,
 
             ];
-        },[...$avancements]);
+        }, [...$avancements]);
 
         dd($taux_realisation);
-
-        
-        
     }
 
 
@@ -90,14 +134,13 @@ class AvancementController extends Controller
 
         $avancements = Avancement::all();
 
-        foreach($avancements as $a){
+        foreach ($avancements as $a) {
             dd($a->modules);
         }
 
 
 
         return response()->json(json_decode($avancements));
-
     }
 
     /**
@@ -114,16 +157,16 @@ class AvancementController extends Controller
     public function store(Request $request)
     {
         //
-        if($request->has('excelfile')){
+        if ($request->has('excelfile')) {
             $jsonData = ExcelServices::convertExcelToJson($request);
-    
-            
+
+
             $data = json_decode($jsonData, true);
-    
-    
+
+
             // dd($data);
-    
-            $avancements = array_map(function($item){
+
+            $avancements = array_map(function ($item) {
                 return [
                     'code_module' => $item['code_module'],
                     'code_filiere' => $item['code_filiere'],
@@ -141,17 +184,17 @@ class AvancementController extends Controller
                     // 'nbh_total_realisee' => $item['nbh_realisee_global'],
 
                 ];
-            },$data);
+            }, $data);
 
             $avancements_unique = array_unique($avancements, SORT_REGULAR);
 
-            
+
 
             // dd($avancements_unique);
 
-          
 
-            foreach($avancements_unique as $avancement){
+
+            foreach ($avancements_unique as $avancement) {
                 Avancement::firstOrCreate($avancement);
             }
 
@@ -165,6 +208,7 @@ class AvancementController extends Controller
     public function show(Avancement $avancement)
     {
         //
+        
     }
 
     /**
