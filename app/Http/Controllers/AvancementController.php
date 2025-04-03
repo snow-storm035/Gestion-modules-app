@@ -10,12 +10,42 @@ use App\Services\ExcelServices;
 class AvancementController extends Controller
 {
 
+
+    public function changerNbHeuresParSemaine(Request $request) {
+
+        // dd($request['avancement']['code_module']);
+
+        $avancement = $request->has('avancement') ? 
+            Avancement::where('code_module',$request['avancement']['code_module'])
+            ->where('code_groupe',$request['avancement']['code_groupe'])
+            ->where('code_formateur',$request['avancement']['code_formateur'])
+            ->firstOrFail()
+        : null;
+
+        // dd($avancement);
+
+        if($request->has('nbh_par_semaine') && $request->has('avancement')){
+            $avancement->update([
+                'nbh_par_semaine_realisee' => $request['nbh_par_semaine']
+            ]);
+            // $avancement['nbh_par_semaine_realisee'] = $request['nbh_par_semaine'];
+
+            // $avancement->save();
+
+            dd($avancement['nbh_par_semaine_realisee']);
+
+            return response(200)->json(['success' => 'data has been updated successfully']);
+        }else{
+            return response(400)->json(['error' => 'all fields are required']);
+        }
+    }
+
     public function calculerTauxAvancement(Request $request){
 
         $avancements = Avancement::all();
 
-        $a = Module::firstOrFail()->pivot();
-        dd($a);
+        $a = Module::firstOrFail();
+        // dd($a['nbh_p_total']);
         
         // dd($avancements);
         // foreach($avancements as $avancement){
@@ -24,16 +54,21 @@ class AvancementController extends Controller
 
         $taux_realisation = array_map(function($item){ 
             
-            // $module = Module::where('code_module',$item['code_module']);
-            $module = $item->module;
-            dd($module);
+            $module = Module::where('code_module',$item['code_module'])->firstOrFail();
+            // $module = $item->module;
+            // dd($module['nbh_p_total']);
 
-            
+
             return [
 
-            'taux_presentiel_realise' => $item['nbhp_realisee'] / $module['nbh_p_total'],
-            'taux_sync_realise' => $item['nbhsync_realisee'] / $module['nbh_sync_total'],
-            'taux_total_realise' => $item['nbh_total_realisee'] / $module['nbh_total_global'],
+                'code_module' => $item['code_module'],
+                'code_formateur' => $item['code_formateur'],
+                'code_groupe' => $item['code_groupe'],
+                'total_realise' => $item['nbh_total_realisee'],
+                'total_heures' => $module['nbh_total_global'],
+                'taux_presentiel_realise' => $module['nbh_p_total']  != 0 ? ($item['nbhp_realisee'] / $module['nbh_p_total']) * 100 : 0,
+                'taux_sync_realise' => $module['nbh_sync_total'] != 0 ? ($item['nbhsync_realisee'] / $module['nbh_sync_total']) * 100 : 0,
+                'taux_total_realise' => $module['nbh_total_global'] != 0 ? ($item['nbh_total_realisee'] / ($module['nbh_p_total'] + $module['nbh_sync_total'])) * 100 : 0,
 
             ];
         },[...$avancements]);

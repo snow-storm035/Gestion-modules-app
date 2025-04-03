@@ -14,6 +14,11 @@ class Avancement extends Model
     protected $table = "groupe_formateur_module";
 
     
+    protected $primaryKey = ['code_module', 'code_groupe', 'code_formateur'];
+    public $incrementing = false;
+    protected $keyType = 'array';
+
+    
     protected $fillable = [
         'code_module', 'code_filiere', 'code_formateur', 'code_groupe',
         'nbh_par_semaine_realisee', 'nbhp_realisee', 'nbhsync_realisee',
@@ -21,6 +26,5 @@ class Avancement extends Model
     ];
 
 
-    
 
 }
