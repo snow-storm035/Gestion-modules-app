@@ -1,8 +1,9 @@
 import "../style/styleRegister.css";
-
+import { useDarkMode } from '../DarkModeProvider/DarkModeContext';
 export default function Register() {
+    const { darkMode } = useDarkMode();
   return (
-    <div className="register-container">
+    <div className={`register-container ${darkMode ? 'dark' : ''}`}>
       <div className="register-card">
         <h1 className="register-title">Register</h1>
         

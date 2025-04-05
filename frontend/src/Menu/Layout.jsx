@@ -6,11 +6,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHouse } from '@fortawesome/free-solid-svg-icons';
 import Logout from "./Logout";
 import DarkMode from "./DarkMode";
-// import { useState } from "react";
+import { useDarkMode } from '../DarkModeProvider/DarkModeContext';
+
 const Layout = () => {
-//   const [darkmode,setDarkmode]=useState("");
-// function handeDarkMode(){}
+  const { darkMode } = useDarkMode();
+
   
+// onClick={toggleDarkMode}
+// className="darkmode"
+// aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
 
 
   return (
@@ -26,10 +30,10 @@ const Layout = () => {
    <nav>
         <ul>
           <li><NavLink className={({ isActive }) => isActive ? "link_dashbord active-link" : "link_dashbord"}  to="/"> <FontAwesomeIcon icon={faHouse} />Home</NavLink></li>
-          <li><NavLink className={({ isActive }) => isActive ? "link_dashbord active-link" : "link_dashbord"} to="/professeur">Professor</NavLink></li>
+          <li><NavLink className={({ isActive }) => isActive ? "link_dashbord active-link" : "link_dashbord"} to="/professeurList">Professor</NavLink></li>
           <li><NavLink className={({ isActive }) => isActive ? "link_dashbord active-link" : "link_dashbord"} to="/avancemnet">Announcement</NavLink></li>
-          <li><NavLink className={({ isActive }) => isActive ? "link_dashbord active-link" : "link_dashbord"} to="/moudel">Module</NavLink></li>
-          <li><NavLink className={({ isActive }) => isActive ? "link_dashbord active-link" : "link_dashbord"} to="/group">Group</NavLink></li>
+          <li><NavLink className={({ isActive }) => isActive ? "link_dashbord active-link" : "link_dashbord"} to="/listmodel">Module</NavLink></li>
+          <li><NavLink className={({ isActive }) => isActive ? "link_dashbord active-link" : "link_dashbord"} to="/groupsList">Group</NavLink></li>
         </ul>
 
       </nav>
@@ -42,7 +46,8 @@ const Layout = () => {
    </div>
    </div>
    {/* content  */}
-     <div className="contenu" >
+     <div className={darkMode ?"contenu":"contenu contenuDarkblack"}>
+     
      <Outlet />
      </div>
 

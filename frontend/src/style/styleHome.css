@@ -60,6 +60,7 @@
 
 }
 
+
 .informtionCountner .aside div {
     border-radius: 10px;
     width: 100%;
@@ -68,6 +69,7 @@
 .informtionCountner .aside div:nth-child(1) {
     flex-basis: 14%;
     background-color: var(--main-red);
+    color: var(--main-white) !important;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -77,6 +79,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
+
 }
 
 .informtionCountner .aside .alert-container p {
@@ -153,7 +156,7 @@
   
   .progress-label {
     font-size: 0.8rem;
-    color: #666;
+    color: var(--main-black) !important;
   }
   
   .module-details {
@@ -161,12 +164,14 @@
     border-top: 1px solid #eee;
     border-bottom: 1px solid #eee;
     margin: 15px 0;
+    /* background-color: red  */
   }
   
   .module-name {
     margin: 0;
     font-size: 0.9rem;
     color: #444;
+    /* background-color: red */
   }
   
   .view-details-btn {
@@ -193,6 +198,7 @@
 .informtionCountner .aside div:nth-child(3) {
     flex-basis: 14%;
     background-color: var(--main-white);
+    color: var(--main-black);
 
 }
 
@@ -309,3 +315,31 @@
   .view-details-btn svg {
     font-size: 0.8rem;
   }
+
+
+
+/* dark mode  */
+.module-progress-card-dark{
+background-color: var(--main-black) !important;
+
+}
+
+.module-progress-card-dark .module-progress-title{
+    color: var(--main-white);
+}
+.module-progress-card-dark  .progress-label {
+    color: var(--main-white) !important;
+    /* background-color: red; */
+}
+.module-progress-card-dark .module-details { 
+    background-color: var(--dark-grey) !important;
+
+}
+.module-progress-card-dark .module-details .module-name { 
+    color: var(--main-white);
+}
+
+.completed-modules-container-dark{
+    background-color: var(--main-black) !important;
+    color: var(--main-white) !important;   
+}

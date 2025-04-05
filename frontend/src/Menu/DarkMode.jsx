@@ -1,12 +1,29 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMoon } from '@fortawesome/free-solid-svg-icons';
-
+import { faMoon ,faLightbulb} from '@fortawesome/free-solid-svg-icons';
+import { useDarkMode } from '../DarkModeProvider/DarkModeContext';
 export default function DarkMode(){
-
+  const { darkMode, toggleDarkMode } = useDarkMode();
     return <>
    <div>
-    < FontAwesomeIcon icon={faMoon} style={{fontSize:"20px"}}/>
-      <button className="darkmode">Dark mode</button>
+    {
+      darkMode ?(
+
+        < FontAwesomeIcon icon={faMoon} style={{fontSize:"20px"}}/>
+      ):
+      (
+        <FontAwesomeIcon icon={faLightbulb} style={{fontSize:"20px"}}/>
+      )
+    }
+     
+      <button
+       onClick={toggleDarkMode}
+      className="darkmode"
+      aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+      >
+
+         {darkMode ? 'Light mode' : 'Dark mode'}
+      
+      </button>
 
    </div>
     </>
