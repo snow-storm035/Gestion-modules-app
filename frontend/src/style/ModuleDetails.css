@@ -1,0 +1,128 @@
+.module-details-container {
+    height: 98vh;
+    background-color: #f5f7fa;
+    padding: 2rem;
+    overflow-y: hidden; /* Enable vertical scrolling */
+    display: flex;
+    flex-direction: column;
+    /* background-color: red; */
+  }
+  
+  .module-scrollable-content {
+    flex: 1;
+    overflow-y: scroll; /* Enable scrolling for content */
+    -ms-overflow-style: none;  /* Hide scrollbar for IE and Edge */
+    scrollbar-width: none;  /* Hide scrollbar for Firefox */
+  }
+
+  .module-header {
+    background: linear-gradient(135deg, #6b73ff 0%, #000dff 100%);
+    color: white;
+    padding: 2rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .module-header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+  }
+  
+  .module-header .module-code {
+    font-size: 1.2rem;
+    opacity: 0.9;
+  }
+  
+  .details-card {
+    background: white;
+    border-radius: 10px;
+    padding: 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    margin-bottom: 2rem;
+  }
+  
+  .section-title {
+    color: #4a5568;
+    border-bottom: 2px solid #edf2f7;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+  }
+  
+  .detail-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .detail-item {
+    margin-bottom: 1rem;
+  }
+  
+  .detail-label {
+    font-weight: 600;
+    color: #4a5568;
+    margin-bottom: 0.25rem;
+  }
+  
+  .detail-value {
+    font-size: 1.1rem;
+    color: #2d3748;
+  }
+  
+  .semester-section {
+    margin-top: 2rem;
+  }
+  
+  .status-badge {
+    display: inline-block;
+    padding: 0.35rem 0.75rem;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.875rem;
+  }
+  
+  .status-active {
+    background-color: #c6f6d5;
+    color: #22543d;
+  }
+  
+  .status-inactive {
+    background-color: #fed7d7;
+    color: #822727;
+  }
+  
+  .back-button {
+    background-color: #4a5568;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 1rem;
+  }
+  
+  .back-button:hover {
+    background-color: #2d3748;
+    transform: translateY(-2px);
+  }
+
+
+
+
+  /* dark mode  */
+  .module-details-container-dark{
+    background-color: var(--dark-grey);
+  }
+
+
+  .module-details-container-dark .details-card {
+    background-color:var(--main-black);
+  }
+
+  .module-details-container-dark .details-card :-webkit-any(div),.section-title{
+    color: var(--main-white) ;
+  }

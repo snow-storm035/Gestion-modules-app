@@ -4,6 +4,7 @@
 
 
 .countiner {
+    
     background-color: var(--main-green);
     display: flex;
     height: 100vh;
@@ -69,6 +70,7 @@ nav ul li {
     top: 100%;
     left: 50%;
     background-color: var(--main-white);
+    /* background-color:fuchsia; */
     width: 0;
     position: absolute;
     transform: translateX(-50%);
@@ -87,7 +89,7 @@ nav ul li {
 
 
 
-.darkModeAndlogout{
+.darkModeAndlogout {
     margin: 0 auto;
     display: flex;
     justify-content: center;
@@ -99,8 +101,8 @@ nav ul li {
    color: var(--main-white);
 }  
 
-.darkModeAndlogout {
-    background-color: red;
+.darkModeAndlogout  {
+    /* background-color:red ; */
     /* margin: 100px 20px; */
     margin-bottom: 0;
 
@@ -111,11 +113,22 @@ nav ul li {
     border: none;
     font-size: 20px;
     background: inherit;
+    padding-left: 10px;
+    color: var(--main-white);
+    cursor: pointer;
 }
 
 .contenu {
     background-color: var(--main-grey);
+    
     width: calc(100% - 300px);
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
 }
+
+.contenuDarkblack {
+/* background-color:var( --main-black); */
+background-color:var(--dark-grey);
+
+}
+

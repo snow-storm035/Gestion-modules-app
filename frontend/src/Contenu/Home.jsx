@@ -1,9 +1,15 @@
 import "../style/styleHome.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChalkboardUser, faGreaterThan, faBell } from '@fortawesome/free-solid-svg-icons';
-
+import { useDarkMode } from "../DarkModeProvider/DarkModeContext";
+// onClick={toggleDarkMode}
+// className="darkmode"
+// aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
 
 export default function Home() {
+  const { darkMode } = useDarkMode();
+  
+  
   return <>
     {/* four div about number moudil and goroub and professoure  */}
     <div className="header">
@@ -42,12 +48,13 @@ export default function Home() {
             <span className="notification-badge">1</span>
           </button>
         </div>
-        <div className="module-progress-card">
+        <div className={darkMode ? "module-progress-card":"module-progress-card module-progress-card-dark"}>
+
           <h2 className="module-progress-title">Progès des modules</h2>
 
           <div className="progress-highlight">
             <span className="progress-percentage">75%</span>
-            <span className="progress-label">highest progress</span>
+            <span className="progress-label ">highest progress</span>
           </div>
 
           <div className="module-details">
@@ -59,7 +66,7 @@ export default function Home() {
           </button>
         </div>
 
-        <div className="completed-modules-container">
+        <div className={darkMode ?"completed-modules-container":"completed-modules-container completed-modules-container-dark"}>
           <p>Modules terminés</p>
           <button className="navigation-button">
             <FontAwesomeIcon icon={faGreaterThan} />

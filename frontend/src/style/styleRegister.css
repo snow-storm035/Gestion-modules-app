@@ -100,3 +100,18 @@
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(62, 142, 253, 0.3);
   }
+
+
+
+  /* Register.css */
+.register-card {
+    /* background-color: var(--card-bg); */
+    background-color: #00000030;
+    color: var(--text-color);
+  }
+  
+  .form-input {
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    border-color: var(--border-color);
+  }
