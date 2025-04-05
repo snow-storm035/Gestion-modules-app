@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Formateur;
 use App\Services\ExcelServices;
+use Exception;
 use Illuminate\Http\Request;
 
 class FormateurController extends Controller
@@ -14,6 +15,9 @@ class FormateurController extends Controller
     public function index()
     {
         //
+        $formateurs = Formateur::all();
+
+        return response()->json(["formateurs" => $formateurs],200);
     }
 
     /**
@@ -30,6 +34,8 @@ class FormateurController extends Controller
     public function store(Request $request)
     {
         //
+        
+
         if($request->has('excelfile')){
             $jsonData = ExcelServices::convertExcelToJson($request);
 
@@ -79,11 +85,24 @@ class FormateurController extends Controller
             foreach($formateurs_unique as $formateur){
                 Formateur::firstOrCreate($formateur);
             }
+        }else{
+            // $codeFormateur = $request->input('code_formateur');
+            // $nomFormateur = $request->input('nom_formateur');
+            // $codeFormateur = $request->input('code_formateur');
+
+            $newFormateur = $request->validate([
+                'code_formateur' => 'bail|required',
+                'nom_formateur' => 'bail|required|alpha'
+            ]);
+
+            if($newFormateur){
+                Formateur::create($newFormateur);
+                return response()->json(['success' => 'formateur a été bien ajouté']);
+            }else{
+                return response()->json(['error' => 'all fields are required']);
+            }
         }
        
-
-
-
 
         return response()->json(["success" => "inserted successfully"]);
     }
@@ -94,6 +113,20 @@ class FormateurController extends Controller
     public function show(Formateur $formateur)
     {
         //
+        // $formateur = Formateur::find($id);
+
+        // $formateur = Formateur::where('code_formateur', $id)->get();
+        // dd($formateur);
+
+        if($formateur){
+            return response()->json(['formateur' => $formateur],200);
+        }
+
+        return response()->json(['error' => 'formateur non trouvé'],404);
+
+        // dd($id);
+
+
     }
 
     /**
@@ -118,5 +151,13 @@ class FormateurController extends Controller
     public function destroy(Formateur $formateur)
     {
         //
+        try{
+            $formateur->delete();
+            return response()->json(['success' => 'data has been removed successfully']);
+        }catch(Exception $e){
+            return response()->json(['error' => $e->getMessage()],404);
+        }
+
+        
     }
 }

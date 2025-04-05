@@ -18,6 +18,7 @@ Route::withoutMiddleware([VerifyCsrfToken::class])->group(function(){
     Route::post('/store', [AvancementController::class, 'store']);
     Route::get('/all', [AvancementController::class, 'calculerTauxAvancement']);
     Route::put('/changerhoraires', [AvancementController::class, 'changerNbHeuresParSemaine']);
+    Route::get('/alerts', [AvancementController::class, 'makeAlert']);
 
     Route::resource('/modules',ModuleController::class);
     Route::resource('/groupes',GroupeController::class);

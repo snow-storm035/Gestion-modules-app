@@ -36,6 +36,16 @@ return new class extends Migration
             $table->float('nbh_total_global');
             // $table->integer('nbcc');
 
+            // dates de debut et fin d'un module au niveau de formation :
+            $table->date('debut_module')->nullable();
+            $table->date('fin_module')->nullable();
+
+            // dates efms :
+            $table->date('date_efm_normal')->nullable();
+            $table->date('date_efm_rattrapage')->nullable();
+
+            
+
             $table->foreign('code_filiere')
             ->references('code_filiere')
             ->on('filieres');

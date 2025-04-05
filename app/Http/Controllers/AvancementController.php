@@ -6,6 +6,7 @@ use App\Models\Avancement;
 use App\Models\Module;
 use Illuminate\Http\Request;
 use App\Services\ExcelServices;
+use Carbon\Carbon;
 
 class AvancementController extends Controller
 {
@@ -21,8 +22,37 @@ class AvancementController extends Controller
         // bad : if not
 
 
-        
+        $modules = Module::all();
+        // $modules = Module::orderBy('debut_module')->get();
 
+        foreach($modules as $m){
+
+            if($m['debut_module'] !== null){
+
+                $dateDebut = Carbon::parse($m['debut_module']);
+    
+                $dateEfm = Carbon::parse($m['date_efm_normal']);
+
+                // différence entre les dates en semaines :
+                $diffWeeks = floor($dateDebut->diffInWeeks($dateEfm));
+
+                $nbhparsemaine = array_map(function($groupe) use($m){
+                    
+                    return [
+                        'code_module' => $groupe['pivot']['code_module'],
+                        'nbh_par_semaine' => $groupe['pivot']['nbh_par_semaine_realisee']
+                    ];
+                },$m->groupes->toArray());
+
+
+
+                dd(gettype($nbhparsemaine), $nbhparsemaine);
+    
+                dd(gettype($dateDebut),gettype($dateEfm),$dateDebut, $diffWeeks, gettype($diffWeeks));
+
+            }
+
+        }
 
     }
 

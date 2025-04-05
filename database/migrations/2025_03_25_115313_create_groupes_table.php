@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::disableForeignKeyConstraints();
         Schema::create('groupes', function (Blueprint $table) {
+
             $table->string('code_filiere');
             $table->string('code_groupe')->primary(true);
             $table->string('niveau');
@@ -21,11 +22,13 @@ return new class extends Migration
             $table->string('status_groupe');
             $table->string('mode');
             $table->string('creneau');
+
             $table->foreign('code_filiere')
                 ->references('code_filiere')
                 ->on('filieres')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
+            
             $table->timestamps();
         });
     }
