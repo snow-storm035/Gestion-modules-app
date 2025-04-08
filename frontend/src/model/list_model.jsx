@@ -6,9 +6,12 @@ import { faEye ,faPlus} from '@fortawesome/free-solid-svg-icons';
   import { Button } from 'react-bootstrap';// onClick={toggleDarkMode}
 // className="darkmode"
 // aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+import { useNavigate } from 'react-router-dom';
+
 
 const ModuleList = () => {
     const { darkMode } = useDarkMode();
+    const navigate = useNavigate();
 
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -55,21 +58,20 @@ const ModuleList = () => {
   const filteredModulesWithsplice =filteredModules.slice(firstPostindex ,lastPostindex)
 
   return (
-    <div className="container-fluid">
+    <div className="container-fluid-model">
       <div className="row">
         <div className="col-12">
           <div className="card mb-4">
             {/* <div className="card-body"> */}
-            <div className={darkMode ? "card-body":"card-body card-body_dark_model"}>
+            <div className={darkMode ? "card-body":"card-body card-body-model-darkmode"}>
               <div className='flex-ajouter-model'>
               <h2 className="pb-3 font-weight-bold text-primary">List modules</h2>
               <Button 
                   variant="primary" 
                   className="ml-2"
-                  onClick={() => {
-                    /* Add your modal open logic here */
-                    console.log("Open add module modal");
-                  }}
+                onClick={()=>{
+                  navigate("/add-module-page")
+                }}
                 >
                   <FontAwesomeIcon icon={faPlus} className="mr-2" />
                   Ajouter model

@@ -1,0 +1,118 @@
+/* Main Container */
+.avancement-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  /* Top Section */
+  .top-section {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    margin-bottom: 30px;
+  }
+  
+  .page-title {
+    color: #2c3e50;
+    margin-bottom: 25px;
+    font-size: 28px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 10px;
+  }
+  
+  /* Stats Grid */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+  }
+  
+  .stat-card {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  }
+  
+  .stat-card.wide {
+    grid-column: span 2;
+  }
+  
+  .stat-icon {
+    font-size: 24px;
+    color: #3498db;
+    margin-right: 15px;
+    min-width: 40px;
+    text-align: center;
+  }
+  
+  .stat-content {
+    flex: 1;
+  }
+  
+  .stat-content h3 {
+    margin: 0 0 8px 0;
+    color: #34495e;
+    font-size: 16px;
+  }
+  
+  .stat-content p {
+    margin: 4px 0;
+    color: #2c3e50;
+    font-size: 14px;
+  }
+  
+  .stat-content .subtext {
+    color: #7f8c8d;
+    font-size: 12px;
+  }
+  
+  /* Hours Grid */
+  .hours-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  
+  .hours-grid div {
+    text-align: center;
+  }
+  
+  .highlight {
+    font-weight: bold;
+    color: #2980b9;
+    font-size: 16px;
+  }
+  
+  /* Status Indicators */
+  .status-completed {
+    color: #27ae60;
+    font-weight: bold;
+  }
+  
+  .status-pending {
+    color: #e74c3c;
+    font-weight: bold;
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .stats-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .stat-card.wide {
+      grid-column: span 1;
+    }
+  }

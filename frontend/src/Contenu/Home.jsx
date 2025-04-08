@@ -1,6 +1,7 @@
 import "../style/styleHome.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChalkboardUser, faGreaterThan, faBell } from '@fortawesome/free-solid-svg-icons';
+import { faUserGroup, faGreaterThan, faBell,faPersonChalkboard ,faBook,faCodeBranch} from '@fortawesome/free-solid-svg-icons';
+import CircularProgress from "../CircularProgress/CircularProgress";
 import { useDarkMode } from "../DarkModeProvider/DarkModeContext";
 // onClick={toggleDarkMode}
 // className="darkmode"
@@ -10,28 +11,29 @@ export default function Home() {
   const { darkMode } = useDarkMode();
   
   
+  
   return <>
     {/* four div about number moudil and goroub and professoure  */}
     <div className="header">
       <div>
         <span>20</span>
-        <FontAwesomeIcon className="faChalkboardUser" icon={faChalkboardUser} />
+        <FontAwesomeIcon className="faPersonChalkboard" icon={faPersonChalkboard} />
         <FontAwesomeIcon className="faGreaterThan" icon={faGreaterThan} />
       </div>
       <div>
         <span>20</span>
-        <FontAwesomeIcon className="faChalkboardUser" icon={faChalkboardUser} />
+        <FontAwesomeIcon className="faBook" icon={faBook} />
         <FontAwesomeIcon className="faGreaterThan" icon={faGreaterThan} />
       </div>
       <div>
         <span>20</span>
-        <FontAwesomeIcon className="faChalkboardUser" icon={faChalkboardUser} />
+        <FontAwesomeIcon className="faCodeBranch" icon={faCodeBranch} />
         <FontAwesomeIcon className="faGreaterThan" icon={faGreaterThan} />
       </div>
 
       <div>
         <span>20</span>
-        <FontAwesomeIcon className="faChalkboardUser" icon={faChalkboardUser} />
+        <FontAwesomeIcon className="faUserGroup" icon={faUserGroup} />
         <FontAwesomeIcon className="faGreaterThan" icon={faGreaterThan} />
       </div>
 
@@ -53,7 +55,11 @@ export default function Home() {
           <h2 className="module-progress-title">Progès des modules</h2>
 
           <div className="progress-highlight">
-            <span className="progress-percentage">75%</span>
+            {/* <span className="progress-percentage">75%</span> */}
+            <span className="progress-percentage">
+            <CircularProgress/>
+            </span>
+           
             <span className="progress-label ">highest progress</span>
           </div>
 

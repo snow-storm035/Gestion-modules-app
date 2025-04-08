@@ -24,6 +24,8 @@ import FormateursDetails from "./professeur/FormateursDetails";
 import GroupsList from "./group/list_group";
 import AddGroupForm from "./group/ajoute_group";
 import GroupDetails from "./group/GroupDetails";
+import Avancement from "./avancement/Avancement";
+import AddModuleFormateurGroupeForm from "./avancement/ajoute_avancement";
 
 function App() {
   // const [count, setCount] = useState(0)
@@ -49,6 +51,8 @@ function App() {
           <Route path="groupsList" element={<GroupsList />} />
           <Route path="addGroupform" element={<AddGroupForm />} />
           <Route path="groupdetail" element={<GroupDetails />} />
+          <Route path="avancement_1" element={<Avancement />} />
+          <Route path="addmoduleFormateurGroupeForm" element={<AddModuleFormateurGroupeForm />} />
         </Route>
       </Routes>
     </Router>  
