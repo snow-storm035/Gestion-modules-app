@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
-import "../style/stylelist_model.css";
+import "../style/ProfeseurList.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye ,faPlus} from '@fortawesome/free-solid-svg-icons';
   import { useDarkMode } from "../DarkModeProvider/DarkModeContext";
   import { Button } from 'react-bootstrap';// onClick={toggleDarkMode}
 // className="darkmode"
 // aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+import { useNavigate } from 'react-router-dom';
+
+// Inside your component function:
 
 const ProfesseurList = () => {
+  const navigate = useNavigate();
+  
     const { darkMode } = useDarkMode();
 
   const [searchTerm, setSearchTerm] = useState('');
@@ -155,18 +160,18 @@ const ProfesseurList = () => {
         <div className="col-12">
           <div className="card mb-4">
             {/* <div className="card-body"> */}
-            <div className={darkMode ? "card-body":"card-body card-body_dark_model"}>
-              <div className='flex-ajouter-model'>
+            <div className={darkMode ? "card-body":"card-body card-body_dark_formateur"}>
+              <div className='flex-ajouter-formateur'>
               <h2 className="pb-3 font-weight-bold text-primary">List formateurs</h2>
               <Button 
                   variant="primary" 
                   className="ml-2"
                   onClick={() => {
-                    /* Add your modal open logic here */
-                    console.log("Open add module modal");
+                    navigate("/addformateurForm");
                   }}
                 >
                   <FontAwesomeIcon icon={faPlus} className="mr-2" />
+                  
                   Ajouter formateur
                 </Button>
 

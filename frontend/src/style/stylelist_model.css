@@ -1,9 +1,9 @@
 /* body{
     background-color: aquamarine !important;
 } */
-.container-fluid{
+.container-fluid-model{
     /* background-color: red; */
-  margin: 30px auto 0;
+  margin: 30px 12px 0;
     /* background-color: var(--main-white); */
  
 }
@@ -26,6 +26,7 @@
     box-shadow: 0 0 6px 4px rgba(128, 128, 128, 0.711);
     }
 
-    .card-body_dark_model {
-        background-color:black;
+    .card-body-model-darkmode{
+        background-color:black !important;
+    
     }

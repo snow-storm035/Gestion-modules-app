@@ -6,8 +6,10 @@ import { faEye ,faPlus} from '@fortawesome/free-solid-svg-icons';
   import { Button } from 'react-bootstrap';// onClick={toggleDarkMode}
 // className="darkmode"
 // aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
-
+import { useNavigate } from 'react-router-dom';
 const GroupsList = () => {
+  const navigate=useNavigate();
+  
     const { darkMode } = useDarkMode();
 
   const [searchTerm, setSearchTerm] = useState('');
@@ -162,10 +164,9 @@ const GroupsList = () => {
               <Button 
                   variant="primary" 
                   className="ml-2"
-                  onClick={() => {
-                    /* Add your modal open logic here */
-                    console.log("Open add group modal");
-                  }}
+                onClick={()=>{
+                  navigate("/addGroupform")
+                }}
                 >
                   <FontAwesomeIcon icon={faPlus} className="mr-2" />
                   Ajouter group

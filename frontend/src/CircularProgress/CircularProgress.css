@@ -1,0 +1,121 @@
+.circular-progress-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    /* margin: 20px;
+    padding: 20px; */
+    background: white ;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 300px;
+  }
+  
+  .circular-progress-container h2 {
+    margin: 5px 0;
+    font-size: 1.2rem;
+    color: #333;
+  }
+  
+  .progress-wrapper {
+    position: relative;
+    /* margin: 20px 0; */
+    background-color: var(--main-white) !important;
+    
+    border: 0;
+  }
+  
+  .circular-progress {
+    display: block;
+    /* background-color:whitesmoke; */
+    
+  }
+  
+  .circular-progress-bg {
+    stroke: #f0f0f0;
+  }
+  
+  .circular-progress-fill {
+    stroke:var(--main-green);
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.3s ease-in-out;
+    
+  }
+  
+  .percentage-text-svg {
+    font-size: 1.5rem;
+    font-weight: bold;
+    fill: #333;
+   /* color: red; */
+   
+   
+}
+
+.percentage-text {
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+    pointer-events: none;
+  }
+  
+  .slider-container {
+    width: 100%;
+    margin-top: 20px;
+  }
+  
+  .progress-slider {
+    width: 100%;
+    height: 100px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: #ddd;
+    border-radius: 4px;
+    outline: none;
+  }
+  
+  .progress-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    /* width: 20px;
+    height: 20px; */
+    border-radius: 50%;
+    background: #4CAF50;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .progress-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+  }
+  
+  .slider-labels {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 5px;
+    color: #666;
+    font-size: 0.8rem;
+  }
+
+
+
+
+
+
+
+  /* dark mode style  */
+  .progress-wrapper-darkmode{
+    background-color: var(--main-black) !important;
+   
+  }
+
+  .progress-wrapper-darkmode .percentage-text-svg{
+    fill: white;
+  }
