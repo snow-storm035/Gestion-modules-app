@@ -48,7 +48,7 @@ class FormateurController extends Controller
             $formateurs_presentiel = array_map(function($item){
                 if($item['code_formateur_p_actif'] && $item['formateur_p'] && $item){
                     return [
-                        "code_formateur" => $item['code_formateur_p_actif'],
+                        "matricule" => $item['code_formateur_p_actif'],
                         "nom_formateur" => $item['formateur_p']
                     ];
                 }
@@ -59,7 +59,7 @@ class FormateurController extends Controller
             $formateurs_sync = array_map(function($item){
                 if($item['code_formateur_sync_actif'] && $item['formateur_sync'] && $item){
                     return [
-                        "code_formateur" => $item['code_formateur_sync_actif'],
+                        "matricule" => $item['code_formateur_sync_actif'],
                         "nom_formateur" => $item['formateur_sync']
                     ];
                 }
@@ -78,7 +78,7 @@ class FormateurController extends Controller
             // dd($formateurs_unique);
             
             Formateur::firstOrCreate([
-                'code_formateur' => 'none',
+                'matricule' => 'none',
                 'nom_formateur' => 'none' 
             ]);
 
@@ -86,12 +86,12 @@ class FormateurController extends Controller
                 Formateur::firstOrCreate($formateur);
             }
         }else{
-            // $codeFormateur = $request->input('code_formateur');
+            // $codeFormateur = $request->input('matricule');
             // $nomFormateur = $request->input('nom_formateur');
-            // $codeFormateur = $request->input('code_formateur');
+            // $codeFormateur = $request->input('matricule');
 
             $newFormateur = $request->validate([
-                'code_formateur' => 'bail|required',
+                'matricule' => 'bail|required',
                 'nom_formateur' => 'bail|required|alpha'
             ]);
 
@@ -115,7 +115,7 @@ class FormateurController extends Controller
         //
         // $formateur = Formateur::find($id);
 
-        // $formateur = Formateur::where('code_formateur', $id)->get();
+        // $formateur = Formateur::where('matricule', $id)->get();
         // dd($formateur);
 
         if($formateur){

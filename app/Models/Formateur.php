@@ -10,23 +10,23 @@ class Formateur extends Model
     /** @use HasFactory<\Database\Factories\FormateurFactory> */
     use HasFactory;
 
-    protected $fillable = ['code_formateur','nom_formateur'];
+    protected $fillable = ['matricule','nom_formateur'];
 
 
-    protected $primaryKey = "code_formateur";
+    protected $primaryKey = "matricule";
     public $incrementing = false;
     protected $keyType = 'string';
 
     public function modules() : BelongsToMany
     {
-        return $this->belongsToMany(Module::class, 'groupe_formateur_module', 'code_formateur', 'code_module')
+        return $this->belongsToMany(Module::class, 'groupe_formateur_module', 'matricule', 'code_module')
             ->withPivot('code_groupe', 'code_filiere', 'nbh_par_semaine_realisee', 'nbhp_realisee', 'nbhsync_realisee', 'nbh_total_realisee', 'nbcc_realisee', 'efm_realise')
             ->withTimestamps();
     }
 
     public function groupes() : BelongsToMany
     {
-        return $this->belongsToMany(Groupe::class, 'groupe_formateur_module', 'code_formateur', 'code_groupe')
+        return $this->belongsToMany(Groupe::class, 'groupe_formateur_module', 'matricule', 'code_groupe')
             ->withPivot('code_module', 'code_filiere', 'nbh_par_semaine_realisee', 'nbhp_realisee', 'nbhsync_realisee', 'nbh_total_realisee', 'nbcc_realisee', 'efm_realise')
             ->withTimestamps();
     }

@@ -32,13 +32,13 @@ class Groupe extends Model
     public function modules() : BelongsToMany
     {
         return $this->belongsToMany(Module::class, 'groupe_formateur_module', 'code_groupe', 'code_module')
-            ->withPivot('code_formateur', 'code_filiere', 'nbh_par_semaine_realisee', 'nbhp_realisee', 'nbhsync_realisee', 'nbh_total_realisee', 'nbcc_realisee', 'efm_realise')
+            ->withPivot('matricule', 'code_filiere', 'nbh_par_semaine_realisee', 'nbhp_realisee', 'nbhsync_realisee', 'nbh_total_realisee', 'nbcc_realisee', 'efm_realise')
             ->withTimestamps();
     }
 
     public function formateurs() : BelongsToMany
     {
-        return $this->belongsToMany(Formateur::class, 'groupe_formateur_module', 'code_groupe', 'code_formateur')
+        return $this->belongsToMany(Formateur::class, 'groupe_formateur_module', 'code_groupe', 'matricule')
             ->withPivot('code_module', 'code_filiere', 'nbh_par_semaine_realisee', 'nbhp_realisee', 'nbhsync_realisee', 'nbh_total_realisee', 'nbcc_realisee', 'efm_realise')
             ->withTimestamps();
     }

@@ -10,7 +10,7 @@ const AddformateurForm = () => {
     const { darkMode } = useDarkMode();
 
   const [formData, setFormData] = useState({
-    code_formateur: '',
+    matricule: '',
     nom_formateur: '',
   });
 
@@ -51,14 +51,14 @@ const AddformateurForm = () => {
                 <Form.Label><strong>Code formateur</strong></Form.Label>
                 <Form.Control
                   type="text"
-                  name="code_formateur"
-                  value={formData.code_formateur}
+                  name="matricule"
+                  value={formData.matricule}
                   onChange={handleInputChange}
                   placeholder="Enter code formateur"
                 />
               </Form.Group>
             </Col>
-            {/* code_formateur: 'F018',
+            {/* matricule: 'F018',
         nom_formateur: 'Wilson',
         created_at: '2023-01-24T09:30:00Z',
         updated_at: '2023-01-24T09:30:00Z' */}

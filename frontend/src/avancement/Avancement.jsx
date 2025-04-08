@@ -8,7 +8,7 @@ const Avancement = ({ moduleData }) => {
     id: 1,
     code_module: '300',
     code_filiere: '',
-    code_formateur: 'none',
+    matricule: 'none',
     code_groupe: '',
     nbh_par_semaine_realisee: 2.5,
     date_debut: null,
@@ -51,7 +51,7 @@ const Avancement = ({ moduleData }) => {
             </div>
             <div className="stat-content">
               <h3>Formateur</h3>
-              <p>{defaultData.code_formateur === 'none' ? 'Not assigned' : defaultData.code_formateur}</p>
+              <p>{defaultData.matricule === 'none' ? 'Not assigned' : defaultData.matricule}</p>
             </div>
           </div>
 

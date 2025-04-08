@@ -86,7 +86,7 @@ class AvancementController extends Controller
 
         $codeModule = $request['avancement']['code_module'];
         $codeGroupe = $request['avancement']['code_groupe'];
-        $codeFormateur = $request['avancement']['code_formateur'];
+        $codeFormateur = $request['avancement']['matricule'];
 
         // dd($codeModule, $codeGroupe, $codeFormateur);
 
@@ -94,14 +94,14 @@ class AvancementController extends Controller
         //     Avancement::findWithCompositeKey([
         //         ['code_module','=',$codeModule],
         //         ['code_groupe','=',$codeGroupe],
-        //         ['code_formateur','=',$codeFormateur]
+        //         ['matricule','=',$codeFormateur]
         //     ])
         //     : null;
 
         $avancement = $request->has('avancement') ?
             Avancement::where('code_module', $codeModule)
             ->where('code_groupe', $codeGroupe)
-            ->where('code_formateur', $codeFormateur)
+            ->where('matricule', $codeFormateur)
             ->first()
             : null;
 
@@ -113,7 +113,7 @@ class AvancementController extends Controller
             Avancement::updateWithCompositeKey([
                 ['code_module','=',$codeModule],
                 ['code_groupe','=',$codeGroupe],
-                ['code_formateur','=',$codeFormateur],
+                ['matricule','=',$codeFormateur],
             ],['nbh_par_semaine_realisee' => $request['nbh_par_semaine']]);
             // $avancement->update([
             //     'nbh_par_semaine_realisee' => $request['nbh_par_semaine']
@@ -126,7 +126,7 @@ class AvancementController extends Controller
 
             $avancement = Avancement::where('code_module', $codeModule)
             ->where('code_groupe', $codeGroupe)
-            ->where('code_formateur', $codeFormateur)
+            ->where('matricule', $codeFormateur)
             ->first();
 
 
@@ -162,7 +162,7 @@ class AvancementController extends Controller
             return [
 
                 'code_module' => $item['code_module'],
-                'code_formateur' => $item['code_formateur'],
+                'matricule' => $item['matricule'],
                 'code_groupe' => $item['code_groupe'],
                 'total_realise' => $item['nbh_total_realisee'],
                 'total_heures' => $module['nbh_total_global'],
@@ -215,27 +215,29 @@ class AvancementController extends Controller
         if ($request->has('excelfile')) {
             $jsonData = ExcelServices::convertExcelToJson($request);
 
-
             $data = json_decode($jsonData, true);
-
 
             // dd($data);
 
             $avancements = array_map(function ($item) {
                 $correspondant = Avancement::findWithCompositeKey([
-                    ['code_formateur','=',$item['code_formateur']],
+                    ['matricule','=',$item['code_formateur_p_actif']],
+                    ['code_groupe','=',$item['code_groupe']],
+                    ['code_module','=',$item['code_module']]
                 ]);
-                if($item['nbh_realisee_global'] > 0 && )
+
+                dd($correspondant);
+                if($item['nbh_realisee_global'] > 0 && ''){}
 
                 $nbh_par_semaine = 2.5;
-                $dateFin = calculerDateFinModule();
+                // $dateFin = calculerDateFinModule(,,);
 
                 return [
                     'code_module' => $item['code_module'],
                     'code_filiere' => $item['code_filiere'],
                     'code_groupe' => $item['code_groupe'],
-                    'code_formateur' => $item['code_formateur_p_actif'] !== "" ? $item['code_formateur_p_actif'] : "none",
-                    // 'code_formateur' => $item['code_formateur_p_actif'] ? $item['code_formateur_p_actif'] : "none" ,
+                    'matricule' => $item['code_formateur_p_actif'] !== "" ? $item['code_formateur_p_actif'] : "none",
+                    // 'matricule' => $item['code_formateur_p_actif'] ? $item['code_formateur_p_actif'] : "none" ,
                     // 'code_formateur_sync' => $item['code_formateur_sync_actif'],
 
                     'nbhp_realisee' => (float) $item['nbh_realisee_p'],
@@ -251,11 +253,7 @@ class AvancementController extends Controller
 
             $avancements_unique = array_unique($avancements, SORT_REGULAR);
 
-
-
             // dd($avancements_unique);
-
-
 
             foreach ($avancements_unique as $avancement) {
                 Avancement::firstOrCreate($avancement);

@@ -24,119 +24,119 @@ const ProfesseurList = () => {
   // Sample data - replace with your actual data
   const formateurs = [
     { id:1,
-      code_formateur: 'F001',
+      matricule: 'F001',
       nom_formateur: 'Smith',
       created_at: '2023-01-15T10:00:00Z',
       updated_at: '2023-01-15T10:00:00Z'
     },
     { 
         id:2,
-      code_formateur: 'F002',
+      matricule: 'F002',
       nom_formateur: 'Johnson',
       created_at: '2023-01-16T11:30:00Z',
       updated_at: '2023-01-16T11:30:00Z'
     },
     { 
         id:3,
-      code_formateur: 'F003',
+      matricule: 'F003',
       nom_formateur: 'Williams',
       created_at: '2023-01-17T09:15:00Z',
       updated_at: '2023-01-17T09:15:00Z'
     },
     { 
         id:4,
-      code_formateur: 'F004',
+      matricule: 'F004',
       nom_formateur: 'Brown',
       created_at: '2023-01-18T14:20:00Z',
       updated_at: '2023-01-18T14:20:00Z'
     },
     { 
         id:5,
-        code_formateur: 'F005',
+        matricule: 'F005',
         nom_formateur: 'Jones',
         created_at: '2023-01-19T08:45:00Z',
         updated_at: '2023-01-19T08:45:00Z'
       },
       { 
         id:6,
-        code_formateur: 'F006',
+        matricule: 'F006',
         nom_formateur: 'Miller',
         created_at: '2023-01-20T13:10:00Z',
         updated_at: '2023-01-20T13:10:00Z'
       },
       { 
         id:7,
-        code_formateur: 'F007',
+        matricule: 'F007',
         nom_formateur: 'Davis',
         created_at: '2023-01-21T16:30:00Z',
         updated_at: '2023-01-21T16:30:00Z'
       },
       { 
         id:8,
-        code_formateur: 'F008',
+        matricule: 'F008',
         nom_formateur: 'Garcia',
         created_at: '2023-01-22T10:15:00Z',
         updated_at: '2023-01-22T10:15:00Z'
       },
       { 
         id:9,
-        code_formateur: 'F009',
+        matricule: 'F009',
         nom_formateur: 'Rodriguez',
         created_at: '2023-01-23T11:45:00Z',
         updated_at: '2023-01-23T11:45:00Z'
       },
       { 
         id:10,
-        code_formateur: 'F010',
+        matricule: 'F010',
         nom_formateur: 'Wilson',
         created_at: '2023-01-24T09:30:00Z',
         updated_at: '2023-01-24T09:30:00Z'
       },
       { 
         id:11,
-        code_formateur: 'F011',
+        matricule: 'F011',
         nom_formateur: 'Wilson',
         created_at: '2023-01-24T09:30:00Z',
         updated_at: '2023-01-24T09:30:00Z'
       },
       { 
         id:12,
-        code_formateur: 'F012',
+        matricule: 'F012',
         nom_formateur: 'Wilson',
         created_at: '2023-01-24T09:30:00Z',
         updated_at: '2023-01-24T09:30:00Z'
       },
       { 
         id:13,
-        code_formateur: 'F013',
+        matricule: 'F013',
         nom_formateur: 'Wilson',
         created_at: '2023-01-24T09:30:00Z',
         updated_at: '2023-01-24T09:30:00Z'
       },
       { 
         id:14,
-        code_formateur: 'F014',
+        matricule: 'F014',
         nom_formateur: 'Wilson',
         created_at: '2023-01-24T09:30:00Z',
         updated_at: '2023-01-24T09:30:00Z'
       },
       { 
         id:15,
-        code_formateur: 'F015',
+        matricule: 'F015',
         nom_formateur: 'Wilson',
         created_at: '2023-01-24T09:30:00Z',
         updated_at: '2023-01-24T09:30:00Z'
       },
       { 
         id:17,
-        code_formateur: 'F016',
+        matricule: 'F016',
         nom_formateur: 'Wilson',
         created_at: '2023-01-24T09:30:00Z',
         updated_at: '2023-01-24T09:30:00Z'
       },
       { 
         id:18,
-        code_formateur: 'F018',
+        matricule: 'F018',
         nom_formateur: 'Wilson',
         created_at: '2023-01-24T09:30:00Z',
         updated_at: '2023-01-24T09:30:00Z'
@@ -149,7 +149,7 @@ const ProfesseurList = () => {
     setCurrentPage(1)
   };
   const filteredformateurs = formateurs.filter(formateur =>
-    formateur.code_formateur.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    formateur.matricule.toLowerCase().includes(searchTerm.toLowerCase()) ||
     formateur. nom_formateur.toLowerCase().includes(searchTerm.toLowerCase())
   );
   const filteredformateursWithsplice =filteredformateurs.slice(firstPostindex ,lastPostindex)
@@ -201,7 +201,7 @@ const ProfesseurList = () => {
                     {filteredformateursWithsplice.map((formateur) => (
                       <tr key={formateur.id}>
                       
-                        <td>{formateur.code_formateur}</td>
+                        <td>{formateur.matricule}</td>
                         <td>{formateur.nom_formateur}</td>
 
                         <td>
