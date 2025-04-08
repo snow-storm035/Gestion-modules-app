@@ -42,7 +42,6 @@ const ModuleList = () => {
     { id: 22, code_module: '222', regionale: 'OUI', mh_presentiel: 7, mh_distance: 4, nombre_total: 3 },
     { id: 23, code_module: '222', regionale: 'OUI', mh_presentiel: 7, mh_distance: 4, nombre_total: 3 },
     { id: 24, code_module: '222', regionale: 'OUI', mh_presentiel: 7, mh_distance: 4, nombre_total: 3 },
-
   ];
 //  this is function use in iput update state 
   const handleSearchChange = (e) => {

@@ -43,8 +43,8 @@ return new class extends Migration
 
 
             $table->float('nbh_par_semaine_realisee')->default(2.5);
-            $table->date('date_debut')->nullable();
-            $table->date('date_fin')->nullable();
+            // $table->date('date_debut')->nullable(); 
+            // $table->date('date_fin')->nullable();
 
             $table->float('nbhp_realisee')->default(0);
             $table->float('nbhsync_realisee')->default(0);

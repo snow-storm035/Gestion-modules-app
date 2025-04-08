@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::disableForeignKeyConstraints();
-        Schema::create('formateurs', function (Blueprint $table) {
-            $table->string('matricule_formateur')->primary(true);
-            $table->string('nom_formateur');
-            // $table->string('prenom_formateur');
-            $table->timestamps();
+        Schema::table('groupe_formateur_module', function (Blueprint $table) {
+            //
+            $table->renameColumn('nbh_par_semaine_realisee','nbh_par_semaine');
         });
     }
 
@@ -25,6 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('formateurs');
+        Schema::table('groupe_formateur_module', function (Blueprint $table) {
+            //
+        });
     }
 };

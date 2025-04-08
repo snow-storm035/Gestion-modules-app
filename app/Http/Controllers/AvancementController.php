@@ -7,11 +7,10 @@ use App\Models\Module;
 use Illuminate\Http\Request;
 use App\Services\ExcelServices;
 use Carbon\Carbon;
+use Mockery\Undefined;
 
 class AvancementController extends Controller
 {
-
-
 
     public function makeAlert() {
 
@@ -25,34 +24,56 @@ class AvancementController extends Controller
         $modules = Module::all();
         // $modules = Module::orderBy('debut_module')->get();
 
+        $modules_stats = [];
         foreach($modules as $m){
 
             if($m['debut_module'] !== null){
+
+                // dd($m['code_module'], $m['code_filiere']);
 
                 $dateDebut = Carbon::parse($m['debut_module']);
     
                 $dateEfm = Carbon::parse($m['date_efm_normal']);
 
                 // différence entre les dates en semaines :
-                $diffWeeks = floor($dateDebut->diffInWeeks($dateEfm));
+                $nbsemaines = floor($dateDebut->diffInWeeks($dateEfm));
 
-                $nbhparsemaine = array_map(function($groupe) use($m){
-                    
-                    return [
-                        'code_module' => $groupe['pivot']['code_module'],
-                        'nbh_par_semaine' => $groupe['pivot']['nbh_par_semaine_realisee']
-                    ];
-                },$m->groupes->toArray());
+                // $module = array_map(function($groupe) use($m){
+                //     $a = [...$groupe['pivot']];
+                //     // dd($a);
+                //     // dd($groupe);
+                //     if($groupe['pivot']['code_filiere'] === $m['code_filiere'] && $groupe['pivot']['code_module'] === $m['code_module']){
+                //         return [
+                //             'code_filiere' => $a['code_filiere'],
+                //             'code_module' => $a['code_module'],
+                //             'nbh_par_semaine' => $a['nbh_par_semaine_realisee']
+                //         ];
+                //     }
+                // },$m->groupes->where('code_filiere',$m['code_filiere'])->toArray());
 
+                $module = $m->groupes->where('code_filiere',$m['code_filiere'])
+                ->firstOrFail() // this will raise a NOT FOUND ERROR !!!
+                ->toArray()['pivot'];
 
+                // dd($m->groupes->where('code_filiere',$m['code_filiere'])->first()->toArray()['pivot']);
+                $taux_total = $module['nbh_par_semaine_realisee'] * $nbsemaines;
+                
+                // dd($taux_total, $m['nbh_p_total'] + $m['nbh_sync_total'], $m['nbh_total_global']);
+                if($taux_total >= $m['nbh_p_total'] + $m['nbh_sync_total']){
+                    $module['willcompleteontime'] = true;
+                }else{
+                    $module['willcompleteontime'] = false;
+                }
 
-                dd(gettype($nbhparsemaine), $nbhparsemaine);
-    
-                dd(gettype($dateDebut),gettype($dateEfm),$dateDebut, $diffWeeks, gettype($diffWeeks));
-
+                $modules_stats[] = $module;
+                
+                // dd(gettype($module), $module);
+                // dd(gettype($dateDebut),gettype($dateEfm),$dateDebut, $diffWeeks, gettype($diffWeeks));
+                
             }
-
+            
         }
+        dd($modules_stats);
 
     }
 
@@ -108,7 +129,9 @@ class AvancementController extends Controller
             ->where('code_formateur', $codeFormateur)
             ->first();
 
+
             dd($avancement['nbh_par_semaine_realisee']);
+
 
             return response()->json(['success' => 'data has been updated successfully'],200);
         } else {
@@ -154,6 +177,8 @@ class AvancementController extends Controller
     }
 
 
+
+
     /**
      * Display a listing of the resource.
      */
@@ -197,6 +222,14 @@ class AvancementController extends Controller
             // dd($data);
 
             $avancements = array_map(function ($item) {
+                $correspondant = Avancement::findWithCompositeKey([
+                    ['code_formateur','=',$item['code_formateur']],
+                ]);
+                if($item['nbh_realisee_global'] > 0 && )
+
+                $nbh_par_semaine = 2.5;
+                $dateFin = calculerDateFinModule();
+
                 return [
                     'code_module' => $item['code_module'],
                     'code_filiere' => $item['code_filiere'],
