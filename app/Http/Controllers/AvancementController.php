@@ -110,11 +110,13 @@ class AvancementController extends Controller
 
 
         if ($request->has('nbh_par_semaine') && $avancement) {
+
             Avancement::updateWithCompositeKey([
                 ['code_module','=',$codeModule],
                 ['code_groupe','=',$codeGroupe],
                 ['matricule','=',$codeFormateur],
             ],['nbh_par_semaine_realisee' => $request['nbh_par_semaine']]);
+
             // $avancement->update([
             //     'nbh_par_semaine_realisee' => $request['nbh_par_semaine']
             // ]);
@@ -124,6 +126,8 @@ class AvancementController extends Controller
 
             // $avancement->save();
 
+
+            // code to review changes :
             $avancement = Avancement::where('code_module', $codeModule)
             ->where('code_groupe', $codeGroupe)
             ->where('matricule', $codeFormateur)
@@ -131,6 +135,7 @@ class AvancementController extends Controller
 
 
             dd($avancement['nbh_par_semaine_realisee']);
+            // ###################################################
 
 
             return response()->json(['success' => 'data has been updated successfully'],200);
@@ -220,16 +225,23 @@ class AvancementController extends Controller
             // dd($data);
 
             $avancements = array_map(function ($item) {
+           
                 $correspondant = Avancement::findWithCompositeKey([
                     ['matricule','=',$item['code_formateur_p_actif']],
                     ['code_groupe','=',$item['code_groupe']],
                     ['code_module','=',$item['code_module']]
                 ]);
 
-                dd($correspondant);
-                if($item['nbh_realisee_global'] > 0 && ''){}
+                // dd($correspondant);
+                // ['code_filiere','=',$item['code_filiere']]
+                
 
-                $nbh_par_semaine = 2.5;
+                if($item['nbh_realisee_global'] > 0 && $correspondant && $correspondant['date_debut'] === null){
+                    $item['date_debut'] = Carbon::now()->toDateString();
+                    dd($item['date_debut'],$item);
+                }
+
+                // $nbh_par_semaine = 2.5;
                 // $dateFin = calculerDateFinModule(,,);
 
                 return [
@@ -245,18 +257,21 @@ class AvancementController extends Controller
                     'nbh_total_realisee' => (float) $item['nbh_realisee_global'],
 
                     'nbcc_realisee' => (int) $item['nbcc'],
-                    'efm_realise' => $item['validation_efm']
-                    // 'nbh_total_realisee' => $item['nbh_realisee_global'],
 
+                    'efm_realise' => $item['validation_efm'],
+                    
+                    'debut_module' => $item['date_debut'],
                 ];
             }, $data);
+            
 
             $avancements_unique = array_unique($avancements, SORT_REGULAR);
 
             // dd($avancements_unique);
 
             foreach ($avancements_unique as $avancement) {
-                Avancement::firstOrCreate($avancement);
+                // Avancement::firstOrCreate($avancement);
+                Avancement::updateOrCreate($avancement);
             }
 
             return response()->json(['success' => 'avancement updated successfully']);
