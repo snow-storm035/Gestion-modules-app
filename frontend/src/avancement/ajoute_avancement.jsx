@@ -12,7 +12,7 @@ const AddModuleFormateurGroupeForm = () => {
     const [formData, setFormData] = useState({
         code_module: '',
         code_filiere: '',
-        code_formateur: 'none',
+        matricule: 'none',
         code_groupe: '',
         nbh_par_semaine_realisee:0,
         date_debut: null,
@@ -94,8 +94,8 @@ const AddModuleFormateurGroupeForm = () => {
             <Form.Label><strong>Code Formateur</strong></Form.Label>
             <Form.Control
               type="text"
-              name="code_formateur"
-              value={formData.code_formateur}
+              name="matricule"
+              value={formData.matricule}
               onChange={handleInputChange}
               placeholder="Enter formateur code"
             />

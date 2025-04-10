@@ -8,7 +8,7 @@ const FormateursDetails = () => {
 
     const formateurs = [
         {
-          code_formateur: 'F001',
+          matricule: 'F001',
           nom_formateur: 'Jean Dupont',
           modules: [
             {
@@ -35,8 +35,8 @@ const FormateursDetails = () => {
         <h2>Détails de Formateur</h2>
         <div className="formateurs-list">
           {formateurs.map(formateur => (
-            <div key={formateur.code_formateur} className="formateur-card">
-              <h3>{formateur.nom_formateur} ({formateur.code_formateur})</h3>
+            <div key={formateur.matricule} className="formateur-card">
+              <h3>{formateur.nom_formateur} ({formateur.matricule})</h3>
               <p>
                 <strong>Créé le:</strong> {new Date(formateur.created_at).toLocaleDateString('fr-FR')}<br />
                 <strong>Mis à jour le:</strong> {new Date(formateur.updated_at).toLocaleDateString('fr-FR')}

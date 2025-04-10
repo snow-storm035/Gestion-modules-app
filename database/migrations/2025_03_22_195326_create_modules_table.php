@@ -36,9 +36,10 @@ return new class extends Migration
             $table->float('nbh_total_global');
             // $table->integer('nbcc');
 
+            $table->enum('semestre',['s1','s2','année']);
             // dates de debut et fin d'un module au niveau de formation :
-            $table->date('debut_module')->nullable();
-            $table->date('fin_module')->nullable();
+            // $table->date('debut_module')->nullable();
+            // $table->date('fin_module')->nullable();
 
             // dates efms :
             $table->date('date_efm_normal')->nullable();

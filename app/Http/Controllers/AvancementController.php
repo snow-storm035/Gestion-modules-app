@@ -7,11 +7,10 @@ use App\Models\Module;
 use Illuminate\Http\Request;
 use App\Services\ExcelServices;
 use Carbon\Carbon;
+use Mockery\Undefined;
 
 class AvancementController extends Controller
 {
-
-
 
     public function makeAlert() {
 
@@ -25,34 +24,56 @@ class AvancementController extends Controller
         $modules = Module::all();
         // $modules = Module::orderBy('debut_module')->get();
 
+        $modules_stats = [];
         foreach($modules as $m){
 
             if($m['debut_module'] !== null){
+
+                // dd($m['code_module'], $m['code_filiere']);
 
                 $dateDebut = Carbon::parse($m['debut_module']);
     
                 $dateEfm = Carbon::parse($m['date_efm_normal']);
 
                 // différence entre les dates en semaines :
-                $diffWeeks = floor($dateDebut->diffInWeeks($dateEfm));
+                $nbsemaines = floor($dateDebut->diffInWeeks($dateEfm));
 
-                $nbhparsemaine = array_map(function($groupe) use($m){
-                    
-                    return [
-                        'code_module' => $groupe['pivot']['code_module'],
-                        'nbh_par_semaine' => $groupe['pivot']['nbh_par_semaine_realisee']
-                    ];
-                },$m->groupes->toArray());
+                // $module = array_map(function($groupe) use($m){
+                //     $a = [...$groupe['pivot']];
+                //     // dd($a);
+                //     // dd($groupe);
+                //     if($groupe['pivot']['code_filiere'] === $m['code_filiere'] && $groupe['pivot']['code_module'] === $m['code_module']){
+                //         return [
+                //             'code_filiere' => $a['code_filiere'],
+                //             'code_module' => $a['code_module'],
+                //             'nbh_par_semaine' => $a['nbh_par_semaine_realisee']
+                //         ];
+                //     }
+                // },$m->groupes->where('code_filiere',$m['code_filiere'])->toArray());
 
+                $module = $m->groupes->where('code_filiere',$m['code_filiere'])
+                ->firstOrFail() // this will raise a NOT FOUND ERROR !!!
+                ->toArray()['pivot'];
 
+                // dd($m->groupes->where('code_filiere',$m['code_filiere'])->first()->toArray()['pivot']);
+                $taux_total = $module['nbh_par_semaine_realisee'] * $nbsemaines;
+                
+                // dd($taux_total, $m['nbh_p_total'] + $m['nbh_sync_total'], $m['nbh_total_global']);
+                if($taux_total >= $m['nbh_p_total'] + $m['nbh_sync_total']){
+                    $module['willcompleteontime'] = true;
+                }else{
+                    $module['willcompleteontime'] = false;
+                }
 
-                dd(gettype($nbhparsemaine), $nbhparsemaine);
-    
-                dd(gettype($dateDebut),gettype($dateEfm),$dateDebut, $diffWeeks, gettype($diffWeeks));
-
+                $modules_stats[] = $module;
+                
+                // dd(gettype($module), $module);
+                // dd(gettype($dateDebut),gettype($dateEfm),$dateDebut, $diffWeeks, gettype($diffWeeks));
+                
             }
-
+            
         }
+        dd($modules_stats);
 
     }
 
@@ -65,7 +86,7 @@ class AvancementController extends Controller
 
         $codeModule = $request['avancement']['code_module'];
         $codeGroupe = $request['avancement']['code_groupe'];
-        $codeFormateur = $request['avancement']['code_formateur'];
+        $codeFormateur = $request['avancement']['matricule'];
 
         // dd($codeModule, $codeGroupe, $codeFormateur);
 
@@ -73,14 +94,14 @@ class AvancementController extends Controller
         //     Avancement::findWithCompositeKey([
         //         ['code_module','=',$codeModule],
         //         ['code_groupe','=',$codeGroupe],
-        //         ['code_formateur','=',$codeFormateur]
+        //         ['matricule','=',$codeFormateur]
         //     ])
         //     : null;
 
         $avancement = $request->has('avancement') ?
             Avancement::where('code_module', $codeModule)
             ->where('code_groupe', $codeGroupe)
-            ->where('code_formateur', $codeFormateur)
+            ->where('matricule', $codeFormateur)
             ->first()
             : null;
 
@@ -89,11 +110,13 @@ class AvancementController extends Controller
 
 
         if ($request->has('nbh_par_semaine') && $avancement) {
+
             Avancement::updateWithCompositeKey([
                 ['code_module','=',$codeModule],
                 ['code_groupe','=',$codeGroupe],
-                ['code_formateur','=',$codeFormateur],
+                ['matricule','=',$codeFormateur],
             ],['nbh_par_semaine_realisee' => $request['nbh_par_semaine']]);
+
             // $avancement->update([
             //     'nbh_par_semaine_realisee' => $request['nbh_par_semaine']
             // ]);
@@ -103,12 +126,17 @@ class AvancementController extends Controller
 
             // $avancement->save();
 
+
+            // code to review changes :
             $avancement = Avancement::where('code_module', $codeModule)
             ->where('code_groupe', $codeGroupe)
-            ->where('code_formateur', $codeFormateur)
+            ->where('matricule', $codeFormateur)
             ->first();
 
+
             dd($avancement['nbh_par_semaine_realisee']);
+            // ###################################################
+
 
             return response()->json(['success' => 'data has been updated successfully'],200);
         } else {
@@ -139,7 +167,7 @@ class AvancementController extends Controller
             return [
 
                 'code_module' => $item['code_module'],
-                'code_formateur' => $item['code_formateur'],
+                'matricule' => $item['matricule'],
                 'code_groupe' => $item['code_groupe'],
                 'total_realise' => $item['nbh_total_realisee'],
                 'total_heures' => $module['nbh_total_global'],
@@ -152,6 +180,8 @@ class AvancementController extends Controller
 
         dd($taux_realisation);
     }
+
+
 
 
     /**
@@ -190,19 +220,36 @@ class AvancementController extends Controller
         if ($request->has('excelfile')) {
             $jsonData = ExcelServices::convertExcelToJson($request);
 
-
             $data = json_decode($jsonData, true);
-
 
             // dd($data);
 
             $avancements = array_map(function ($item) {
+           
+                $correspondant = Avancement::findWithCompositeKey([
+                    ['matricule','=',$item['code_formateur_p_actif']],
+                    ['code_groupe','=',$item['code_groupe']],
+                    ['code_module','=',$item['code_module']]
+                ]);
+
+                // dd($correspondant);
+                // ['code_filiere','=',$item['code_filiere']]
+                
+
+                if($item['nbh_realisee_global'] > 0 && $correspondant && $correspondant['date_debut'] === null){
+                    $item['date_debut'] = Carbon::now()->toDateString();
+                    dd($item['date_debut'],$item);
+                }
+
+                // $nbh_par_semaine = 2.5;
+                // $dateFin = calculerDateFinModule(,,);
+
                 return [
                     'code_module' => $item['code_module'],
                     'code_filiere' => $item['code_filiere'],
                     'code_groupe' => $item['code_groupe'],
-                    'code_formateur' => $item['code_formateur_p_actif'] !== "" ? $item['code_formateur_p_actif'] : "none",
-                    // 'code_formateur' => $item['code_formateur_p_actif'] ? $item['code_formateur_p_actif'] : "none" ,
+                    'matricule' => $item['code_formateur_p_actif'] !== "" ? $item['code_formateur_p_actif'] : "none",
+                    // 'matricule' => $item['code_formateur_p_actif'] ? $item['code_formateur_p_actif'] : "none" ,
                     // 'code_formateur_sync' => $item['code_formateur_sync_actif'],
 
                     'nbhp_realisee' => (float) $item['nbh_realisee_p'],
@@ -210,22 +257,21 @@ class AvancementController extends Controller
                     'nbh_total_realisee' => (float) $item['nbh_realisee_global'],
 
                     'nbcc_realisee' => (int) $item['nbcc'],
-                    'efm_realise' => $item['validation_efm']
-                    // 'nbh_total_realisee' => $item['nbh_realisee_global'],
 
+                    'efm_realise' => $item['validation_efm'],
+                    
+                    'debut_module' => $item['date_debut'],
                 ];
             }, $data);
+            
 
             $avancements_unique = array_unique($avancements, SORT_REGULAR);
 
-
-
             // dd($avancements_unique);
 
-
-
             foreach ($avancements_unique as $avancement) {
-                Avancement::firstOrCreate($avancement);
+                // Avancement::firstOrCreate($avancement);
+                Avancement::updateOrCreate($avancement);
             }
 
             return response()->json(['success' => 'avancement updated successfully']);

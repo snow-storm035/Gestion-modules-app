@@ -23,34 +23,58 @@ const ProfesseurList = () => {
 
   // Sample data - replace with your actual data
   const formateurs = [
+<<<<<<< HEAD
     {
       id: 1,
       code_formateur: 'F001',
+=======
+    { id:1,
+      matricule: 'F001',
+>>>>>>> 5ddc21d86a7024a6b85ba91f4f1d76a8cdb25be3
       nom_formateur: 'Smith',
       created_at: '2023-01-15T10:00:00Z',
       updated_at: '2023-01-15T10:00:00Z'
     },
+<<<<<<< HEAD
     {
       id: 2,
       code_formateur: 'F002',
+=======
+    { 
+        id:2,
+      matricule: 'F002',
+>>>>>>> 5ddc21d86a7024a6b85ba91f4f1d76a8cdb25be3
       nom_formateur: 'Johnson',
       created_at: '2023-01-16T11:30:00Z',
       updated_at: '2023-01-16T11:30:00Z'
     },
+<<<<<<< HEAD
     {
       id: 3,
       code_formateur: 'F003',
+=======
+    { 
+        id:3,
+      matricule: 'F003',
+>>>>>>> 5ddc21d86a7024a6b85ba91f4f1d76a8cdb25be3
       nom_formateur: 'Williams',
       created_at: '2023-01-17T09:15:00Z',
       updated_at: '2023-01-17T09:15:00Z'
     },
+<<<<<<< HEAD
     {
       id: 4,
       code_formateur: 'F004',
+=======
+    { 
+        id:4,
+      matricule: 'F004',
+>>>>>>> 5ddc21d86a7024a6b85ba91f4f1d76a8cdb25be3
       nom_formateur: 'Brown',
       created_at: '2023-01-18T14:20:00Z',
       updated_at: '2023-01-18T14:20:00Z'
     },
+<<<<<<< HEAD
     {
       id: 5,
       code_formateur: 'F005',
@@ -143,6 +167,100 @@ const ProfesseurList = () => {
       updated_at: '2023-01-24T09:30:00Z'
     },
   ];
+=======
+    { 
+        id:5,
+        matricule: 'F005',
+        nom_formateur: 'Jones',
+        created_at: '2023-01-19T08:45:00Z',
+        updated_at: '2023-01-19T08:45:00Z'
+      },
+      { 
+        id:6,
+        matricule: 'F006',
+        nom_formateur: 'Miller',
+        created_at: '2023-01-20T13:10:00Z',
+        updated_at: '2023-01-20T13:10:00Z'
+      },
+      { 
+        id:7,
+        matricule: 'F007',
+        nom_formateur: 'Davis',
+        created_at: '2023-01-21T16:30:00Z',
+        updated_at: '2023-01-21T16:30:00Z'
+      },
+      { 
+        id:8,
+        matricule: 'F008',
+        nom_formateur: 'Garcia',
+        created_at: '2023-01-22T10:15:00Z',
+        updated_at: '2023-01-22T10:15:00Z'
+      },
+      { 
+        id:9,
+        matricule: 'F009',
+        nom_formateur: 'Rodriguez',
+        created_at: '2023-01-23T11:45:00Z',
+        updated_at: '2023-01-23T11:45:00Z'
+      },
+      { 
+        id:10,
+        matricule: 'F010',
+        nom_formateur: 'Wilson',
+        created_at: '2023-01-24T09:30:00Z',
+        updated_at: '2023-01-24T09:30:00Z'
+      },
+      { 
+        id:11,
+        matricule: 'F011',
+        nom_formateur: 'Wilson',
+        created_at: '2023-01-24T09:30:00Z',
+        updated_at: '2023-01-24T09:30:00Z'
+      },
+      { 
+        id:12,
+        matricule: 'F012',
+        nom_formateur: 'Wilson',
+        created_at: '2023-01-24T09:30:00Z',
+        updated_at: '2023-01-24T09:30:00Z'
+      },
+      { 
+        id:13,
+        matricule: 'F013',
+        nom_formateur: 'Wilson',
+        created_at: '2023-01-24T09:30:00Z',
+        updated_at: '2023-01-24T09:30:00Z'
+      },
+      { 
+        id:14,
+        matricule: 'F014',
+        nom_formateur: 'Wilson',
+        created_at: '2023-01-24T09:30:00Z',
+        updated_at: '2023-01-24T09:30:00Z'
+      },
+      { 
+        id:15,
+        matricule: 'F015',
+        nom_formateur: 'Wilson',
+        created_at: '2023-01-24T09:30:00Z',
+        updated_at: '2023-01-24T09:30:00Z'
+      },
+      { 
+        id:17,
+        matricule: 'F016',
+        nom_formateur: 'Wilson',
+        created_at: '2023-01-24T09:30:00Z',
+        updated_at: '2023-01-24T09:30:00Z'
+      },
+      { 
+        id:18,
+        matricule: 'F018',
+        nom_formateur: 'Wilson',
+        created_at: '2023-01-24T09:30:00Z',
+        updated_at: '2023-01-24T09:30:00Z'
+      },
+    ];
+>>>>>>> 5ddc21d86a7024a6b85ba91f4f1d76a8cdb25be3
 
   //  this is function use in iput update state 
   const handleSearchChange = (e) => {
@@ -150,8 +268,13 @@ const ProfesseurList = () => {
     setCurrentPage(1)
   };
   const filteredformateurs = formateurs.filter(formateur =>
+<<<<<<< HEAD
     formateur.code_formateur.toLowerCase().includes(searchTerm.toLowerCase()) ||
     formateur.nom_formateur.toLowerCase().includes(searchTerm.toLowerCase())
+=======
+    formateur.matricule.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    formateur. nom_formateur.toLowerCase().includes(searchTerm.toLowerCase())
+>>>>>>> 5ddc21d86a7024a6b85ba91f4f1d76a8cdb25be3
   );
   const filteredformateursWithsplice = filteredformateurs.slice(firstPostindex, lastPostindex)
 
@@ -201,8 +324,13 @@ const ProfesseurList = () => {
                   <tbody>
                     {filteredformateursWithsplice.map((formateur) => (
                       <tr key={formateur.id}>
+<<<<<<< HEAD
 
                         <td>{formateur.code_formateur}</td>
+=======
+                      
+                        <td>{formateur.matricule}</td>
+>>>>>>> 5ddc21d86a7024a6b85ba91f4f1d76a8cdb25be3
                         <td>{formateur.nom_formateur}</td>
 
                         <td>

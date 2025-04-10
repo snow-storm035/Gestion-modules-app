@@ -20,7 +20,7 @@ const GroupDetails = () => {
     updated_at: '2023-06-15T14:30:00Z',
     formateurs: [
       { 
-        code_formateur: 'F001', 
+        matricule: 'F001', 
         nom_formateur: 'Jean Dupont',
         modules: [
           { code_module: 'MATH101', libelle_module: 'Mathématiques Avancées', mh_presentiel: 30, mh_distance: 15 },
@@ -28,7 +28,7 @@ const GroupDetails = () => {
         ]
       },
       { 
-        code_formateur: 'F002', 
+        matricule: 'F002', 
         nom_formateur: 'Marie Lambert',
         modules: [
           { code_module: 'PROG101', libelle_module: 'Programmation Fondamentale', mh_presentiel: 40, mh_distance: 20 }
@@ -99,10 +99,10 @@ const GroupDetails = () => {
           </h2>
           <div className="formateurs-modules-container">
             {group.formateurs.map(formateur => (
-              <div key={formateur.code_formateur} className={darkMode ?"formateur-module-card":"formateur-module-card formateur-module-card-darkmode"}>
+              <div key={formateur.matricule} className={darkMode ?"formateur-module-card":"formateur-module-card formateur-module-card-darkmode"}>
                 <div className="formateur-header">
                   <h3>{formateur.nom_formateur}</h3>
-                  <p className="formateur-code">{formateur.code_formateur}</p>
+                  <p className="formateur-code">{formateur.matricule}</p>
                 </div>
                 
                 <div className="modules-taught">

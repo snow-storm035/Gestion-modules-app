@@ -13,6 +13,7 @@ const AvancemnetList = () => {
   
     const { darkMode } = useDarkMode();
 
+<<<<<<< HEAD
   // const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const postPerPage = 8;
@@ -174,6 +175,29 @@ const AvancemnetList = () => {
   const handleFilterChange = (filterName, value) => {
     setFilters(prev => ({ ...prev, [filterName]: value }));
     setCurrentPage(1)
+=======
+const Avancement = ({ moduleData }) => {
+  // Sample data structure matching your schema
+  const defaultData = {
+    id: 1,
+    code_module: '300',
+    code_filiere: '',
+    matricule: 'none',
+    code_groupe: '',
+    nbh_par_semaine_realisee: 2.5,
+    date_debut: null,
+    date_fin: null,
+    nbhp_realisee: 0,
+    nbhsync_realisee: 0,
+    nbh_total_realisee: 0,
+    nbcc_realisee: 0,
+    efm_realise: 'non',
+    regionale: 'NON',
+    mh_presentiel: 7,
+    mh_distance: 4,
+    nombre_total: 3,
+    ...moduleData // Override with passed props
+>>>>>>> 5ddc21d86a7024a6b85ba91f4f1d76a8cdb25be3
   };
 
   // Reset all filters
@@ -227,6 +251,7 @@ const filteredavoncesWithsplice =sortedDocuments.slice(firstPostindex ,lastPosti
           ))}
         </select>
 
+<<<<<<< HEAD
         {/* Module Filter */}
         <select 
           value={filters.module}
@@ -238,6 +263,18 @@ const filteredavoncesWithsplice =sortedDocuments.slice(firstPostindex ,lastPosti
             <option key={module} value={module}>{module}</option>
           ))}
         </select>
+=======
+          {/* Formateur Information */}
+          <div className="stat-card">
+            <div className="stat-icon">
+              <FaChalkboardTeacher />
+            </div>
+            <div className="stat-content">
+              <h3>Formateur</h3>
+              <p>{defaultData.matricule === 'none' ? 'Not assigned' : defaultData.matricule}</p>
+            </div>
+          </div>
+>>>>>>> 5ddc21d86a7024a6b85ba91f4f1d76a8cdb25be3
 
         {/* Groupe Filter */}
         <select 

@@ -16,7 +16,7 @@ return new class extends Migration
 
             $table->string('code_module')->nullable();
             $table->string('code_filiere')->nullable();
-            $table->string('code_formateur')->default("none")->nullable(); 
+            $table->string('matricule')->default("none")->nullable(); 
             $table->string('code_groupe')->nullable();
 
             $table->foreign(["code_filiere","code_module"])
@@ -25,8 +25,8 @@ return new class extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
-            $table->foreign("code_formateur")
-                ->references("code_formateur")
+            $table->foreign("matricule")
+                ->references("matricule")
                 ->on('formateurs')
                 ->onDelete('restrict')
                 ->onUpdate('cascade')
@@ -38,13 +38,13 @@ return new class extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
-            $table->primary(['code_module', 'code_formateur', 'code_groupe']);
+            $table->primary(['code_module', 'matricule', 'code_groupe']);
 
 
 
             $table->float('nbh_par_semaine_realisee')->default(2.5);
-            $table->date('date_debut')->nullable();
-            $table->date('date_fin')->nullable();
+            // $table->date('date_debut')->nullable(); 
+            // $table->date('date_fin')->nullable();
 
             $table->float('nbhp_realisee')->default(0);
             $table->float('nbhsync_realisee')->default(0);
