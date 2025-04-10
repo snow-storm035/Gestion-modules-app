@@ -14,12 +14,12 @@ const ModuleDetails = () => {
   const moduleData = {
     id: 1,
     code_module: 'MATH101',
-    // libelle_module: 'Mathematics Fundamentals',
     libelle_module: 'Algorithem',
     code_filiere: 'CS101',
     regional: 'O',
     status: 'active',
     
+    // Hours data
     nbh_p_s1: 30,
     nbh_sync_s1: 15,
     nbh_async_s1: 15,
@@ -35,6 +35,11 @@ const ModuleDetails = () => {
     nbh_async_total: 25,
     nbh_total_global: 120,
     
+    // New date fields (nullable)
+    date_efm_normal: '2023-06-15', // Example normal exam date (YYYY-MM-DD format)
+    date_efm_rattrapage: '2023-07-05', // Example retake exam date
+    
+    // Timestamps
     created_at: '2023-05-15T10:00:00Z',
     updated_at: '2023-05-20T14:30:00Z'
   };
@@ -69,6 +74,23 @@ const ModuleDetails = () => {
               {moduleData.status}
             </div>
           </div>
+   
+          <div className="detail-item">
+            <div className="detail-label">Date EFM Normal</div>
+            <div className="detail-value">
+              {/* {moduleData.date_efm_normal ? 'OUI' : 'NON'} */}
+              {moduleData.date_efm_normal ? new Date(moduleData.date_efm_normal).toLocaleDateString():"pas encore définit"}
+            </div>
+          </div>
+          <div className="detail-item">
+            <div className="detail-label">Date EFM Rattrapage</div>
+            <div className="detail-value">
+              {/* {moduleData.regional === 'O' ? 'OUI' : 'NON'} */}
+              {moduleData.date_efm_rattrapage ? new Date(moduleData.date_efm_rattrapage).toLocaleDateString():"pas encore définit"}
+            </div>
+
+          </div>
+
         </div>
       </div>
       

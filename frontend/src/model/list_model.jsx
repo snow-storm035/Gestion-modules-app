@@ -1,24 +1,24 @@
 import React, { useState } from 'react';
 import "../style/stylelist_model.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye ,faPlus} from '@fortawesome/free-solid-svg-icons';
-  import { useDarkMode } from "../DarkModeProvider/DarkModeContext";
-  import { Button } from 'react-bootstrap';// onClick={toggleDarkMode}
+import { faEye, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { useDarkMode } from "../DarkModeProvider/DarkModeContext";
+import { Button } from 'react-bootstrap';// onClick={toggleDarkMode}
 // className="darkmode"
 // aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
 import { useNavigate } from 'react-router-dom';
 
 
 const ModuleList = () => {
-    const { darkMode } = useDarkMode();
-    const navigate = useNavigate();
+  const { darkMode } = useDarkMode();
+  const navigate = useNavigate();
 
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const postPerPage = 9;
-  const lastPostindex=currentPage * postPerPage ;
-  const firstPostindex=lastPostindex - postPerPage ;
-  
+  const lastPostindex = currentPage * postPerPage;
+  const firstPostindex = lastPostindex - postPerPage;
+
   // Sample data - replace with your actual data
   const modules = [
     { id: 1, code_module: '300', regionale: 'NON', mh_presentiel: 7, mh_distance: 4, nombre_total: 3 },
@@ -47,7 +47,7 @@ const ModuleList = () => {
     { id: 24, code_module: '222', regionale: 'OUI', mh_presentiel: 7, mh_distance: 4, nombre_total: 3 },
 
   ];
-//  this is function use in iput update state 
+  //  this is function use in iput update state 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
     setCurrentPage(1)
@@ -56,7 +56,7 @@ const ModuleList = () => {
     module.code_module.toLowerCase().includes(searchTerm.toLowerCase()) ||
     module.regionale.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  const filteredModulesWithsplice =filteredModules.slice(firstPostindex ,lastPostindex)
+  const filteredModulesWithsplice = filteredModules.slice(firstPostindex, lastPostindex)
 
   return (
     <div className="container-fluid-model">
@@ -64,15 +64,15 @@ const ModuleList = () => {
         <div className="col-12">
           <div className="card mb-4">
             {/* <div className="card-body"> */}
-            <div className={darkMode ? "card-body":"card-body card-body-model-darkmode"}>
+            <div className={darkMode ? "card-body" : "card-body card-body-model-darkmode"}>
               <div className='flex-ajouter-model'>
-              <h2 className="pb-3 font-weight-bold text-primary">List modules</h2>
-              <Button 
-                  variant="primary" 
+                <h2 className="pb-3 font-weight-bold text-primary">List modules</h2>
+                <Button
+                  variant="primary"
                   className="ml-2"
-                onClick={()=>{
-                  navigate("/add-module-page")
-                }}
+                  onClick={() => {
+                    navigate("/add-module-page")
+                  }}
                 >
                   <FontAwesomeIcon icon={faPlus} className="mr-2" />
                   Ajouter model
@@ -91,7 +91,7 @@ const ModuleList = () => {
 
               <div className="table-responsive">
                 {/* <table className="table table-striped"> */}
-                <table className={darkMode ?"table table-striped" :"table table-dark table-striped"}>
+                <table className={darkMode ? "table table-striped" : "table table-dark table-striped"}>
                   <thead>
                     <tr>
                       <th>Code Module</th>
@@ -114,7 +114,11 @@ const ModuleList = () => {
                         <td>{module.nombre_total}</td>
                         <td>
                           <button className="btn btn-sm btn-outline-secondary">
-                            <FontAwesomeIcon icon={faEye} />
+                            <FontAwesomeIcon
+                              onClick={() => {
+                                navigate("/moduledetails")
+                              }}
+                              icon={faEye} />
                           </button>
                         </td>
                       </tr>
@@ -124,16 +128,16 @@ const ModuleList = () => {
               </div>
 
               <div className="d-flex justify-content-between mt-3">
-                <button 
-                  className="btn btn-outline-primary" 
+                <button
+                  className="btn btn-outline-primary"
                   disabled={currentPage === 1}
                   onClick={() => setCurrentPage(prev => prev - 1)}
                 >
                   Previous
                 </button>
                 {/* <span>Page {currentPage}</span> */}
-                <span style={{color:"red"}}>Page {currentPage}</span>
-                <button 
+                <span style={{ color: "red" }}>Page {currentPage}</span>
+                <button
                   className="btn btn-outline-primary"
                   onClick={() => setCurrentPage(prev => prev + 1)}
                 >
