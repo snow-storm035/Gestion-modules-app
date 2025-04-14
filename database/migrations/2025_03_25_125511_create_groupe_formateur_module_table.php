@@ -42,13 +42,20 @@ return new class extends Migration
 
 
 
-            $table->float('nbh_par_semaine_realisee')->default(2.5);
+            $table->float('nbh_par_semaine_p')->default(2.5);
+            $table->float('nbh_par_semaine_sync')->default(2.5);
+            $table->float('nbh_par_semaine_total')->default(2.5);
             // $table->date('date_debut')->nullable(); 
             // $table->date('date_fin')->nullable();
 
             $table->float('nbhp_realisee')->default(0);
             $table->float('nbhsync_realisee')->default(0);
             $table->float('nbh_total_realisee')->default(0);
+
+            $table->float('prec_nbhp_realisee')->default(0);   // old values
+            $table->float('prec_nbhsync_realisee')->default(0);
+            $table->float('prec_nbh_total_realisee')->default(0);
+
             $table->integer('nbcc_realisee')->default(0);
 
             $table->enum('efm_realise',['oui','non']);

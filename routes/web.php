@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AvancementController;
+use App\Http\Controllers\ExcelFileController;
 use App\Http\Controllers\FiliereController;
 use App\Http\Controllers\FormateurController;
 use App\Http\Controllers\GroupeController;
@@ -14,6 +15,7 @@ Route::get('/', function () {
 // 
 
 Route::withoutMiddleware([VerifyCsrfToken::class])->group(function(){
+    
     Route::get('/index', [AvancementController::class, 'index']);
     Route::post('/store', [AvancementController::class, 'store']);
     Route::get('/all', [AvancementController::class, 'calculerTauxAvancement']);
@@ -24,6 +26,9 @@ Route::withoutMiddleware([VerifyCsrfToken::class])->group(function(){
     Route::resource('/groupes',GroupeController::class);
     Route::resource('/formateurs',FormateurController::class);
     Route::resource('/filieres',FiliereController::class);
+
+
+    Route::post('/uploadstats',[ExcelFileController::class,'extractAllData']);
 
 });
 

@@ -36,10 +36,8 @@ class FiliereController extends Controller
         //
         if($request->has('excelfile')){
             $jsonData = ExcelServices::convertExcelToJson($request);
-    
             
             $data = json_decode($jsonData, true);
-    
     
             // dd($data);
     
@@ -54,10 +52,7 @@ class FiliereController extends Controller
 
             $filieres_unique = array_unique($filieres, SORT_REGULAR);
 
-            
-
             // dd($filieres_unique);
-
 
             foreach($filieres_unique as $filiere){
                 Filiere::create($filiere);

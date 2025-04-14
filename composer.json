@@ -29,7 +29,9 @@
             "Database\\Seeders\\": "database/seeders/"
         },
         "files":[
-            "app/Helpers/calculerDateFinModule.php"
+            "app/Helpers/calculerDateFinModule.php",
+            "app/Helpers/calculerNbHeuresParSemaine.php",
+            "app/Helpers/isModuleCompleted.php"
         ]
     },
     "autoload-dev": {
