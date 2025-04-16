@@ -58,28 +58,34 @@ const GroupDetails = () => {
         
         <div className="header-stats">
           <div className="stat-card">
-            <h3>Niveau</h3>
-            <p>{group.niveau}</p>
+            {/* <h3>Niveau:</h3>
+            <p>{group.niveau}</p> */}
+            Niveau : {group.niveau}
           </div>
           <div className="stat-card">
-            <h3>Effectif</h3>
-            <p>{group.effectif} étudiants</p>
+            {/* <h3>Effectif:</h3>
+            <p>{group.effectif} étudiants</p> */}
+            Effectif : {group.effectif} étudiants
           </div>
           <div className="stat-card">
-            <h3>Année</h3>
-            <p>{group.annee_formation}</p>
+            {/* <h3>Année:</h3>
+            <p>{group.annee_formation}</p> */}
+            Année : {group.annee_formation}
           </div>
           <div className="stat-card">
-            <h3>Mode</h3>
-            <p>{group.mode}</p>
+            {/* <h3>Mode:</h3>
+            <p>{group.mode}</p> */}
+            Mode : {group.mode}
           </div>
           <div className="stat-card">
-            <h3>Créneau</h3>
-            <p>{group.creneau}</p>
+            {/* <h3>Créneau:</h3>
+            <p>{group.creneau}</p> */}
+            Créneau : {group.creneau}
           </div>
           <div className="stat-card">
-            <h3>Filiere</h3>
-            <p>{group.nom_filiere}</p>
+            {/* <h3>Filiere:</h3>
+            <p>{group.nom_filiere}</p> */}
+            Filiere : {group.nom_filiere}
           </div>
         </div>
       </header>

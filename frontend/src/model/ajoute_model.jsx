@@ -1,13 +1,13 @@
 // AddModuleForm.js
-import  { useState } from 'react';
+import { useState } from 'react';
 import "../style/AddModuleForm.css"
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
-  import { useDarkMode } from "../DarkModeProvider/DarkModeContext";
+import { useDarkMode } from "../DarkModeProvider/DarkModeContext";
 
 
 
 const AddModuleForm = () => {
-    const { darkMode } = useDarkMode();
+  const { darkMode } = useDarkMode();
 
   const [formData, setFormData] = useState({
     code_module: '',
@@ -15,7 +15,9 @@ const AddModuleForm = () => {
     mh_presentiel: '',
     mh_distance: '',
     total_horaire: '',
-    regionale: 'OUI'
+    regionale: 'OUI',
+    date_efm_normal: '',
+    date_efm_rattrapage: ''
   });
 
   const [excelFile, setExcelFile] = useState(null);
@@ -44,9 +46,9 @@ const AddModuleForm = () => {
   return (
     <div className="add-module-container">
       {/* <Container fluid className="add-module-content"> */}
-      <Container fluid className={darkMode ? "add-module-content":"add-module-content add-module-content-dark"}>
+      <Container fluid className={darkMode ? "add-module-content" : "add-module-content add-module-content-dark"}>
         <h1 className="mb-4">Ajouter module</h1>
-        
+
         {/* First Form - Module Data */}
         <Form onSubmit={handleSubmitModule} className="module-form">
           <Row>
@@ -144,6 +146,30 @@ const AddModuleForm = () => {
               </Form.Group>
             </Col>
           </Row>
+          <Row>
+            <Col md={6}>
+              <Form.Group className="mb-3">
+                <Form.Label>Date EFM Normal</Form.Label>
+                <Form.Control
+                  type="date"
+                  name="date_efm_normal"
+                  value={formData.date_efm_normal || ''}
+                  onChange={handleInputChange}
+                />
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Group className="mb-3">
+                <Form.Label>Date EFM Rattrapage</Form.Label>
+                <Form.Control
+                  type="date"
+                  name="date_efm_rattrapage"
+                  value={formData.date_efm_rattrapage || ''}
+                  onChange={handleInputChange}
+                />
+              </Form.Group>
+            </Col>
+          </Row>
 
           <div className="mt-4">
             <Button variant="primary" type="submit" className="full-width-btn">
@@ -151,13 +177,13 @@ const AddModuleForm = () => {
             </Button>
           </div>
         </Form>
-  <hr />
+        <hr />
         {/* Second Form - Excel File Only */}
         <Form onSubmit={handleSubmitExcel} className="excel-form">
           {/* <button type="button" className="submit-heading" disabled>
             Submit
           </button> */}
-          
+
           <Form.Group className="mb-4">
             <Form.Label><strong>Select Excel file:</strong></Form.Label>
             <Form.Control

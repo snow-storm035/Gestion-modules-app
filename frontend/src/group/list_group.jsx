@@ -204,8 +204,17 @@ const GroupsList = () => {
                         <td>{group.code_groupe}</td>
                         <td>{group.annee_formation}</td>
                         <td>
+<<<<<<< HEAD
+                          <button className="btn btn-sm btn-outline-secondary">
+                            <FontAwesomeIcon 
+                                                 onClick={()=>{
+                                                  navigate("/groupdetail")
+                                                }}
+                            icon={faEye} />
+=======
                           <button onClick={() => navigate('/groupdetail')} className="btn btn-sm btn-outline-secondary">
                             <FontAwesomeIcon icon={faEye} />
+>>>>>>> 5ddc21d86a7024a6b85ba91f4f1d76a8cdb25be3
                           </button>
                         </td>
                       </tr>

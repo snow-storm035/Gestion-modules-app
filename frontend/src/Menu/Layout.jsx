@@ -31,9 +31,10 @@ const Layout = () => {
         <ul>
           <li><NavLink className={({ isActive }) => isActive ? "link_dashbord active-link" : "link_dashbord"}  to="/"> <FontAwesomeIcon icon={faHouse} />Home</NavLink></li>
           <li><NavLink className={({ isActive }) => isActive ? "link_dashbord active-link" : "link_dashbord"} to="/professeurList">Professor</NavLink></li>
-          <li><NavLink className={({ isActive }) => isActive ? "link_dashbord active-link" : "link_dashbord"} to="/avancemnet">Announcement</NavLink></li>
+          <li><NavLink className={({ isActive }) => isActive ? "link_dashbord active-link" : "link_dashbord"} to="/avancemnet">avancement</NavLink></li>
           <li><NavLink className={({ isActive }) => isActive ? "link_dashbord active-link" : "link_dashbord"} to="/listmodel">Module</NavLink></li>
           <li><NavLink className={({ isActive }) => isActive ? "link_dashbord active-link" : "link_dashbord"} to="/groupsList">Group</NavLink></li>
+          <li><NavLink className={({ isActive }) => isActive ? "link_dashbord active-link" : "link_dashbord"} to="/filiereList">Filières</NavLink></li>
         </ul>
 
       </nav>
