@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::table('groupe_formateur_module', function (Blueprint $table) {
             //
             // dates de debut et fin d'un module au niveau de formation :
-                $table->date('debut_module')->nullable()->after('nbh_par_semaine');
+                $table->date('debut_module')->nullable()->after('nbh_par_semaine_total');
                 $table->date('fin_module')->nullable()->after('debut_module');
     
                 // dates efms :

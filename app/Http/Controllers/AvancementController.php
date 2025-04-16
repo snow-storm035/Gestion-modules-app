@@ -194,10 +194,10 @@ class AvancementController extends Controller
         // $data = ExcelServices::convertExcelToJson($request);
 
         $avancements = Avancement::all();
-
-        foreach ($avancements as $a) {
-            dd($a->modules);
-        }
+        // dd()
+        // foreach ($avancements as $a) {
+        //     dd($a->modules);
+        // }
 
         return response()->json(json_decode($avancements));
     }
@@ -256,7 +256,7 @@ class AvancementController extends Controller
 
                     //verify if a groupe has completed the module's HOURS and that we have a start date('date_debut'):
                     if(!isModuleHoursCompleted($correspondant['nbh_total_realisee'], $total ) && $correspondant['debut_module'] !== null){ 
-                        $nbh_par_semaine = $correspondant['nbhp_realisee'] - $item['nbh_realisee_p'];
+                        $nbh_par_semaine = $item['nbh_realisee_p'] - $correspondant['nbhp_realisee'];
 
                         // calculer la date fin prévu :
                         $dateFin = calculerDateFinModule($total,$nbh_par_semaine,$correspondant['debut_module']);

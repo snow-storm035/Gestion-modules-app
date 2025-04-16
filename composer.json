@@ -31,7 +31,9 @@
         "files":[
             "app/Helpers/calculerDateFinModule.php",
             "app/Helpers/calculerNbHeuresParSemaine.php",
-            "app/Helpers/isModuleCompleted.php"
+            "app/Helpers/isModuleCompleted.php",
+            "app/Helpers/excelExtractors.php"
+            
         ]
     },
     "autoload-dev": {

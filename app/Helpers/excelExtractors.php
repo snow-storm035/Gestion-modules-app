@@ -6,7 +6,7 @@ use App\Models\Module;
 use App\Models\Avancement;
 use Carbon\Carbon;
 
-    if(function_exists('getFilieres'))
+    if(!function_exists('getFilieres'))
     {
         function getFilieres($data){
             $filieres = array_map(function($item){
@@ -29,7 +29,7 @@ use Carbon\Carbon;
     }
 
 
-    if(function_exists('getFormateurs'))
+    if(!function_exists('getFormateurs'))
     {
         function getFormateurs($data)
         {
@@ -79,7 +79,7 @@ use Carbon\Carbon;
 
 
 
-    if(function_exists('getGroupes'))
+    if(!function_exists('getGroupes'))
     {
         function getGroupes($data){
 
@@ -104,7 +104,7 @@ use Carbon\Carbon;
         }
     }
 
-    if(function_exists('getModules'))
+    if(!function_exists('getModules'))
     {
         function getModules($data)
         {
@@ -141,7 +141,7 @@ use Carbon\Carbon;
     }
 
 
-    if(function_exists('getAvancements'))
+    if(!function_exists('getAvancements'))
     {
         function getAvancements($data)
         {
@@ -232,7 +232,7 @@ use Carbon\Carbon;
                         ['matricule', '=', $avancement['matricule']],
                         ['code_filiere', '=', $avancement['code_filiere']]
                     ],$avancement);
-                    dd('error rise here');
+                    // dd('error rise here');
                 }
             }
         }
