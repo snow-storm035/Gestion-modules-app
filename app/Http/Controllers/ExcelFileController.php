@@ -18,7 +18,6 @@ class ExcelFileController extends Controller
         
                 $data = json_decode($jsonData, true);
         
-        
                 getFilieres($data);
                 getFormateurs($data);
                 getGroupes($data);
@@ -27,10 +26,8 @@ class ExcelFileController extends Controller
             
                 return response()->json(['success' => 'operation completed'],200);
             }
-
         }catch(Exception $e){
             return response()->json(['error' => $e->getMessage()],500);
         }
-
     }
 }

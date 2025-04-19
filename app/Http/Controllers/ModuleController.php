@@ -66,10 +66,7 @@ class ModuleController extends Controller
 
             $modules_unique = array_unique($modules, SORT_REGULAR);
 
-            
-
             // dd($modules_unique);
-
 
             foreach($modules_unique as $module){
                 Module::create($module);
