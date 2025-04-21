@@ -1,121 +1,125 @@
-.circular-progress-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-family: Arial, sans-serif;
-    text-align: center;
-    /* margin: 20px;
-    padding: 20px; */
-    background: white ;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 300px;
-  }
-  
-  .circular-progress-container h2 {
-    margin: 5px 0;
-    font-size: 1.2rem;
-    color: #333;
-  }
-  
-  .progress-wrapper {
-    position: relative;
-    /* margin: 20px 0; */
-    background-color: var(--main-white) !important;
-    
-    border: 0;
-  }
-  
-  .circular-progress {
-    display: block;
-    /* background-color:whitesmoke; */
-    
-  }
-  
-  .circular-progress-bg {
-    stroke: #f0f0f0;
-  }
-  
-  .circular-progress-fill {
-    stroke:var(--main-green);
-    stroke-linecap: round;
-    transition: stroke-dashoffset 0.3s ease-in-out;
-    
-  }
-  
-  .percentage-text-svg {
-    font-size: 1.5rem;
-    font-weight: bold;
-    fill: #333;
-   /* color: red; */
-   
-   
+/* Main container */
+.progress-container {
+  font-family: 'Arial', sans-serif;
+  max-width: 300px;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 8px;
+  /* box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); */
+  /* width: 100%; */
+  margin: 0;
+  /* background-color: red; */
+
 }
 
-.percentage-text {
+/* Title */
+.progress-title {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+}
 
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 2rem;
-    font-weight: bold;
-    color: #333;
-    pointer-events: none;
-  }
+/* Each progress item */
+.progress-item {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  background-color:white !important;
+
+}
+
+/* Progress header (name and percentage) */
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  font-size: 0.9rem;
+  background-color: white !important;
   
-  .slider-container {
-    width: 100%;
-    margin-top: 20px;
-  }
-  
-  .progress-slider {
-    width: 100%;
-    height: 100px;
-    -webkit-appearance: none;
-    appearance: none;
-    background: #ddd;
-    border-radius: 4px;
-    outline: none;
-  }
-  
-  .progress-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    /* width: 20px;
-    height: 20px; */
-    border-radius: 50%;
-    background: #4CAF50;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  
-  .progress-slider::-webkit-slider-thumb:hover {
-    transform: scale(1.1);
-  }
-  
-  .slider-labels {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    margin-top: 5px;
-    color: #666;
-    font-size: 0.8rem;
-  }
+  /* border-radius: 10px; */
+}
+.progress-header span{
+  color: black;
+}
+/* SVG progress bar container */
+.progress-bar {
+  width: 100%;
+  height: 20px;
+}
+
+/* Progress bar background */
+.progress-bar-bg {
+  fill: #e0e0e0;
+}
+
+/* Progress bar fill */
+.progress-bar-fill {
+  fill: var(--main-blue); /* Default (low) color */
+}
+
+.progress-bar-fill.high {
+  fill: var(--main-green); /* High progress color */
+  /* fill: linear-gradient(to left,#4CAF50,#FFC107); */
+}
 
 
+.progress-container {
+  position: relative; /* Required for absolute positioning inside */
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* Spacing between progress bars */
+  padding-bottom: 2.5rem; /* Space for the button */
+}
 
+.progress-container .button-container {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  /* display: flex; */
+  /* justify-content: end; */
+ 
+}
 
+.details-button {
+  padding: 8px 16px;
+  background-color: var(--main-green);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 10px;
+}
 
+.details-button:hover {
+  background-color: #45a049;
+}
+/* Details panel */
+.details-panel {
+  margin-top: 15px;
+  padding: 15px;
+  background: #f5f5f5;
+  border-radius: 5px;
+  animation: fadeIn 0.3s ease-in;
+}
 
+.details-panel h3 {
+  margin-top: 0;
+  font-size: 1rem;
+  color: #555;
+}
 
-  /* dark mode style  */
-  .progress-wrapper-darkmode{
-    background-color: var(--main-black) !important;
-   
-  }
+.details-panel ul {
+  padding-left: 20px;
+  margin-bottom: 0;
+}
 
-  .progress-wrapper-darkmode .percentage-text-svg{
-    fill: white;
-  }
+.details-panel li {
+  margin-bottom: 5px;
+  font-size: 0.9rem;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
