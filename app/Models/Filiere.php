@@ -18,7 +18,7 @@ class Filiere extends Model
 
     public function groupes() : HasMany
     {
-        return $this->hasMany(Groupe::class);
+        return $this->hasMany(Groupe::class, 'code_filiere', 'code_filiere');
     }
 
 

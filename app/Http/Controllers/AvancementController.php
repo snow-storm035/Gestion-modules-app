@@ -71,19 +71,15 @@ class AvancementController extends Controller
                 
                 // dd(gettype($module), $module);
                 // dd(gettype($dateDebut),gettype($dateEfm),$dateDebut, $diffWeeks, gettype($diffWeeks));
-                
             }
-            
         }
         dd($modules_stats);
-
     }
 
 
 
     public function changerNbHeuresParSemaine(Request $request)
     {
-
         // dd($request['avancement']['code_module']);
 
         $codeModule = $request['avancement']['code_module'];
@@ -321,10 +317,19 @@ class AvancementController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Avancement $avancement)
+    public function show(string $groupe, string $module, Request $request)
     {
         //
-        
+        // dd($groupe, $module);
+        $recommandedMh = $request->input('recommandedMh');
+        // dd($recommandedMh);
+        $avancement = Avancement::where([
+            ['code_groupe' , $groupe],
+            ['code_module', $module]
+        ])->first();
+
+
+        return response()->json(['avancement' => $avancement,'recommandation' => $recommandedMh]);
     }
 
     /**

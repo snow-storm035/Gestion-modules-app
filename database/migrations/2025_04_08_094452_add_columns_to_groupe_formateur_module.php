@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::table('groupe_formateur_module', function (Blueprint $table) {
             //
             // dates de debut et fin d'un module au niveau de formation :
-                $table->date('debut_module')->nullable()->after('nbh_par_semaine_total');
-                $table->date('fin_module')->nullable()->after('debut_module');
+                $table->string('debut_module')->nullable()->after('nbh_par_semaine_total');
+                $table->string('fin_module')->nullable()->after('debut_module');
     
                 // dates efms :
-                $table->date('date_efm_normal')->nullable()->after('fin_module');
-                $table->date('date_efm_rattrapage')->nullable()->after('date_efm_normal');
+                $table->string('date_efm_normal')->nullable()->after('fin_module');
+                $table->string('date_efm_rattrapage')->nullable()->after('date_efm_normal');
         });
     }
 

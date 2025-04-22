@@ -14,10 +14,12 @@ class FiliereController extends Controller
     public function index()
     {
         //
-
-        $filieres = Filiere::all();
-
-        
+        $filieres = Filiere::latest()->get();
+        foreach($filieres as $filiere)
+        {
+            calculerTauxMoyenFiliere($filiere);
+        }
+        // return response()->json(['']);
     }
 
     /**
@@ -49,15 +51,11 @@ class FiliereController extends Controller
                     'secteur' => $item['secteur']
                 ];
             },$data);
-
             $filieres_unique = array_unique($filieres, SORT_REGULAR);
-
             // dd($filieres_unique);
-
             foreach($filieres_unique as $filiere){
                 Filiere::create($filiere);
             }
-
             return response()->json(['succeess' => 'success']);
         }
     }

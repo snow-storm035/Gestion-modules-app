@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Avancement;
 use App\Models\Groupe;
 use App\Services\ExcelServices;
 use Illuminate\Http\Request;
@@ -14,6 +15,7 @@ class GroupeController extends Controller
     public function index()
     {
         //
+        // $groupes = Groupe::all();
     }
 
     /**
@@ -70,7 +72,7 @@ class GroupeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Groupe $groupe)
+    public function show(Groupe $groupe, Request $request)
     {
         //
     }

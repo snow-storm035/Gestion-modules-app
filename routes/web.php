@@ -1,18 +1,19 @@
 <?php
 
+use App\Http\Controllers\AlertController;
 use App\Http\Controllers\AvancementController;
 use App\Http\Controllers\ExcelFileController;
 use App\Http\Controllers\FiliereController;
 use App\Http\Controllers\FormateurController;
 use App\Http\Controllers\GroupeController;
 use App\Http\Controllers\ModuleController;
+// use App\Models\Avancement;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return ['Laravel' => app()->version()];
 });
-// 
 
 Route::withoutMiddleware([VerifyCsrfToken::class])->group(function(){
     
@@ -20,27 +21,27 @@ Route::withoutMiddleware([VerifyCsrfToken::class])->group(function(){
     Route::post('/store', [AvancementController::class, 'store']);
     Route::get('/all', [AvancementController::class, 'calculerTauxAvancement']);
     Route::put('/changerhoraires', [AvancementController::class, 'changerNbHeuresParSemaine']);
-    Route::get('/alerts', [AvancementController::class, 'makeAlert']);
+    // Route::get('/alerts', [AvancementController::class, 'makeAlert']);
 
-    Route::resource('/modules',ModuleController::class);
-    Route::resource('/groupes',GroupeController::class);
-    Route::resource('/formateurs',FormateurController::class);
-    Route::resource('/filieres',FiliereController::class);
+    // Route::resource('/modules',ModuleController::class);
+    // Route::resource('/groupes',GroupeController::class);
+    // Route::resource('/formateurs',FormateurController::class);
+    // Route::resource('/filieres',FiliereController::class);
+    Route::get('/filieres',[FiliereController::class,'index']);
+    Route::resource('/alerts',AlertController::class);
 
+    Route::get('/avancements/{groupe}/{module}',[AvancementController::class,'show']);
+
+    Route::get('/trailswitch', function(){
+        return redirect()->route('groupes.show','GE101');
+    });
 
     Route::post('/uploadstats',[ExcelFileController::class,'extractAllData']);
-
 });
-
-
-
-
-
 
 // Route::post('/index', [AvancementController::class, 'index'])
 // ->withoutMiddleware([VerifyCsrfToken::class]);
 
 // Route::post('/module', [ModuleController::class, 'store'])->withoutMiddleware([VerifyCsrfToken::class]);
-
 
 require __DIR__.'/auth.php';

@@ -58,7 +58,7 @@ return new class extends Migration
 
             $table->integer('nbcc_realisee')->default(0);
 
-            $table->enum('efm_realise',['oui','non']);
+            $table->enum('efm_realise',['oui','non'])->default('non');
             $table->timestamps();
         });
     }

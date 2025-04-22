@@ -26,27 +26,46 @@ class Avancement extends Model
         'code_filiere',
         'matricule',
         'code_groupe',
-        'nbh_par_semaine_realisee',
+        'nbh_par_semaine_p',
+        'nbh_par_semaine_sync',
+        'nbh_par_semaine_total',
         'nbhp_realisee',
         'nbhsync_realisee',
         'nbh_total_realisee',
+        'prec_nbhp_realisee',
+        'prec_nbhsync_realisee',
+        'prec_nbh_total_realisee',
         'nbcc_realisee',
-        'efm_realise'
+        'efm_realise',
+        'debut_module',
+        'fin_module'
     ];
+
+    // protected $casts = [
+    //     'debut_module' => 'date',
+    //     'fin_module' => 'date' // good if you're passing strings
+    // ];
+    
+    // 'nbh_par_semaine_realisee',
+    public function getKeyName()
+    {
+        // dd($this->primaryKey);
+        return $this->primaryKey;
+    }
 
 
     public static function findWithCompositeKey(array $query)
     {
-        try{
-            return Avancement::where($query)
-                ->first();
-            // return DB::table('groupe_formateur_module')
-            //     ->where($query)
-            //     ->get();
+        // try{
+        return Avancement::where($query)
+            ->first();
+        // return DB::table('groupe_formateur_module')
+        //     ->where($query)
+        //     ->get();
 
-        }catch(Exception $e){
-            return null;
-        }
+        // }catch(Exception $e){
+        //     return null;
+        // }
     }
 
     public static function updateWithCompositeKey(array $query, array $options)

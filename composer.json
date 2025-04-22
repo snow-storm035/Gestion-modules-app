@@ -32,7 +32,11 @@
             "app/Helpers/calculerDateFinModule.php",
             "app/Helpers/calculerNbHeuresParSemaine.php",
             "app/Helpers/isModuleCompleted.php",
-            "app/Helpers/excelExtractors.php"
+            "app/Helpers/excelExtractors.php",
+            "app/Helpers/statsCalcules.php",
+            "app/Helpers/alertingmethods.php",
+            "app/Helpers/utilityfunctions.php"
+            
             
         ]
     },

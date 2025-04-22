@@ -12,7 +12,7 @@ class ExcelFileController extends Controller
 
     public function extractAllData(Request $request)
     {
-        try{
+        // try{
             if($request->has('excelfile')){
                 $jsonData = ExcelServices::convertExcelToJson($request);
         
@@ -26,8 +26,8 @@ class ExcelFileController extends Controller
             
                 return response()->json(['success' => 'operation completed'],200);
             }
-        }catch(Exception $e){
-            return response()->json(['error' => $e->getMessage()],500);
-        }
+        // }catch(Exception $e){
+        //     return response()->json(['error' => $e->getMessage()],500);
+        // }
     }
 }
