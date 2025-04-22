@@ -1,73 +1,47 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './CircularProgress.css';
-import { useDarkMode } from "../DarkModeProvider/DarkModeContext";
 
-const CircularProgress = () => {
-    const { darkMode } = useDarkMode();
-    const [percentage, setPercentage] = useState(30);
-  const radius = 40;
-  const circumference = 2 * Math.PI * radius;
-  const offset = circumference - (percentage / 100) * circumference;
+const ProgressModules = () => {
+  const [progressData] = useState([
+    { id: 1, name: "filière 1", value: 9 },
+    { id: 2, name: "filière 2", value: 40 },
+    { id: 3, name: "filière 3", value: 55 }
+  ]);
 
-//   const handlePercentageChange = (e) => {
-//     setPercentage(parseInt(e.target.value));
-//   };
+  const [showDetails, setShowDetails] = useState(false);
 
   return (
-    <div className="circular-progress-container">      
-      {/* <div className="progress-wrapper"> */}
-      <div className={darkMode ?"progress-wrapper":"progress-wrapper progress-wrapper-darkmode"}>
-        <svg className="circular-progress" width="120" height="120" viewBox="0 0 120 120">
-          <circle
-            className="circular-progress-bg"
-            cx="60"
-            cy="60"
-            r={radius}
-            strokeWidth="4"
-            fill="transparent"
-          />
-          <circle
-            className="circular-progress-fill"
-            cx="60"
-            cy="60"
-            r={radius}
-            strokeWidth="4"
-            fill="transparent"
-            strokeDasharray={circumference}
-            strokeDashoffset={offset}
-            transform="rotate(-90 60 60)"
-          />
-          <text
-            x="60"
-            y="65"
-            // fill='red'
+    <div className="progress-container">
+      {/* <h2 className="progress-title">Progrès des modules</h2> */}
 
-            className="percentage-text-svg"
-            textAnchor="middle"
-            dominantBaseline="middle"
-          >
-            {percentage}%
-          </text>
-        </svg>
-        
-      </div>
-      
-      {/* <div className="slider-container">
-        <input
-          type="range"
-          min="0"
-          max="100"
-          value={percentage}
-          onChange={handlePercentageChange}
-          className="progress-slider"
-        />
-        <div className="slider-labels">
-          <span>0%</span>
-          <span>100%</span>
+      {progressData.map((filiere) => (
+        <div key={filiere.id} className="progress-item">
+          <div className="progress-header">
+            <span>{filiere.name} :</span>
+            <span>{filiere.value}%</span>
+          </div>
+          <svg className="progress-bar">
+            <rect className="progress-bar-bg" width="100%" height="6" rx="5" ry="5" />
+            <rect
+              className={`progress-bar-fill ${filiere.value > 50 ? 'high' : 'low'}`}
+              width={`${filiere.value}%`}
+              height="6"
+              rx="5"
+              ry="5"
+            />
+          </svg>
         </div>
-      </div> */}
+      ))}
+
+      {/* Button at bottom-right inside progress-container */}
+      <div className="button-container">
+        <button className="details-button" onClick={() => setShowDetails(!showDetails)}>
+          Détails {showDetails ? '<<' : '>>'}
+        </button>
+      </div>
+
     </div>
   );
 };
 
-export default CircularProgress;
+export default ProgressModules;

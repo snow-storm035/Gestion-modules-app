@@ -4,6 +4,7 @@
  import Contenu from './Menu/Layout'
  import Layout from './Menu/Layout';
  import Home from './Contenu/Home';
+ import Home2 from "./Contenu/Home2";
  import Group from './Contenu/group';
  import Avancemnet from './Contenu/Avancement';
  import Moudel from './Contenu/Moudel';
@@ -30,6 +31,11 @@ import AvancemnetList from "./avancement/avancement";
 import FiliereList from "./Filieres/Filieres";
 import AddFiliereForm from "./Filieres/AddFilire";
 import AvancementDetails from "./avancement/AvancementDetails";
+import Alerts from "./Alerts/alert";
+import ImporterFichierExcel from "./Alerts/ImporterFichierExcel";
+import DatesEFMsReg from "./model/dateEfmRegainal";
+import UpdateModuleStatu from "./group/UpdateModuleStatu";
+import GroupDetails2 from "./group/GroupDetails2";
 
 function App() {
   // const [count, setCount] = useState(0)
@@ -39,7 +45,8 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
+          {/* <Route index element={<Home />} /> */}
+          <Route index element={<Home2 />} />
           <Route path="professeur" element={<Professeur />} />
           {/* <Route path="avancemnet" element={<Avancemnet />} /> */}
           <Route path="moudel" element={<Moudel />} />
@@ -61,6 +68,11 @@ function App() {
           <Route path="avancementDetail" element={<AvancementDetails />} />
           <Route path="filiereList" element={<FiliereList />} />
           <Route path="addFiliereForm" element={<AddFiliereForm />} />
+          <Route path="alerts" element={<Alerts />} />
+          <Route path="importerfichierexcel" element={<ImporterFichierExcel />} />
+          <Route path="datesEFMsReg" element={<DatesEFMsReg />} />
+          <Route path="updateModuleStatu" element={<UpdateModuleStatu />} />
+          <Route path="groupDetails2" element={<GroupDetails2 />} />
         </Route>
       </Routes>
     </Router>  
