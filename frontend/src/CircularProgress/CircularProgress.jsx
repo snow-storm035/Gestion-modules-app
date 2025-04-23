@@ -1,7 +1,14 @@
 import { useState } from 'react';
 import './CircularProgress.css';
+import { useNavigate } from 'react-router-dom';
+
+import { useDarkMode } from "../DarkModeProvider/DarkModeContext";
+
+// Inside your component:
 
 const ProgressModules = () => {
+  const { darkMode } = useDarkMode();
+  const navigate = useNavigate();
   const [progressData] = useState([
     { id: 1, name: "filière 1", value: 9 },
     { id: 2, name: "filière 2", value: 40 },
@@ -11,7 +18,7 @@ const ProgressModules = () => {
   const [showDetails, setShowDetails] = useState(false);
 
   return (
-    <div className="progress-container">
+    <div  className={darkMode?"progress-container":"progress-container progress-container-dark-mode-progers"}>
       {/* <h2 className="progress-title">Progrès des modules</h2> */}
 
       {progressData.map((filiere) => (
@@ -35,8 +42,9 @@ const ProgressModules = () => {
 
       {/* Button at bottom-right inside progress-container */}
       <div className="button-container">
-        <button className="details-button" onClick={() => setShowDetails(!showDetails)}>
-          Détails {showDetails ? '<<' : '>>'}
+        {/* <button className="details-button" onck onClick={() => setShowDetails(!showDetails)}> */}
+        <button className="details-button" onClick={()=>navigate("/alerts")}>
+          Détails {showDetails ? '>>' : '>>'}
         </button>
       </div>
 

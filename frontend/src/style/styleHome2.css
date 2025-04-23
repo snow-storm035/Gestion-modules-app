@@ -59,7 +59,7 @@
     font-weight: 900;
 }
 /* icon */
-.header div .faUserGroup,.faPersonChalkboard ,.faBook ,.faCodeBranch{
+.header div  .faUserGroup ,.faCodeBranch{
     font-size: 60px;
     color: var(--dark-grey);
 }
@@ -111,8 +111,15 @@
     background-color: var(--main-grey);
    
 }
+.aside .alert-container {
+  /* background-color: red !important; */
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  gap: 15px;
+} 
 .alert-container .button-container{
-  background-color: green  !important;
+  /* background-color: green  !important; */
   width: 100%;
   display: flex;
   justify-content: space-around;
@@ -282,7 +289,7 @@ background-color: #FFA3A3;
   .view-details-btn {
     background: none;
     border: none;
-    color: #18377b;
+    /* color: #18377b; */
     font-size: 0.9rem;
     padding: 5px 0;
     cursor: pointer;
@@ -291,9 +298,17 @@ background-color: #FFA3A3;
     gap: 5px;
     align-self: flex-end;
   }
-  
-  .view-details-btn:hover {
-    text-decoration: underline;
+  .details-button-date {
+    padding: 8px 16px;
+    background-color: var(--main-white);
+    color: #18377b;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 10px;
+  }
+  .view-details-btn:hover{
+    background-color: rgba(255, 255, 255, 0.84);
   }
   
   .view-details-btn svg {
@@ -326,4 +341,10 @@ background-color: var(--main-black) !important;
 .completed-modules-container-dark{
     background-color: var(--main-black) !important;
     color: var(--main-white) !important;   
+}
+
+
+/* dark mode alert */
+.alert-container-dark-mode{
+  background-color: var(--dark-grey) !important;
 }

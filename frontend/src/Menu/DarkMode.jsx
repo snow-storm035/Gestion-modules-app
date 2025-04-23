@@ -21,7 +21,7 @@ export default function DarkMode(){
       aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
       >
 
-         {darkMode ? 'Light mode' : 'Dark mode'}
+         {darkMode ? 'Mode lumière' : 'Mode sombre'}
       
       </button>
 

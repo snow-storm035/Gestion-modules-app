@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { FaChalkboardTeacher, FaSortAmountDown, FaSortAmountUp } from 'react-icons/fa';// import { useState } from 'react';
-import "../style/avancement.css";
+import "../style/AvancemnetGroup.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { useDarkMode } from "../DarkModeProvider/DarkModeContext";
@@ -8,7 +8,7 @@ import { Button } from 'react-bootstrap';// onClick={toggleDarkMode}
 // className="darkmode"
 // aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
 import { useNavigate } from 'react-router-dom';
-const AvancemnetList = () => {
+const AvancemnetGroup = () => {
   const navigate = useNavigate();
 
   const { darkMode } = useDarkMode();
@@ -196,7 +196,7 @@ const AvancemnetList = () => {
   //   nbh_total_realisee: 0,
   //   nbcc_realisee: 0,
   //   efm_realise: 'non',
-  //   regionale: 'NON',
+  //   formateurs: 'NON',
   //   mh_presentiel: 7,
   //   mh_distance: 4,
   //   nombre_total: 3,
@@ -240,100 +240,149 @@ const AvancemnetList = () => {
   // console.log(filteredavoncesWithsplice)
   return (
     <>
-      <div className='header-avancements'>
-       <div><span>M105 :</span><p> presque finit</p></div>
-       <div><span>M105 :</span><p> presque finit</p></div>
-      </div>
-        <div className="container-fluid-avancement">
-      {/* <div className="filter-container"> */}
-      <div className={darkMode ? "filter-container" : "filter-container filter-container-darkmode"}>
-        <h2>Liste des avancements par groupe:</h2>
-        <div className="filter-controls">
-          {/* Filière Filter */}
-          <select
-            value={filters.filiere}
-            onChange={(e) => handleFilterChange('filiere', e.target.value)}
-            className="filter-select"
-          >
-            <option value="">Toutes filières</option>
-            {filieres.map(filiere => (
-              <option key={filiere} value={filiere}>{filiere}</option>
-            ))}
-          </select>
+
+      <div className="container-fluid-avancement">
+        {/* <div className="filter-container"> */}
+        <div className={darkMode ? "filter-container" : "filter-container filter-container-darkmode"}>
+          <h2>Liste des avancements par groupe:</h2>
+          <div className="filter-controls">
+            {/* Filière Filter */}
+            
+            <div className="filter-group">
+              <input
+                list="filiere"
+                id="filiereFilter"
+                name="filiereFilter"
+                value={filters.filiere}
+                onChange={(e) => handleFilterChange('filiere', e.target.value)}
+                className="filter-select"
+                placeholder="filieres"
+              />
+              <datalist id="filiere">
+                {filieres.map(module => (
+                  <option key={module} value={module} />
+                ))}
+
+              </datalist>
+            </div>
 
 
-          {/* Module Filter */}
-          <select
-            value={filters.module}
-            onChange={(e) => handleFilterChange('module', e.target.value)}
-            className="filter-select"
-          >
-            <option value="">Tous modules</option>
-            {modules.map(module => (
-              <option key={module} value={module}>{module}</option>
-            ))}
-          </select>
+            {/* Module Filter */}
 
-          {/* Groupe Filter */}
-          <select
-            value={filters.groupe}
-            onChange={(e) => handleFilterChange('groupe', e.target.value)}
-            className="filter-select"
-          >
-            <option value="">Tous groupes</option>
-            {groupes.map(groupe => (
-              <option key={groupe} value={groupe}>{groupe}</option>
-            ))}
-          </select>
 
-          {/* annee_formation Filter */}
-          <select
-            value={filters.groupe}
-            onChange={(e) => handleFilterChange('annee_formation', e.target.value)}
-            className="filter-select"
-          >
-            <option value="">Annee formation</option>
-            {annee_formation.map(annee => (
-              <option key={annee} value={annee}>{annee}</option>
-            ))}
-          </select>
+            <div className="filter-group">
+              <input
+                list="modules"
+                id="modulesFilter"
+                name="modulesFilter"
+                value={filters.module}
+                onChange={(e) => handleFilterChange('module', e.target.value)}
+                className="filter-select"
+                placeholder="modules"
+              />
+              <datalist id="modules">
+                {modules.map(module => (
+                  <option key={module} value={module} />
+                ))}
 
-          {/* Niveau Filter */}
-          <select
-            value={filters.niveau}
-            onChange={(e) => handleFilterChange('niveau', e.target.value)}
-            className="filter-select"
-          >
-            <option value="">Tous niveaux</option>
-            {niveaux.map(niveau => (
-              <option key={niveau} value={niveau}>{niveau}</option>
-            ))}
-          </select>
+              </datalist>
+            </div>
 
-          {/* Formateur Filter */}
-          <select
-            value={filters.formateur}
-            onChange={(e) => handleFilterChange('formateur', e.target.value)}
-            className="filter-select"
-          >
-            <option value="">Tous formateurs</option>
-            {formateurs.map(formateur => (
-              <option key={formateur} value={formateur}>{formateur}</option>
-            ))}
-          </select>
+            {/* Groupe Filter */}
 
-          {/* Reset Button */}
-          <button onClick={resetFilters} className="reset-btn">
-            Réinitialiser
-          </button>
+
+            <div className="filter-group">
+              <input
+                list="groupes"
+                id="groupesFilter"
+                name="groupesFilter"
+                value={filters.groupe}
+                onChange={(e) => handleFilterChange('groupe', e.target.value)}
+                className="filter-select"
+                placeholder="groupes"
+              />
+              <datalist id="groupes">
+                {groupes.map(groupe => (
+                  <option key={groupe} value={groupe} />
+                ))}
+
+              </datalist>
+            </div>
+
+
+            {/* annee_formation Filter */}
+
+            <div className="filter-group">
+              <input
+                list="annee_formation"
+                id="annee_formationFilter"
+                name="annee_formationFilter"
+                value={filters.annee_formation}
+                onChange={(e) => handleFilterChange('annee_formation', e.target.value)}
+                className="filter-select"
+                placeholder="Annee formation"
+              />
+              <datalist id="annee_formation">
+                {annee_formation.map(annee => (
+                  <option key={annee} value={annee} />
+                ))}
+
+              </datalist>
+            </div>
+
+            {/* Niveau Filter */}
+
+            <div className="filter-group">
+
+              <input
+                list="niveau"
+                id="niveauFilter"
+                name="niveauFilter"
+                value={filters.niveau}
+                onChange={(e) => handleFilterChange('niveau', e.target.value)}
+                className="filter-select"
+                placeholder="niveaux"
+              />
+              <datalist id="niveau">
+                {niveaux.map(niveau => (
+                  <option key={niveau} value={niveau} />
+                ))}
+
+              </datalist>
+            </div>
+
+            {/* Formateur Filter */}
+            <div className="filter-group">
+
+              <input
+                list="formateurs"
+                id="formateursFilter"
+                name="formateursFilter"
+                value={filters.formateur}
+                onChange={(e) => handleFilterChange('formateur', e.target.value)}
+                className="filter-select"
+                placeholder="formateurs"
+              />
+              <datalist id="formateurs">
+                {formateurs.map(formateurs => (
+                  <option key={formateurs} value={formateurs} />
+                ))}
+
+              </datalist>
+            </div>
+
+            {/* Reset Button */}
+            <button onClick={resetFilters} className="reset-btn">
+              Réinitialiser
+            </button>
+          </div>
         </div>
-      </div>
-      <div className="row">
-        <div className="col-12">
-          <div className="card mb-4">
-            {/* <div className="card-body"> */}
-            <div className={darkMode ? "card-body" : "card-body card-body_dark_avancement"}>
-              {/* <div className='flex-ajouter-avancement'>
+        <div className="row">
+          <div className="col-12">
+            <div className={darkMode?"card-groupes mb-4":"card-groupes mb-4 card-groupes-dark-mode"}>
+              {/* <div className="card-body"> */}
+              <div className={darkMode ? "card-body-group" : "card-body-group card-body_dark_avancement"}>
+                {/* <div className='flex-ajouter-avancement'>
                 <h2 className="pb-3 font-weight-bold text-primary">Liste des avancements par groupe:</h2>
                 <Button
                   variant="primary"
@@ -348,87 +397,86 @@ const AvancemnetList = () => {
 
               </div> */}
 
-              <div className="table-responsive">
-                {/* <table className="table table-striped"> */}
-                <table className={darkMode ? "table table-striped" : "table table-dark table-striped"}>
-                  <thead>
-                    <tr>
-                      <th>code filière</th>
-                      <th>Code groupe</th>
-                      <th>Code module</th>
-                      <th>formateur</th>
-                      <th>nbh_par_semaine</th>
-                      <th>date début</th>
-                      <th>date efm prévu</th>
+                <div className="table-responsive">
+                  {/* <table className="table table-striped"> */}
+                  <table className={darkMode ? "table table-striped" : "table table-dark table-striped"}>
+                    <thead>
+                      <tr>
+                        <th>code filière</th>
+                        <th>Code groupe</th>
+                        <th>Code module</th>
+                        <th>formateur</th>
+                        <th>nbh_par_semaine</th>
+                        <th>date début</th>
+                        <th>date efm prévu</th>
 
-                      <th
-                        className="sortable-header"
-                        onClick={toggleSort}
-                      >
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                          Taux Réalisé
-                          {sortDirection === 'asc' ?
-                            <FaSortAmountUp className="sort-icon active" /> :
-                            <FaSortAmountDown className="sort-icon active" />
-                          }
-                        </div>
-                      </th>
+                        <th
+                          className="sortable-header"
+                          onClick={toggleSort}
+                        >
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                            Taux Réalisé
+                            {sortDirection === 'asc' ?
+                              <FaSortAmountUp className="sort-icon active" /> :
+                              <FaSortAmountDown className="sort-icon active" />
+                            }
+                          </div>
+                        </th>
 
-                      <th>Actions </th>
+                        <th>Actions </th>
 
 
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filteredavoncesWithsplice.map((avince) => (
-                      <tr key={avince.id}>
-                        <td>{avince.filière.code}</td>
-                        <td>{avince.groupe.code}</td>
-                        <td>{avince.module.code}</td>
-                        <td>{avince.formateur.nom}</td>
-                        <td>{avince.nbh_par_semaine_realisee}</td>
-                        <td>{avince.date_debut}</td>
-                        <td>{avince.date_fin}</td>
-                        <td>{avince.taux_realise}</td>
-                        <td>
-                          <button className="btn btn-sm btn-outline-secondary">
-                            <FontAwesomeIcon
-                              onClick={() => {
-                                navigate("/avancementDetail")
-                              }}
-                              icon={faEye} />
-                          </button>
-                        </td>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                    </thead>
+                    <tbody>
+                      {filteredavoncesWithsplice.map((avince) => (
+                        <tr key={avince.id}>
+                          <td>{avince.filière.code}</td>
+                          <td>{avince.groupe.code}</td>
+                          <td>{avince.module.code}</td>
+                          <td>{avince.formateur.nom}</td>
+                          <td>{avince.nbh_par_semaine_realisee}</td>
+                          <td>{avince.date_debut}</td>
+                          <td>{avince.date_fin}</td>
+                          <td>{avince.taux_realise}</td>
+                          <td>
+                            <button className="btn btn-sm btn-outline-secondary">
+                              <FontAwesomeIcon
+                                onClick={() => {
+                                  navigate("/avancementDetail")
+                                }}
+                                icon={faEye} />
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
 
-              <div className="d-flex justify-content-between mt-3">
-                <button
-                  className="btn btn-outline-primary"
-                  disabled={currentPage === 1}
-                  onClick={() => setCurrentPage(prev => prev - 1)}
-                >
-                  Previous
-                </button>
-                {/* <span>Page {currentPage}</span> */}
-                <span style={{ color: "red" }}>Page {currentPage}</span>
-                <button
-                  className="btn btn-outline-primary"
-                  onClick={() => setCurrentPage(prev => prev + 1)}
-                >
-                  Next
-                </button>
+                <div className="pagination-container-groupe">
+                  <button
+                    className="pagination-btn-groupe"
+                    disabled={currentPage === 1}
+                    onClick={() => setCurrentPage(prev => prev - 1)}
+                  >
+                    Previous
+                  </button>
+                  <span className="current-page-groupe">Page {currentPage}</span>
+                  <button
+                    className="pagination-btn-groupe"
+                    onClick={() => setCurrentPage(prev => prev + 1)}
+                  >
+                    Next
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
     </>
   );
 }
-export default AvancemnetList;
+export default AvancemnetGroup;
