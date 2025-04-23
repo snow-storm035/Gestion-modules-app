@@ -9,5 +9,9 @@ class Alert extends Model
 {
     /** @use HasFactory<\Database\Factories\AlertFactory> */
     use HasFactory;
-    protected $fillable = ['code_module','code_groupe','matricule','etat','mhrestante'];
+    protected $fillable = ['avancement_id','code_module','code_groupe','matricule','etat','mhrestante'];
+
+
+
+    
 }

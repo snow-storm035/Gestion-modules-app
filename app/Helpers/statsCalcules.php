@@ -3,23 +3,30 @@
 use App\Models\Avancement;
 use App\Models\Filiere;
 use App\Models\Module;
+use Illuminate\Database\Eloquent\Collection;
 
 if (!function_exists('calculerTauxAvancement')) {
     function calculerTauxAvancement(Avancement $avancement)
     {
         // (mhtotal / mhrealisee) * 100 = tt %
-        $module = Module::where('code_module', $avancement['code_module'])->first();
-
+        $module = Module::where([
+            ['code_module', '=', $avancement['code_module']],
+            ['code_filiere', '=', $avancement['code_filiere']]
+        ])->first();
+        // dd($avancement['nbh_total_realisee'] / $module['nbh_total_global'], $module,$avancement);
         return ($avancement['nbh_total_realisee'] / $module['nbh_total_global']) * 100;
     }
 }
 // masse horaire restante
 if (!function_exists('mhrestante')) {
-    function mhrestante(float $nbhrealise, float $nbhtotal)
+    function mhrestante(Avancement $avancement)
     {
         // mhtotal - mhrealisee
-
-        return $nbhrealise - $nbhtotal;
+        $module = Module::where([
+            ['code_module', '=', $avancement['code_module']],
+            ['code_filiere', '=', $avancement['code_filiere']]
+        ])->first();
+        return $avancement['nbh_total_realisee'] - $module['nbh_total_global'];
     }
 }
 
@@ -27,33 +34,54 @@ if (!function_exists('mhrestante')) {
 if (!function_exists('calculerTauxMoyenFiliere')) {
     function calculerTauxMoyenFiliere(Filiere $filiere)
     {
-        $groupes = $filiere->groupes()->get();
-        // dd($groupes);
-        $all = [];
-        foreach ($groupes as $g) {
-            $all[] = Avancement::where([
-                ['code_filiere', '=', $filiere->code_filiere],
-                ['code_groupe', '=', $g->code_groupe]
-            ])->get();
-            // dd($avancements);
-            // foreach($avancements as $a){
-            //     echo $a['code_module']."<br/>";
-            // }
-            // echo "*****************************************************************************";
-            // $taux = array_map(function($item){
-            //     return calculerTauxAvancement($item);
-            // },[...$avancements]);
-        }
-        // dd($all);
-        foreach ($all as $a) {
-            $taux = array_map(function($item){
-                return calculerTauxAvancement($item);
-            },[...$a]);
-            $moyenne = array_sum($taux) / count($taux);
-            echo $moyenne."<br/>";
-        }
-        // dd("hi");
+        // tous les modules pour une filière:
+        $modules = $filiere->modules()->get();
+        // dd($modules);
 
-        dd($moyenne);
+        // les avancements de tous les groupes dans chaque module
+        $all = [];
+        foreach ($modules as $m) {
+            $all[] = [
+                $m->code_module => Avancement::where([
+                    ['code_filiere', '=', $filiere->code_filiere],
+                    ['code_module', '=', $m->code_module]
+                ])->get()
+            ];
+
+        }
+
+        $avancements_filiere = [];
+
+        foreach ($all as $a) {
+            foreach ($a as $key => $item) {
+                global $taux;
+                $taux = array_map(function ($avancement) {
+                    return calculerTauxAvancement($avancement);
+                }, [...$item]);
+                $moyenne = array_sum($taux) / count($taux);
+                // dd($moyenne);
+                $avancements_filiere[] = [
+                    "code_filiere" => $filiere['code_filiere'],
+                    "code_module" => $key,
+                    "module" => Module::where('code_module', $key)
+                        ->where('code_filiere', $filiere['code_filiere'])
+                        ->first()
+                        ->libelle_module,
+                    "taux_avancement" => $moyenne
+                ];
+            }
+        }
+
+        dd($avancements_filiere);
+        return $avancements_filiere;
+    }
+}
+
+
+if (!function_exists('verifierEtatModule')) {
+    function verifierEtatModule(Avancement $avancement)
+    {
+        // if($avancement['nbh_total_realisee'])
+        return;
     }
 }

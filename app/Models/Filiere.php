@@ -20,6 +20,10 @@ class Filiere extends Model
     {
         return $this->hasMany(Groupe::class, 'code_filiere', 'code_filiere');
     }
+    public function modules() : HasMany
+    {
+        return $this->hasMany(Module::class, 'code_filiere', 'code_filiere');
+    }
 
 
 

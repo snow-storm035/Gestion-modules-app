@@ -156,6 +156,11 @@ if (!function_exists('getAvancements')) {
 
             // dd($correspondant);
 
+            $nbh_par_semaine_p = 0;
+            $nbh_par_semaine_sync = 0;
+            $nbh_par_semaine_total = 0;
+            $dateFin = null;
+
             if ($correspondant) {
 
                 if ($item['nbh_realisee_global'] > 0 && $correspondant['debut_module'] === null) {
@@ -177,9 +182,11 @@ if (!function_exists('getAvancements')) {
                 // dd(isModuleHoursCompleted($correspondant['nbh_total_realisee'], $total ));
 
                 //verify if a groupe has completed the module's HOURS and that we have a start date('date_debut'):
-                    // dd($correspondant['fin_module']);
-                    // dd((string) null);
-                if (!isModuleHoursCompleted($correspondant['nbh_total_realisee'], $total) && $correspondant['debut_module'] !== null && $correspondant['fin_module'] === null) {
+                // dd($correspondant['fin_module']);
+                // dd((string) null);
+                // Avancement::where([])->update(['fin_module' => null]);
+                // dd(!isModuleHoursCompleted($correspondant['nbh_total_realisee']-50, $total) && $correspondant['debut_module'] !== null && $correspondant['fin_module'] === null);
+                if (!isModuleHoursCompleted($correspondant['nbh_total_realisee']-50, $total) && $correspondant['debut_module'] !== null && $correspondant['fin_module'] === null) {
                     $nbh_par_semaine_p = $correspondant['nbhp_realisee'] - $item['nbh_realisee_p'];
                     $nbh_par_semaine_sync = $correspondant['nbhsync_realisee'] - $item['nbh_realisee_sync'];
                     $nbh_par_semaine_total = $correspondant['nbh_total_realisee'] - $item['nbh_realisee_global'];
@@ -194,7 +201,7 @@ if (!function_exists('getAvancements')) {
                 //     dd('did not enter if condition');
                 // }
             }
-            // dd($correspondant);
+            // dd($nbh_par_semaine_p, $dateFin->toDateString(), $correspondant['nbhp_realisee'], $item['nbh_realisee_p']);
             // $prec_nbh_par_semaine = $correspondant ? $correspondant['nbh_par_semaine'] : 0;
             $prec_nbhp_realisee = $correspondant ? $correspondant['nbhp_realisee'] : 0;
             $prec_nbhsync_realisee = $correspondant ? $correspondant['nbhsync_realisee'] : 0;
@@ -230,24 +237,28 @@ if (!function_exists('getAvancements')) {
                 'debut_module' => isset($date_debut) ? (string) $date_debut : "2020-10-10",
 
                 // 'fin_module' => "2020-05-05"
-                'fin_module' => isset($dateFin) ? (string) $dateFin->toDateString() : "2020-10-10"
+                'fin_module' => isset($dateFin) ? (string) $dateFin->toDateString() : null
             ];
 
             // echo print_r($correspondant['nbh_par_semaine']);
         }, $data);
 
         // dd($avancements);
-        $avancements_unique = array_unique($avancements, SORT_REGULAR);
+        // $avancements_unique = array_unique($avancements, SORT_REGULAR);
         // dd($avancements_unique);
-        // $avancements_unique = collect($avancements)
-        //     ->unique(function ($item) {
-        //         return $item['code_module'] . '_' . $item['code_groupe'] . '_' . $item['matricule'];
-        //     })
-        //     ->values()
-        //     ->all();
+        $avancements_unique = collect($avancements)
+            ->unique(function ($item) {
+                return $item['code_module'] . '_' . $item['code_groupe'] . '_' . $item['matricule'];
+            })
+            ->values()
+            ->all();
 
         foreach ($avancements_unique as $a) {
             foreach ($a as $key => $val) {
+                if (!is_array($a)) {
+                    dd($a);
+                    continue; // Skip non-array values
+                }
                 if (!is_string($key)) {
                     echo var_dump($key) . "<br/>";
                 }
@@ -255,7 +266,7 @@ if (!function_exists('getAvancements')) {
             // echo "<pre>".print_r(array_keys($a))."</pre>";
         }
         // dd($avancements_unique);
-        try {
+        // try {
             $i = 0;
             foreach ($avancements_unique as $avancement) {
                 // $fillableColumns = (new \App\Models\Avancement)->getFillable();
@@ -289,60 +300,27 @@ if (!function_exists('getAvancements')) {
                     // ], $clean_avancement);
 
                     $target = Avancement::findWithCompositeKey([
+                        ['code_module', '=', $avancement['code_module']],
+                        ['code_groupe', '=', $avancement['code_groupe']],
+                        ['matricule', '=', $avancement['matricule']]
+                    ]);
+
+                    if (!$target) {
+                        Avancement::create($clean_avancement);
+                    } else {
+                        Avancement::where([
                             ['code_module', '=', $avancement['code_module']],
                             ['code_groupe', '=', $avancement['code_groupe']],
                             ['matricule', '=', $avancement['matricule']]
-                    ]);
-
-                    // dd($target);
-
-                    // $target->nbhp_realisee = $clean_avancement['nbhp_realisee'];
-                    // $target->fill($clean_avancement);
-
-                    // dd(gettype(Carbon::parse($avancement['debut_module'])));
-                    // dd(gettype($clean_avancement['debut_module']), $clean_avancement['debut_module']);
-
-
-                    // dd(array_keys($clean_avancement), array_map(function ($item){
-                    //     return is_string($item);
-                    // },array_keys($clean_avancement)));
-                    // $target->nbhp_realisee = $clean_avancement['nbhp_realisee'];
-                    // dd('error here');
-                    // $target->nbhsync_realisee = $clean_avancement['nbhsync_realisee'];
-                    // $target->nbh_total_realisee = $clean_avancement['nbh_total_realisee'];
-                    // dd($clean_avancement['prec_nbhp_realisee'],gettype($clean_avancement['prec_nbhp_realisee']));
-                    // dd($clean_avancement['nbhp_realisee'],gettype($clean_avancement['nbhp_realisee']));
-                    
-                    $target->prec_nbhp_realisee = $clean_avancement['prec_nbhp_realisee'];
-                    // $target->prec_nbhsync_realisee = $clean_avancement['prec_nbhsync_realisee'];
-                    // $target->prec_nbh_total_realisee = $clean_avancement['prec_nbh_total_realisee'];
-
-                    // $target->nbh_par_semaine_p = $clean_avancement['nbh_par_semaine_p'];
-                    // $target->nbh_par_semaine_sync = $clean_avancement['nbh_par_semaine_sync'];
-                    // $target->nbh_par_semaine_total = $clean_avancement['nbh_par_semaine_total'];
-                    // $target->nbcc_realisee = $clean_avancement['nbcc_realisee'];
-                    // $target->efm_realise = $clean_avancement['efm_realise'];
-
-                    // $target->debut_module = $clean_avancement['debut_module'];
-                    // $target->fin_module = $clean_avancement['fin_module'];
-
-                    // $target->debut_module = Carbon::parse($avancement['debut_module']);
-
-                    // $target->debut_module = Carbon::createFromFormat('Y-m-d', $avancement['debut_module']);
-
-                    // $target->fin_module = "2020-10-10";
-
-                    $target->save();
-                    
-                    // dd($avancement);
-                    // break;
-                    // dd('update passed');
+                        ])->update($clean_avancement);
+                    }
                 }
             }
-        } catch (Exception $e) {
-            throw new Error("error here $i");
-            // return response()->json(['error here' => $i]);
-            // dd($avancement);
-        }
+            verifierAvancements();
+        // } catch (Exception $e) {
+        //     throw new Error("error here $i");
+        //     // return response()->json(['error here' => $i]);
+        //     // dd($avancement);
+        // }
     }
 }

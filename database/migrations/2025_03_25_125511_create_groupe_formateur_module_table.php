@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::disableForeignKeyConstraints();
         Schema::create('groupe_formateur_module', function (Blueprint $table) {
 
+            $table->id();
+
             $table->string('code_module')->nullable();
             $table->string('code_filiere')->nullable();
             $table->string('matricule')->default("none")->nullable(); 
@@ -38,7 +40,7 @@ return new class extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
-            $table->primary(['code_module', 'matricule', 'code_groupe']);
+            $table->unique(['code_module', 'matricule', 'code_groupe']);
 
 
 

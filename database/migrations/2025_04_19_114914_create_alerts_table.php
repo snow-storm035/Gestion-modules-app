@@ -14,17 +14,22 @@ return new class extends Migration
         Schema::disableForeignKeyConstraints();
         Schema::create('alerts', function (Blueprint $table) {
             $table->id();
+            // $table->string('avancement_id');
             $table->string('code_groupe');
             $table->string('code_module');
             $table->string('matricule');
             $table->string('etat')->nullable();
             $table->float('mhrestante')->nullable();
 
-            $table->foreign(['code_module', 'matricule', 'code_groupe'])
-                ->references(['code_module', 'matricule', 'code_groupe'])
-                ->on('groupe_formateur_module')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
+            $table->foreignId('avancement_id')
+                ->constrained()
+                ->on('groupe_formateur_module');
+
+            // $table->foreign(['code_module', 'matricule', 'code_groupe'])
+            //     ->references(['code_module', 'matricule', 'code_groupe'])
+            //     ->on('groupe_formateur_module')
+            //     ->onDelete('cascade')
+            //     ->onUpdate('cascade');
 
             $table->timestamps();
         });

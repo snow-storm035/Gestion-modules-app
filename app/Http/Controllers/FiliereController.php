@@ -15,11 +15,14 @@ class FiliereController extends Controller
     {
         //
         $filieres = Filiere::latest()->get();
+        $filieres_avancements = [];
         foreach($filieres as $filiere)
         {
-            calculerTauxMoyenFiliere($filiere);
+            $filieres_avancements[] = [
+               $filiere->code_filiere => calculerTauxMoyenFiliere($filiere)
+            ];
         }
-        // return response()->json(['']);
+        return response()->json($filieres_avancements,200);
     }
 
     /**

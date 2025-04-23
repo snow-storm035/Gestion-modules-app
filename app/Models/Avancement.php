@@ -16,7 +16,7 @@ class Avancement extends Model
     protected $table = "groupe_formateur_module";
 
 
-    protected $primaryKey = ['code_module', 'code_groupe', 'matricule'];
+    protected $primaryKey = ['code_module', 'matricule', 'code_groupe'];
     public $incrementing = false;
     protected $keyType = 'string';
 
@@ -50,7 +50,11 @@ class Avancement extends Model
     public function getKeyName()
     {
         // dd($this->primaryKey);
-        return $this->primaryKey;
+        try{
+            return $this->primaryKey;
+        }catch(Exception $e){
+            return $e->getMessage();
+        }
     }
 
 
@@ -73,6 +77,10 @@ class Avancement extends Model
         DB::table('groupe_formateur_module')
             ->where($query)
             ->update($options);
+    }
+
+    public function alerts(){
+        $this->hasMany(Avancement::class, 'avancement_id', 'avancement_id');
     }
 
     // public static function createOrUpdate(Array $query, Array $options){
