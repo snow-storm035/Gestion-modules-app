@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Avancement;
+use App\Models\Filiere;
+use App\Models\Groupe;
 use App\Models\Module;
 use Illuminate\Http\Request;
 use App\Services\ExcelServices;
 use Carbon\Carbon;
+use Error;
+use Exception;
 use Mockery\Undefined;
 
 use function PHPUnit\Framework\isNull;
@@ -14,12 +18,13 @@ use function PHPUnit\Framework\isNull;
 class AvancementController extends Controller
 {
 
-    public function makeAlert() {
+    public function makeAlert()
+    {
 
         // display an alert
         // good : if the nbh/sem is sufficient
         //    --> this means : between start and end dates the number of hours after this period will
-            // reach the total amount in the end 
+        // reach the total amount in the end 
         // bad : if not
 
 
@@ -27,14 +32,14 @@ class AvancementController extends Controller
         // $modules = Module::orderBy('debut_module')->get();
 
         $modules_stats = [];
-        foreach($modules as $m){
+        foreach ($modules as $m) {
 
-            if($m['debut_module'] !== null){
+            if ($m['debut_module'] !== null) {
 
                 // dd($m['code_module'], $m['code_filiere']);
 
                 $dateDebut = Carbon::parse($m['debut_module']);
-    
+
                 $dateEfm = Carbon::parse($m['date_efm_normal']);
 
                 // différence entre les dates en semaines :
@@ -53,22 +58,22 @@ class AvancementController extends Controller
                 //     }
                 // },$m->groupes->where('code_filiere',$m['code_filiere'])->toArray());
 
-                $module = $m->groupes->where('code_filiere',$m['code_filiere'])
-                ->firstOrFail() // this will raise a NOT FOUND ERROR !!!
-                ->toArray()['pivot'];
+                $module = $m->groupes->where('code_filiere', $m['code_filiere'])
+                    ->firstOrFail() // this will raise a NOT FOUND ERROR !!!
+                    ->toArray()['pivot'];
 
                 // dd($m->groupes->where('code_filiere',$m['code_filiere'])->first()->toArray()['pivot']);
                 $taux_total = $module['nbh_par_semaine_realisee'] * $nbsemaines;
-                
+
                 // dd($taux_total, $m['nbh_p_total'] + $m['nbh_sync_total'], $m['nbh_total_global']);
-                if($taux_total >= $m['nbh_p_total'] + $m['nbh_sync_total']){
+                if ($taux_total >= $m['nbh_p_total'] + $m['nbh_sync_total']) {
                     $module['willcompleteontime'] = true;
-                }else{
+                } else {
                     $module['willcompleteontime'] = false;
                 }
 
                 $modules_stats[] = $module;
-                
+
                 // dd(gettype($module), $module);
                 // dd(gettype($dateDebut),gettype($dateEfm),$dateDebut, $diffWeeks, gettype($diffWeeks));
             }
@@ -76,6 +81,8 @@ class AvancementController extends Controller
         dd($modules_stats);
     }
 
+
+    // public function majDates
 
 
     public function changerNbHeuresParSemaine(Request $request)
@@ -110,10 +117,10 @@ class AvancementController extends Controller
         if ($request->has('nbh_par_semaine') && $avancement) {
 
             Avancement::updateWithCompositeKey([
-                ['code_module','=',$codeModule],
-                ['code_groupe','=',$codeGroupe],
-                ['matricule','=',$codeFormateur],
-            ],['nbh_par_semaine_realisee' => $request['nbh_par_semaine']]);
+                ['code_module', '=', $codeModule],
+                ['code_groupe', '=', $codeGroupe],
+                ['matricule', '=', $codeFormateur],
+            ], ['nbh_par_semaine_total' => $request['nbh_par_semaine']]);
 
             // $avancement->update([
             //     'nbh_par_semaine_realisee' => $request['nbh_par_semaine']
@@ -127,17 +134,17 @@ class AvancementController extends Controller
 
             // code to review changes :
             $avancement = Avancement::where('code_module', $codeModule)
-            ->where('code_groupe', $codeGroupe)
-            ->where('matricule', $codeFormateur)
-            ->first();
+                ->where('code_groupe', $codeGroupe)
+                ->where('matricule', $codeFormateur)
+                ->first();
 
 
-            dd($avancement['nbh_par_semaine_realisee']);
+            dd($avancement['nbh_par_semaine_total']);
             // ###################################################
-  
-            return response()->json(['success' => 'data has been updated successfully'],200);
+
+            return response()->json(['success' => 'data has been updated successfully'], 200);
         } else {
-            return response()->json(['error' => 'all fields are required'],400);
+            return response()->json(['error' => 'all fields are required'], 400);
         }
     }
 
@@ -184,18 +191,91 @@ class AvancementController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
+
     {
         //
         // $data = ExcelServices::convertExcelToJson($request);
 
-        $avancements = Avancement::all();
+        global $avancements;
+
+        // filiere filter
+        $filieres = array_map(function ($item) {
+            // dd($item);
+            return [
+                'code_filiere' => $item['code_filiere'],
+                'libelle' => $item['nom_filiere']
+            ];
+        }, Filiere::all()->toArray());
+
+        // groupe filter
+        $filiere = null;
+
+        // dd($request);
+        if ($request->has('filiere')) {
+            $filiere = Filiere::where('code_filiere', $request->input('filiere'))->first();
+
+            $avancements = Avancement::where('code_filiere',$filiere['code_filiere']);
+            // dd("here");
+            // dd($filiere->groupes()->get());
+        }
+
+        $groupes = array_map(function ($item) {
+            return [
+                'code_groupe' => $item['code_groupe'],
+                // 'libelle' => $item['nom_filiere']
+            ];
+        }, $filiere ? $filiere->groupes()->get()->toArray() : Groupe::all()->toArray());
+        // dd($groupes);
+
+        // module filter :
+        $modules = array_map(function ($item) {
+            return [
+                'code_module' => $item['code_module'],
+                // 'libelle' => $item['nom_filiere']
+            ];
+        }, $filiere ? $filiere->modules()->get()->toArray() : Groupe::all()->toArray());
+        // dd($modules);
+
+
+        // annee formation filter :
+
+        $annees = array_map(function ($item) {
+            return $item['annee_formation'];
+        }, Groupe::orderBy('annee_formation')->get()->toArray());
+        $annees_unique = array_unique($annees, SORT_REGULAR);
+        // dd($annees_unique);
+
+        // niveau filter :
+        $niveaux = array_map(function ($item) {
+            return $item['niveau'];
+        }, Filiere::orderBy('niveau')->get()->toArray());
+        $niveaux_unique = array_unique($niveaux, SORT_REGULAR);
+        dd($niveaux_unique);
+
+        
+
+        // 
+        // dd($avancements);
         // dd()
         // foreach ($avancements as $a) {
-        //     dd($a->modules);
+        //     dd($a);
         // }
 
-        return response()->json(json_decode($avancements));
+        $avancements = Avancement::paginate(10);
+
+
+
+        return response()->json([
+            "avancements" => $avancements,
+            "filters" => [
+                'filieres' => $filieres,
+                'groupes' => $groupes,
+                'modules' => $modules,
+                'annees_formation' => $annees_unique,
+                'niveaux' => $niveaux_unique,
+            ]
+        ],200);
     }
 
     /**
@@ -222,28 +302,28 @@ class AvancementController extends Controller
             $avancements = array_map(function ($item) {
 
                 $correspondant = Avancement::findWithCompositeKey([
-                    ['matricule','=',$item['code_formateur_p_actif']],
-                    ['code_groupe','=',$item['code_groupe']],
+                    ['matricule', '=', $item['code_formateur_p_actif']],
+                    ['code_groupe', '=', $item['code_groupe']],
                     // ['code_filiere','=',$item['code_filiere']],
-                    ['code_module','=',$item['code_module']]
+                    ['code_module', '=', $item['code_module']]
                 ]);
 
                 // dd($correspondant);
-                
-                if($correspondant){
 
-                    if($item['nbh_realisee_global'] > 0 && $correspondant['debut_module'] === null){
+                if ($correspondant) {
+
+                    if ($item['nbh_realisee_global'] > 0 && $correspondant['debut_module'] === null) {
                         $date_debut = Carbon::now()->toDateString();
                         // dd($item['date_debut'],$item);
                     }
 
                     $module = Module::where([
-                        ['code_module','=',$correspondant['code_module']],
-                        ['code_filiere','=',$correspondant['code_filiere']]
+                        ['code_module', '=', $correspondant['code_module']],
+                        ['code_filiere', '=', $correspondant['code_filiere']]
                     ])->first();
-                    
+
                     // dd($module);
-                    if($module){
+                    if ($module) {
                         $total = $module['nbh_p_total'] + $module['nbh_sync_total'];
                     }
 
@@ -251,11 +331,11 @@ class AvancementController extends Controller
                     // dd(isModuleHoursCompleted($correspondant['nbh_total_realisee'], $total ));
 
                     //verify if a groupe has completed the module's HOURS and that we have a start date('date_debut'):
-                    if(!isModuleHoursCompleted($correspondant['nbh_total_realisee'], $total ) && $correspondant['debut_module'] !== null){ 
+                    if (!isModuleHoursCompleted($correspondant['nbh_total_realisee'], $total) && $correspondant['debut_module'] !== null) {
                         $nbh_par_semaine = $item['nbh_realisee_p'] - $correspondant['nbhp_realisee'];
 
                         // calculer la date fin prévu :
-                        $dateFin = calculerDateFinModule($total,$nbh_par_semaine,$correspondant['debut_module']);
+                        $dateFin = calculerDateFinModule($total, $nbh_par_semaine, $correspondant['debut_module']);
                         // dd($nbh_par_semaine,$correspondant);
                         dd($dateFin->toDateString());
                     }
@@ -288,24 +368,23 @@ class AvancementController extends Controller
 
                     'fin_module' => isset($dateFin) ? $dateFin->toDateString() : null
                 ];
-
                 // echo print_r($correspondant['nbh_par_semaine']);
             }, $data);
-            
+
             // dd($avancements);
             $avancements_unique = array_unique($avancements, SORT_REGULAR);
 
             // dd($avancements_unique);
 
             foreach ($avancements_unique as $avancement) {
-                if($avancement !== null){
+                if ($avancement !== null) {
                     // Avancement::firstOrCreate($avancement);
                     Avancement::updateOrCreate([
                         ['code_module', '=', $avancement['code_module']],
                         ['code_groupe', '=', $avancement['code_groupe']],
                         ['matricule', '=', $avancement['matricule']],
                         ['code_filiere', '=', $avancement['code_filiere']]
-                    ],$avancement);
+                    ], $avancement);
                     dd('error rise here');
                 }
             }
@@ -324,12 +403,12 @@ class AvancementController extends Controller
         $recommandedMh = $request->input('recommandedMh');
         // dd($recommandedMh);
         $avancement = Avancement::where([
-            ['code_groupe' , $groupe],
+            ['code_groupe', $groupe],
             ['code_module', $module]
         ])->first();
 
 
-        return response()->json(['avancement' => $avancement,'recommandation' => $recommandedMh]);
+        return response()->json(['avancement' => $avancement, 'recommandation' => $recommandedMh]);
     }
 
     /**
@@ -338,6 +417,7 @@ class AvancementController extends Controller
     public function edit(Avancement $avancement)
     {
         //
+
     }
 
     /**
@@ -345,7 +425,34 @@ class AvancementController extends Controller
      */
     public function update(Request $request, Avancement $avancement)
     {
-        //
+        // need testing
+        // dd($request);
+        try{
+            global $new_nbh_par_semaine_total;
+            $validated = $request->validate([
+                'nbhparsemainetotal' => 'required|numeric|min:0'
+            ]);
+
+            $min_nbhparsemaine = proposerNbHeuresParSemaines(Carbon::parse($avancement['date_efm_normal']),mhrestante($avancement));
+
+            if($validated){
+                $new_nbh_par_semaine_total = $request->input('nbhparsemainetotal');
+                
+            }else{
+                throw new Exception('valeur non valide');
+            }
+            // dd($new_nbh_par_semaine_total);
+            // $enretard = moduleEnRetard(mhrestante($avancement), $avancement, $new_nbh_par_semaine_total);
+            // dd($enretard);
+            if($new_nbh_par_semaine_total < $min_nbhparsemaine){
+                throw new Exception('valeur insuffisante pour finir en temps');
+            }
+            $avancement->update(['nbh_par_semaine_total' => $new_nbh_par_semaine_total]);
+            // $updated = Avancement::find($avancement->id);
+            return response()->json(['success' => 'updating was successfull !'],200);
+        }catch(Exception $e){
+            return response()->json(['error' => 'failed to update : '.$e->getMessage()],400);
+        }
     }
 
     /**

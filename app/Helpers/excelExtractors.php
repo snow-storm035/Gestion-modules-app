@@ -18,6 +18,7 @@ if (!function_exists('getFilieres')) {
                 'code_filiere' => $item['code_filiere'],
                 'nom_filiere' => $item['filiere'],
                 'type_formation' => $item['type_formation'],
+                'niveau' => $item['niveau'],
                 'secteur' => $item['secteur']
             ];
         }, $data);
@@ -89,7 +90,6 @@ if (!function_exists('getGroupes')) {
             return [
                 'code_filiere' => $item['code_filiere'],
                 'code_groupe' => $item['code_groupe'],
-                'niveau' => $item['niveau'],
                 'effectif' => $item['effectif_groupe'],
                 'annee_formation' => $item['annee_formation'],
                 'status_groupe' => $item['status_sousgroupe'],
@@ -160,6 +160,7 @@ if (!function_exists('getAvancements')) {
             $nbh_par_semaine_sync = 0;
             $nbh_par_semaine_total = 0;
             $dateFin = null;
+            // $taux_avancement = 0;
 
             if ($correspondant) {
 
@@ -176,16 +177,11 @@ if (!function_exists('getAvancements')) {
                 // dd($module);
                 if ($module) {
                     $total = $module['nbh_p_total'] + $module['nbh_sync_total'];
+                    
+
                 }
+                // $taux_avancement = calculerTauxAvancement($correspondant);
 
-                // dd($total);
-                // dd(isModuleHoursCompleted($correspondant['nbh_total_realisee'], $total ));
-
-                //verify if a groupe has completed the module's HOURS and that we have a start date('date_debut'):
-                // dd($correspondant['fin_module']);
-                // dd((string) null);
-                // Avancement::where([])->update(['fin_module' => null]);
-                // dd(!isModuleHoursCompleted($correspondant['nbh_total_realisee']-50, $total) && $correspondant['debut_module'] !== null && $correspondant['fin_module'] === null);
                 if (!isModuleHoursCompleted($correspondant['nbh_total_realisee']-50, $total) && $correspondant['debut_module'] !== null && $correspondant['fin_module'] === null) {
                     $nbh_par_semaine_p = $correspondant['nbhp_realisee'] - $item['nbh_realisee_p'];
                     $nbh_par_semaine_sync = $correspondant['nbhsync_realisee'] - $item['nbh_realisee_sync'];
@@ -208,7 +204,7 @@ if (!function_exists('getAvancements')) {
             $prec_nbh_total_realisee = $correspondant ? $correspondant['nbh_total_realisee'] : 0;
 
             // dd($prec_nbh_par_semaine,$prec_nbh_total_realisee,$prec_nbhp_realisee,$prec_nbhsync_realisee);
-
+            // dd($correspondant,calculerTauxAvancement($correspondant));
             return [
                 'code_module' => $item['code_module'],
                 'code_filiere' => $item['code_filiere'],
@@ -224,6 +220,10 @@ if (!function_exists('getAvancements')) {
                 'prec_nbhp_realisee' => (float)  $prec_nbhp_realisee,
                 'prec_nbhsync_realisee' => (float)  $prec_nbhsync_realisee,
                 'prec_nbh_total_realisee' => (float) $prec_nbh_total_realisee,
+
+                // 'tauxp_realisee' => (float) $taux_avancement['presentiel'],
+                // 'tauxsync_realisee' => (float) $taux_avancement['sync'],
+                // 'taux_total_realisee' => (float) calculerTauxAvancement($correspondant),
 
                 // maybe should reset to 0 :
                 'nbh_par_semaine_p' => isset($nbh_par_semaine_p) ? $nbh_par_semaine_p : 0,
@@ -266,7 +266,7 @@ if (!function_exists('getAvancements')) {
             // echo "<pre>".print_r(array_keys($a))."</pre>";
         }
         // dd($avancements_unique);
-        // try {
+        try {
             $i = 0;
             foreach ($avancements_unique as $avancement) {
                 // $fillableColumns = (new \App\Models\Avancement)->getFillable();
@@ -289,10 +289,7 @@ if (!function_exists('getAvancements')) {
                 if ($clean_avancement !== null) {
                     // Avancement::firstOrCreate($avancement);
                     $i++;
-                    // echo $i . "<br/>";
-                    // echo "<pre>";
-                    // echo print_r($avancement) . "<br/>";
-                    // echo "</pre>";
+
                     // Avancement::updateOrCreate([
                     //     ['code_module', '=', $clean_avancement['code_module']],
                     //     ['code_groupe', '=', $clean_avancement['code_groupe']],
@@ -316,11 +313,65 @@ if (!function_exists('getAvancements')) {
                     }
                 }
             }
+            updateTauxAvancement();
+            // verifier avancements:
             verifierAvancements();
-        // } catch (Exception $e) {
-        //     throw new Error("error here $i");
-        //     // return response()->json(['error here' => $i]);
-        //     // dd($avancement);
-        // }
+
+        } catch (Exception $e) {
+            throw new Error("error here $i");
+            // return response()->json(['error here' => $i]);
+            // dd($avancement);
+        }
+    }
+}
+
+
+
+if(!function_exists('updateDatesFromFile')){
+    function updateDatesFromFile($data)
+    {
+        $dates_modules = array_map(function ($item) {
+            return [
+                'code_filiere' => $item['code_filiere'],
+                'code_module' => $item['code_module'],
+                'matricule' => ($item['matricule']) ? $item['matricule'] : "none",
+                'code_groupe' => $item['code_groupe'],
+                'debut_module' => $item['debut_module'],
+                'date_efm_normal' => Carbon::parse($item['fin_module'])->toDateString(),
+            ];
+        }, $data);
+        // dd($dates_modules);
+
+        $dates_modules_unique = array_unique($dates_modules, SORT_REGULAR);
+
+        $i=1;
+        foreach ($dates_modules_unique as $item) {
+            $i++;
+            // dd([
+            //     ['code_module','=',$item['code_module']],
+            //     ['matricule','=',$item['matricule']],
+            //     ['code_groupe','=',$item['code_groupe']],
+            // ]);
+            if(!($item['code_module'] && $item['matricule'] && $item['code_groupe'])){
+                throw new Error("necessary info is missing on file please check it again, line : $i ");
+            }
+            $record = Avancement::findWithCompositeKey([
+                ['code_module','=',$item['code_module']],
+                ['matricule','=',$item['matricule']],
+                ['code_groupe','=',$item['code_groupe']],
+            ]);
+
+            // dd($item['code_module'], $item['matricule'],$record);
+
+            Avancement::where([
+                ['code_module','=',$item['code_module']],
+                ['matricule','=',$item['matricule']],
+                ['code_groupe','=',$item['code_groupe']],
+            ])
+            ->update([
+                'debut_module' => $record['debut_module'] ? $record['debut_module'] : $item['debut_module'],
+                'date_efm_normal' => $record['date_efm_normal'] ? $record['date_efm_normal'] : $item['date_efm_normal']
+            ]);
+        }
     }
 }

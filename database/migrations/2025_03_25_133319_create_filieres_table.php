@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('code_filiere')->primary(true);
             $table->string('nom_filiere');
             $table->string('type_formation');
+            $table->string('niveau');
             $table->string('secteur');
             $table->timestamps();
         });

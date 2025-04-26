@@ -15,7 +15,7 @@ class Groupe extends Model
     protected $fillable = [
         "code_filiere",
         "code_groupe",
-        "niveau",
+        // "niveau",
         "effectif",
         "annee_formation",
         "status_groupe",

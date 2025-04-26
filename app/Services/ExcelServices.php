@@ -73,11 +73,19 @@ class ExcelServices {
         "efp_pie"
     ];
 
+    const DATES_HEADERS = [
+        "code_filiere",
+        "code_module",
+        "code_groupe",
+        "matricule",
+        "debut_module",
+        "fin_module"
+    ];
+
 
     public static function convertExcelToJson(Request $request) {
 
-        try{
-            
+        try{          
             $path = $request->file('excelfile');
             $spreadsheet = IOFactory::load($path);
             
@@ -87,19 +95,41 @@ class ExcelServices {
             $jsonData = [];
 
             array_shift($data);
-            
-            foreach ($data as $row) {
-                // dd(count(ExcelServices::FILE_HEADERS));
-                $jsonData[] = array_combine(ExcelServices::FILE_HEADERS, $row);
+            if($request->input('type') === "avancements"){
+                foreach ($data as $row) {
+                    // dd(count(ExcelServices::FILE_HEADERS));
+                    $jsonData[] = array_combine(ExcelServices::FILE_HEADERS, $row);
+                }
+            }else if($request->input('type') === "dates_modules"){
+                foreach ($data as $row) {
+                    // dd(count(ExcelServices::FILE_HEADERS));
+                    $jsonData[] = array_combine(ExcelServices::DATES_HEADERS, $row);
+                }
             }
             $json = json_encode($jsonData);
+            // dd($jsonData);
             return $json;
-
         }catch(Exception $e){
             return $e->getMessage();
-            
             // return response()->json(["error" => "failed to convert excel file"]);
-        }
-        
+        }   
     }
+
+    // public static function datesDebutExcelToJson(Request $request)
+    // {
+    //     try{
+    //         $path = $request->file('excelfile');
+    //         $spreadsheet = IOFactory::load($path);
+            
+    //         $sheet = $spreadsheet->getActiveSheet();
+    //         $data = $sheet->toArray();
+
+    //         $jsonData = [];
+
+    //         array_shift($data);
+
+    //     }catch(Exception $e){
+    //         return $e->getMessage();
+    //     }
+    // }
 }

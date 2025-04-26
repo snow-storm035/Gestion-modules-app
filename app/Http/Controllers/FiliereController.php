@@ -11,7 +11,7 @@ class FiliereController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         //
         $filieres = Filiere::latest()->get();

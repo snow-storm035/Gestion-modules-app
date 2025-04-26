@@ -16,9 +16,9 @@ class Avancement extends Model
     protected $table = "groupe_formateur_module";
 
 
-    protected $primaryKey = ['code_module', 'matricule', 'code_groupe'];
-    public $incrementing = false;
-    protected $keyType = 'string';
+    // protected $primaryKey = ['code_module', 'matricule', 'code_groupe'];
+    // public $incrementing = false;
+    // protected $keyType = 'string';
 
 
     protected $fillable = [
@@ -32,6 +32,7 @@ class Avancement extends Model
         'nbhp_realisee',
         'nbhsync_realisee',
         'nbh_total_realisee',
+        'taux_total_realisee',
         'prec_nbhp_realisee',
         'prec_nbhsync_realisee',
         'prec_nbh_total_realisee',

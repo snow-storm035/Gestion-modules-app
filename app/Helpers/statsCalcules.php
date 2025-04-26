@@ -17,6 +17,7 @@ if (!function_exists('calculerTauxAvancement')) {
         return ($avancement['nbh_total_realisee'] / $module['nbh_total_global']) * 100;
     }
 }
+
 // masse horaire restante
 if (!function_exists('mhrestante')) {
     function mhrestante(Avancement $avancement)
@@ -72,7 +73,7 @@ if (!function_exists('calculerTauxMoyenFiliere')) {
             }
         }
 
-        dd($avancements_filiere);
+        // dd($avancements_filiere);
         return $avancements_filiere;
     }
 }
@@ -85,3 +86,24 @@ if (!function_exists('verifierEtatModule')) {
         return;
     }
 }
+
+
+
+if(!function_exists('updateTauxAvancement')){
+    function updateTauxAvancement(){
+        $avancements = Avancement::all();
+        foreach($avancements as $avancement){
+            $taux = number_format(calculerTauxAvancement($avancement),2);
+            $avancement->update(['taux_total_realisee' => $taux]);
+        }
+    }
+}
+
+
+// if(!function_exists('nbhParSemaineRecommandee')){
+
+//     function nbhParSemaineRecommandee()
+//     {
+
+//     }
+// }

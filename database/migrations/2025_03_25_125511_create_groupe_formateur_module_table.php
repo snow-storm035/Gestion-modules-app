@@ -58,6 +58,11 @@ return new class extends Migration
             $table->float('prec_nbhsync_realisee')->default(0);
             $table->float('prec_nbh_total_realisee')->default(0);
 
+
+            // $table->float('tauxp_realisee')->default(0);
+            // $table->float('tauxsync_realisee')->default(0);
+            $table->float('taux_total_realisee')->default(0);
+
             $table->integer('nbcc_realisee')->default(0);
 
             $table->enum('efm_realise',['oui','non'])->default('non');

@@ -152,6 +152,7 @@ class FormateurController extends Controller
     {
         //
         try{
+            dd($formateur);
             $formateur->delete();
             return response()->json(['success' => 'data has been removed successfully']);
         }catch(Exception $e){

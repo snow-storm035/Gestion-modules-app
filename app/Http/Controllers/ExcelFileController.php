@@ -17,12 +17,14 @@ class ExcelFileController extends Controller
     public function extractAllData(Request $request)
     {
         // try{
-            if($request->has('excelfile')){
-                $jsonData = ExcelServices::convertExcelToJson($request);
-        
-                $data = json_decode($jsonData, true);
-                // dd($data);
-        
+        // dd($request);
+        if ($request->has('excelfile')) {
+            $jsonData = ExcelServices::convertExcelToJson($request);
+
+            $data = json_decode($jsonData, true);
+            // dd($data);
+            if ($request->input('type') === "avancements") {
+
                 $filieres = Filiere::first();
                 $formateurs = Formateur::first();
                 $groupes = Groupe::first();
@@ -30,18 +32,25 @@ class ExcelFileController extends Controller
                 // dd(!$filieres && !$formateurs && !$groupes && !$modules);
                 // dd($filieres ,$formateurs ,$groupes ,$modules);
 
-                if(!$filieres && !$formateurs && !$groupes && !$modules) //checking if there is data before running these functions
+                if (!$filieres && !$formateurs && !$groupes && !$modules) //checking if there is data before running these functions
                 {
                     getFilieres($data);
                     getFormateurs($data);
                     getGroupes($data);
                     getModules($data);
                 }
-
+                
                 getAvancements($data);
-            
-                return response()->json(['success' => 'operation completed'],200);
+
+                return response()->json(['success' => 'operation completed'], 200);
+
+            } else if ($request->input('type') === 'dates_modules') {
+                // dd('hi');
+                updateDatesFromFile($data);
+
+                return response()->json(['success' => 'les dates sont mis à jour avec succèss'],200);
             }
+        }
         // }catch(Exception $e){
         //     return response()->json(['error' => $e->getMessage()],500);
         // }

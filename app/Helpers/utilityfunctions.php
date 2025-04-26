@@ -1,4 +1,5 @@
 <?php
+
     if(!function_exists('convertStringToDate'))
     {
         function convertStringToDate(string $dateString)
@@ -7,7 +8,4 @@
             return $date->format('Y-m-d');
         }
     }
-
-
-
 ?>

@@ -16,6 +16,7 @@ class GroupeController extends Controller
     {
         //
         // $groupes = Groupe::all();
+
     }
 
     /**
@@ -55,11 +56,6 @@ class GroupeController extends Controller
             },$data);
 
             $groupes_unique = array_unique($groupes, SORT_REGULAR);
-
-            
-
-            // dd($groupes_unique);
-
 
             foreach($groupes_unique as $groupe){
                 Groupe::create($groupe);

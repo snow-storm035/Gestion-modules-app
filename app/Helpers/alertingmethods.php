@@ -9,12 +9,21 @@ use App\Notifications\ModulePrequeFini;
 
 if (!function_exists('moduleEnRetard')) {
     // function moduleEnRetard(float $mhrestante, float $nbhparsemaine, Carbon $dateEfmPrevu)
-    function moduleEnRetard(float $mhrestante, Avancement $avancement)
+    function moduleEnRetard(float $mhrestante, Avancement $avancement, float $new_nbhparsemaine = 0)
     {
-        if($avancement['nbhparsemaine'] != 0){
-            $nbrSemaines = ceil($mhrestante / $avancement['nbhparsemaine']);
+        // in case of update we might want to check before updating
+        // dd($avancement);
+        $main_nbhparsemaine = $new_nbhparsemaine != 0 ? $new_nbhparsemaine : $avancement['nbh_par_semaine_total'];
+        dd($main_nbhparsemaine);
+        if($main_nbhparsemaine != 0){
+            $nbrSemaines = ceil($mhrestante / $main_nbhparsemaine);
+            // dd($nbrSemaines);
             $dateFinPrevu = Carbon::now()->addWeeks($nbrSemaines);
-            if ($avancement['dateEfmPrevu'] < $dateFinPrevu) {
+            $dates_gape = $dateFinPrevu->diffInDays(Carbon::parse($avancement['date_efm_normal'])); // -> dateefm - datefinprevu > 0
+            // dd($dates_gape,$dateFinPrevu->toDateString());
+            // dd($dateFinPrevu->toDateString(),$avancement['dateEfmPrevu']);
+            if ($dates_gape < 0) {
+                // dd("inside",($dates_gape < 0));
                 // Alert::create([
                 //     "code_module" => $avancement['code_module'],
                 //     "code_groupe" => $avancement['code_groupe'],
@@ -22,7 +31,7 @@ if (!function_exists('moduleEnRetard')) {
                 //     "etat" => "en retard",
                 //     "mhrestante" => $mhrestante ,
                 // ]);
-                return true;
+                return true; // càd en retard
             }
         }
         return false;

@@ -9,6 +9,7 @@ use App\Http\Controllers\GroupeController;
 use App\Http\Controllers\ModuleController;
 // use App\Models\Avancement;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -35,6 +36,13 @@ Route::withoutMiddleware([VerifyCsrfToken::class])->group(function(){
     Route::get('/trailswitch', function(){
         return redirect()->route('groupes.show','GE101');
     });
+
+    Route::get('/testing', function(Request $request){
+        dd($request->input('test'));
+        return $request->input('test');
+    });
+
+    Route::put('/avancements/{avancement}', [AvancementController::class,'update']);
 
     Route::post('/uploadstats',[ExcelFileController::class,'extractAllData']);
 });

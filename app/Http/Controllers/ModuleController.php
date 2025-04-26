@@ -33,10 +33,8 @@ class ModuleController extends Controller
 
         if($request->has('excelfile')){
             $jsonData = ExcelServices::convertExcelToJson($request);
-    
             
             $data = json_decode($jsonData, true);
-    
     
             // dd($data);
     
@@ -72,13 +70,7 @@ class ModuleController extends Controller
                 Module::create($module);
             }
         }
-
-
-
-
-
         return response()->json(["success" => "inserted successfully"]);
-
     }
 
     /**

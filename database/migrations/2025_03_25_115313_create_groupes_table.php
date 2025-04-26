@@ -16,7 +16,7 @@ return new class extends Migration
 
             $table->string('code_filiere');
             $table->string('code_groupe')->primary(true);
-            $table->string('niveau');
+            // $table->string('niveau');
             $table->integer('effectif');
             $table->integer('annee_formation');
             $table->string('status_groupe');
