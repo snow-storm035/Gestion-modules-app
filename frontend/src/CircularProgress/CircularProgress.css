@@ -1,16 +1,24 @@
 /* Main container */
 .progress-container {
   font-family: 'Arial', sans-serif;
-  max-width: 300px;
+ 
   padding: 10px;
   background-color: #fff;
   border-radius: 8px;
-  /* box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); */
-  /* width: 100%; */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
   margin: 0;
   /* background-color: red; */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-bottom: 2.5rem; 
+  height: 40vh;
 
 }
+
+
 
 /* Title */
 .progress-title {
@@ -63,13 +71,6 @@
 }
 
 
-.progress-container {
-  position: relative; /* Required for absolute positioning inside */
-  display: flex;
-  flex-direction: column;
-  gap: 1rem; /* Spacing between progress bars */
-  padding-bottom: 2.5rem; /* Space for the button */
-}
 
 .progress-container .button-container {
   position: absolute;
@@ -122,4 +123,22 @@
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-10px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+
+.progress-container-dark-mode-progers{
+  background-color: black;
+}
+.progress-container-dark-mode-progers .progress-item{
+  background-color: black !important;
+}
+.progress-container-dark-mode-progers .progress-item .progress-header{
+  background-color: var( --dark-grey) !important;
+ 
+
+}
+.progress-container-dark-mode-progers .progress-item .progress-header span{
+  padding: 2px;
+color:var(--main-wihte);
+border-radius: 5px;
 }

@@ -5,23 +5,6 @@ import "../style/AvancementDetails.css";
 const AvancementDetails = ({ moduleData }) => {
   // Sample data structure matching your schema
   const defaultData = {
-    // id: 1,
-    // code_module: '300',
-    // code_filiere: '',
-    // code_formateur: 'none',
-    // code_groupe: '',
-    // nbh_par_semaine_realisee: 2.5,
-    // date_debut: null,
-    // date_fin: null,
-    // nbhp_realisee: 0,
-    // nbhsync_realisee: 0,
-    // nbh_total_realisee: 0,
-    // nbcc_realisee: 0,
-    // efm_realise: 'non',
-    // regionale: 'NON',
-    // mh_presentiel: 7,
-    // mh_distance: 4,
-    // nombre_total: 3,
     id: 1,
     code_module: 'MATH101',
     code_filiere: 'CS101',

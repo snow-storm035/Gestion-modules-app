@@ -1,14 +1,8 @@
 import { useState } from 'react';
-import { FaChalkboardTeacher, FaSortAmountDown, FaSortAmountUp } from 'react-icons/fa';
-import "../style/dateEfmRegainal.css";
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faEye, faPlus } from '@fortawesome/free-solid-svg-icons';
+// import { FaChalkboardTeacher, FaSortAmountDown, FaSortAmountUp } from 'react-icons/fa';
+import "../style/CalendrierEfm.css";
 import { useDarkMode } from "../DarkModeProvider/DarkModeContext";
-// import { Button } from 'react-bootstrap';// onClick={toggleDarkMode}
-// className="darkmode"
-// aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
-import { useNavigate } from 'react-router-dom';
-const DatesEFMsReg = () => {
+const CalendrierEfm = () => {
     // const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState('');
     const { darkMode } = useDarkMode();
@@ -205,10 +199,6 @@ const DatesEFMsReg = () => {
     const filteredAlertsWithsplice = filteredAlert.slice(firstPostindex, lastPostindex)
     return (
         <>
-            <div className='header-alets'>
-                <div><span>M105 :</span><p> presque finit</p></div>
-                <div><span>M105 :</span><p> presque finit</p></div>
-            </div>
             <div className="container-fluid-alets">
                 {/* <div className="filter-container"> */}
                 <div className={darkMode ? "filter-container-alets" : "filter-container-alets filter-container-darkmode-alets"}>
@@ -237,10 +227,10 @@ const DatesEFMsReg = () => {
                                 placeholder="Filiere"
                             />
                             <datalist id="filiere">
-                            {/* <option value=""> Niveaux</option> */}
-                            {filieres.map(filiere => (
-                                <option key={filiere} value={filiere}/>
-                            ))}
+                                {/* <option value=""> Niveaux</option> */}
+                                {filieres.map(filiere => (
+                                    <option key={filiere} value={filiere} />
+                                ))}
 
                             </datalist>
                         </div>
@@ -260,10 +250,10 @@ const DatesEFMsReg = () => {
                                 placeholder="Niveau"
                             />
                             <datalist id="niveau">
-                            {/* <option value=""> Niveaux</option> */}
-                            {niveaux.map(niveau => (
-                                <option key={niveau} value={niveau}/>
-                            ))}
+                                {/* <option value=""> Niveaux</option> */}
+                                {niveaux.map(niveau => (
+                                    <option key={niveau} value={niveau} />
+                                ))}
 
                             </datalist>
                         </div>
@@ -280,9 +270,9 @@ const DatesEFMsReg = () => {
                                 placeholder="Sélectionner Annee formation"
                             />
                             <datalist id="anneeOptions">
-                            {annee.map(annee => (
-                                <option key={annee} value={annee}/>
-                            ))}
+                                {annee.map(annee => (
+                                    <option key={annee} value={annee} />
+                                ))}
 
                             </datalist>
                         </div>
@@ -296,7 +286,7 @@ const DatesEFMsReg = () => {
                 </div>
                 <div className="row">
                     <div className="col-12">
-                        <div className="card mb-4">
+                        <div className={darkMode?"card-CalendrierEfm mb-4":"card-CalendrierEfm mb-4 card-CalendrierEfm-dark-mode"}>
                             {/* <div className="card-body"> */}
                             <div className={darkMode ? "card-body" : "card-body card-body_dark_alets"}>
                                 {/* <table className="table table-striped"> */}
@@ -307,8 +297,8 @@ const DatesEFMsReg = () => {
                                             <th>Code module</th>
                                             <th>régionale</th>
                                             <th>taux avancement</th>
-                                            <th>date efm prévu</th>                                        
-                                            <th>date efm réelle</th>                                        
+                                            <th>date efm prévu</th>
+                                            <th>date efm réelle</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -319,7 +309,7 @@ const DatesEFMsReg = () => {
                                                 <td>{avince.regional}</td>
                                                 <td>{avince.taux_avancement}</td>
                                                 <td>{avince.date_fin_prevu}</td>
-                                                <td>{avince.date_efm_reelle?avince.annee_formation:"Date à déterminer"}</td>
+                                                <td>{avince.date_efm_reelle ? avince.annee_formation : "Date à déterminer"}</td>
 
 
                                             </tr>
@@ -328,18 +318,17 @@ const DatesEFMsReg = () => {
                                 </table>
                             </div>
 
-                            <div className="d-flex justify-content-between mt-3">
+                            <div className="pagination-container-CalendrierEfm">
                                 <button
-                                    className="btn btn-outline-primary"
+                                    className="pagination-btn-CalendrierEfm"
                                     disabled={currentPage === 1}
                                     onClick={() => setCurrentPage(prev => prev - 1)}
                                 >
                                     Previous
                                 </button>
-                                {/* <span>Page {currentPage}</span> */}
-                                <span style={{ color: "red" }}>Page: {currentPage}</span>
+                                <span className="current-page-CalendrierEfm">Page {currentPage}</span>
                                 <button
-                                    className="btn btn-outline-primary"
+                                    className="pagination-btn-CalendrierEfm"
                                     onClick={() => setCurrentPage(prev => prev + 1)}
                                 >
                                     Next
@@ -354,4 +343,4 @@ const DatesEFMsReg = () => {
         </>
     );
 }
-export default DatesEFMsReg;
+export default CalendrierEfm;

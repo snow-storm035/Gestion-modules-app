@@ -1,88 +1,80 @@
-import "../style/styleHome.css"
+import "../style/styleHome2.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserGroup, faGreaterThan, faBell,faPersonChalkboard ,faBook,faCodeBranch} from '@fortawesome/free-solid-svg-icons';
+import {  faGreaterThan, faBook, faCodeBranch ,faUserGroup} from '@fortawesome/free-solid-svg-icons';
 import CircularProgress from "../CircularProgress/CircularProgress";
+import downloadImage from "../image/download.png";
+import ProgressModules from "../CircularProgress/CircularProgress";
+import { useNavigate } from "react-router-dom";
 import { useDarkMode } from "../DarkModeProvider/DarkModeContext";
 // onClick={toggleDarkMode}
 // className="darkmode"
 // aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
 
 export default function Home() {
+  const navigate=useNavigate();
   const { darkMode } = useDarkMode();
-  
-  
-  
+
+
+
   return <>
-    {/* four div about number moudil and goroub and professoure  */}
-    <div className="header">
-      <div>
-        <span>20</span>
-        <FontAwesomeIcon className="faPersonChalkboard" icon={faPersonChalkboard} />
-        <FontAwesomeIcon className="faGreaterThan" icon={faGreaterThan} />
-      </div>
-      <div>
-        <span>20</span>
-        <FontAwesomeIcon className="faBook" icon={faBook} />
-        <FontAwesomeIcon className="faGreaterThan" icon={faGreaterThan} />
-      </div>
-      <div>
-        <span>20</span>
-        <FontAwesomeIcon className="faCodeBranch" icon={faCodeBranch} />
-        <FontAwesomeIcon className="faGreaterThan" icon={faGreaterThan} />
-      </div>
+    <div className="articl-dates-card-section-header-all-div">
 
-      <div>
-        <span>20</span>
-        <FontAwesomeIcon className="faUserGroup" icon={faUserGroup} />
-        <FontAwesomeIcon className="faGreaterThan" icon={faGreaterThan} />
-      </div>
+      {/* four div about number moudil and goroub and professoure  */}
+      <div className="section-header">
 
-    </div>
-    {/* this parter exest tow div asise and articl */}
-
-
-    <div className="informtionCountner">
-      <div className="aside">
-        <div className="alert-container">
-          <p>Alert</p>
-          <button className="btn-notification">
-            <FontAwesomeIcon icon={faBell} />
-            <span className="notification-badge">1</span>
-          </button>
-        </div>
-        <div className={darkMode ? "module-progress-card":"module-progress-card module-progress-card-dark"}>
-
-          <h2 className="module-progress-title">Progès des modules</h2>
-
-          <div className="progress-highlight">
-            {/* <span className="progress-percentage">75%</span> */}
-            <span className="progress-percentage">
-            <CircularProgress/>
-            </span>
+        <div className="header">
+          <div>
+            <span>20</span>
+            <FontAwesomeIcon className="faCodeBranch" icon={faCodeBranch} />
+            <FontAwesomeIcon className="faGreaterThan" icon={faGreaterThan} />
+          </div>
+          <div>
+            <span>20</span>
            
-            <span className="progress-label ">highest progress</span>
+            <FontAwesomeIcon className="faUserGroup" icon={faUserGroup} />
+            <FontAwesomeIcon className="faGreaterThan" icon={faGreaterThan} />
           </div>
 
-          <div className="module-details">
-            <p className="module-name">Module : développement frontend</p>
-          </div>
 
-          <button className="view-details-btn">
-            Détails <FontAwesomeIcon icon={faGreaterThan} />
-          </button>
         </div>
+        <div className="informtionCountner">
+          <div className="aside">
+            <div  className={darkMode?"alert-container":"alert-container alert-container-dark-mode"}>
 
-        <div className={darkMode ?"completed-modules-container":"completed-modules-container completed-modules-container-dark"}>
-          <p>Modules terminés</p>
-          <button className="navigation-button">
-            <FontAwesomeIcon icon={faGreaterThan} />
-            <FontAwesomeIcon icon={faGreaterThan} />
-          </button>
+              {/* <div className="button-container"> */}
+                <button className="status-button presque-finis " onClick={()=>navigate("/alerts")}>
+                  <span className="count">5</span>
+                  <span className="label">Modules presque finis</span>
+                </button>
+
+                <button className="status-button en-retards" onClick={()=>navigate("/alerts")}>
+                  <span className="count">3</span>
+                  <span className="label">Modules en retard</span>
+                </button>
+              {/* </div> */}
+            </div>
+            <div className={darkMode ? "module-progress-card" : "module-progress-card module-progress-card-dark"}>
+
+              <h2 className="module-progress-title">Progès des modules</h2>
+
+              <ProgressModules />
+            </div>
+
+            <div className={darkMode ? "completed-modules-container" : "completed-modules-container completed-modules-container-dark"}>
+              <p>États modules</p>
+              <button className="navigation-button details-button-date" onClick={()=>navigate("/etatmodel")}>
+               {">>"}
+              </button>
+            </div>
+          </div>
         </div>
       </div>
-      {/* <div className="article"> */}
+      {/* this parter exest tow div asise and articl */}
 
+
+      <div className="articl-dates-card">
         <div className="dates-efms-card article">
+
           <h3 className="dates-efms-title">DATES EFMS</h3>
 
           <ul className="module-dates-list">
@@ -108,11 +100,20 @@ export default function Home() {
             </li>
           </ul>
 
-          <button className="view-details-btn">
-            Details <FontAwesomeIcon icon={faGreaterThan} />
+          <button className=" view-details-btn details-button-date" onClick={()=>navigate("/calendrierEfm")}>
+          Détails {">>"} 
           </button>
         </div>
+        <a href="importerfichierexcel" className="link-go-page-avoncemnt">
+          <div className="import-file-exele-avoncement">
+            <img src={downloadImage} alt="download" className="image-download" />
+            <p>
+              Importer les avancements
+            </p>
+          </div>
+        </a>
       </div>
-    {/* </div> */}
+      {/* </div> */}
+    </div>
   </>
 }

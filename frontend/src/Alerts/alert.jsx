@@ -206,10 +206,7 @@ const Alerts = () => {
     const filteredAlertsWithsplice = filteredAlert.slice(firstPostindex, lastPostindex)
     return (
         <>
-            <div className='header-alets'>
-                <div><span>M105 :</span><p> presque finit</p></div>
-                <div><span>M105 :</span><p> presque finit</p></div>
-            </div>
+
             <div className="container-fluid-alets">
                 {/* <div className="filter-container"> */}
                 <div className={darkMode ? "filter-container-alets" : "filter-container-alets filter-container-darkmode-alets"}>
@@ -238,10 +235,10 @@ const Alerts = () => {
                                 placeholder="Filiere"
                             />
                             <datalist id="filiere">
-                            {/* <option value=""> Niveaux</option> */}
-                            {filieres.map(filiere => (
-                                <option key={filiere} value={filiere}/>
-                            ))}
+                                {/* <option value=""> Niveaux</option> */}
+                                {filieres.map(filiere => (
+                                    <option key={filiere} value={filiere} />
+                                ))}
 
                             </datalist>
                         </div>
@@ -261,10 +258,10 @@ const Alerts = () => {
                                 placeholder="Niveau"
                             />
                             <datalist id="niveau">
-                            {/* <option value=""> Niveaux</option> */}
-                            {niveaux.map(niveau => (
-                                <option key={niveau} value={niveau}/>
-                            ))}
+                                {/* <option value=""> Niveaux</option> */}
+                                {niveaux.map(niveau => (
+                                    <option key={niveau} value={niveau} />
+                                ))}
 
                             </datalist>
                         </div>
@@ -296,9 +293,9 @@ const Alerts = () => {
                 </div>
                 <div className="row">
                     <div className="col-12">
-                        <div className="card mb-4">
+                        <div className={darkMode ? "card-alets mb-4" : "card-alets mb-4 card-alets-dark-mode"}>
                             {/* <div className="card-body"> */}
-                            <div className={darkMode ? "card-body" : "card-body card-body_dark_alets"}>
+                            <div className={darkMode ? "card-body-alets" : "card-body-alets card-body_dark_alets"}>
                                 {/* <table className="table table-striped"> */}
                                 <table className={darkMode ? "table table-striped" : "table table-dark table-striped"}>
                                     <thead>
@@ -339,18 +336,17 @@ const Alerts = () => {
                                 </table>
                             </div>
 
-                            <div className="d-flex justify-content-between mt-3">
+                            <div className="pagination-container-alerts">
                                 <button
-                                    className="btn btn-outline-primary"
+                                    className="pagination-btn-alerts"
                                     disabled={currentPage === 1}
                                     onClick={() => setCurrentPage(prev => prev - 1)}
                                 >
                                     Previous
                                 </button>
-                                {/* <span>Page {currentPage}</span> */}
-                                <span style={{ color: "red" }}>Page: {currentPage}</span>
+                                <span className="current-page-alerts">Page {currentPage}</span>
                                 <button
-                                    className="btn btn-outline-primary"
+                                    className="pagination-btn-alerts"
                                     onClick={() => setCurrentPage(prev => prev + 1)}
                                 >
                                     Next

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import '../style/GroupDetails2.css';
+import '../style/DetailsAvencemnet.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleLeft } from '@fortawesome/free-solid-svg-icons';
-const GroupDetails2 = () => {
+const DetailsAvencemnet = () => {
     const [openModifier, setOpenModifier] = useState(true)
 
     const handelModifier = () => {
@@ -55,7 +55,7 @@ const GroupDetails2 = () => {
             <div className="group-hours-container">
                 {((GroupDet.recommandation !== null) &&( GroupDet.recommandation>=GroupDet.nbh_par_semaine_realisee))?
                     
-                    <div className="section-header">
+                    <div className="section-header-recommandation">
                     <h3> mh minimum recommandé : <span>{GroupDet.recommandation}h</span></h3>
 
                    </div>
@@ -164,4 +164,10 @@ const GroupDetails2 = () => {
 };
 // <h1>Groupe : DEV205</h1>
 //       <h2>modifier nombre heures par semaine</h2>
-export default GroupDetails2;
+export default DetailsAvencemnet;
+
+
+
+
+
+

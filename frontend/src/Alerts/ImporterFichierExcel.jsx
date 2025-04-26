@@ -2,8 +2,9 @@
 import "../style/ImporterFichierExcel.css"
 import excelIcon from "../image/excel.png"; // Correct import for the image
 import { useState } from "react";
-
+import { useDarkMode } from "../DarkModeProvider/DarkModeContext";
 export default function ImporterFichierExcel() {
+  const {darkMode}=useDarkMode();
      const [excelFile, setExcelFile] = useState(null);
   const handleSubmitExcel = (e) => {
     e.preventDefault();
@@ -14,7 +15,7 @@ const handleExcelChange = (e) => {
     setExcelFile(e.target.files[0]);
 };
   return (
-    <div className="container-import-file-excel">
+    <div className={darkMode?"container-import-file-excel":"container-import-file-excel container-import-file-excel-dark-mode"}>
       <h1>Importer fichier Excel :</h1>
       <div className="form-choisir-fichier">
         <img src={excelIcon} alt="Excel Icon" className="file-excel" />
