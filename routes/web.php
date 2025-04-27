@@ -43,10 +43,16 @@ Route::withoutMiddleware([VerifyCsrfToken::class])->group(function(){
         return $request->input('test');
     });
 
+    // routes for dashboard's home page:
     Route::get('/nbrfilieres', [FiliereController::class,'nbrfilieres']);
+
     Route::get('/nbrgroupes', [GroupeController::class,'nbrgroupes']);
 
+    Route::get('/nbralerts', [AlertController::class,'alertsCount']);
+    //#########################################################
+    
     Route::get('/calendrierefms/{regional?}',[GeneralAppController::class,'calendrierEfms']);
+
     Route::get('/etatsmodules', [GeneralAppController::class, 'etatsModules']);
 
     Route::put('/avancements/{avancement}', [AvancementController::class,'update']);
