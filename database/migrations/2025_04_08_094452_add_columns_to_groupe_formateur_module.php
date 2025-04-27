@@ -18,8 +18,8 @@ return new class extends Migration
                 $table->string('fin_module')->nullable()->after('debut_module');
     
                 // dates efms :
-                $table->string('date_efm_normal')->nullable()->after('fin_module');
-                $table->string('date_efm_rattrapage')->nullable()->after('date_efm_normal');
+                $table->string('date_efm_prevu')->nullable()->after('fin_module');
+                $table->string('date_efm_reelle')->nullable()->after('date_efm_prevu');
         });
     }
 

@@ -99,6 +99,20 @@ if(!function_exists('updateTauxAvancement')){
     }
 }
 
+if(!function_exists('getModuleState')){
+    function getModuleState(array $avancement, Module $module){
+        if($avancement['nbh_total_realisee'] >= $module['nbh_total_global'] && $avancement['efm_realise'] === "oui"){
+            return "achevé";
+        } else if($avancement['nbh_total_realisee'] >= $module['nbh_total_global']){
+            return "masse horaire terminée";
+        } else if($avancement['nbh_total_realisee'] > 0){
+            return "en cours";
+        }else{
+            return "pas encore commencé";
+        }
+    }
+}
+
 
 // if(!function_exists('nbhParSemaineRecommandee')){
 

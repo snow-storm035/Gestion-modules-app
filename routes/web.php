@@ -5,6 +5,7 @@ use App\Http\Controllers\AvancementController;
 use App\Http\Controllers\ExcelFileController;
 use App\Http\Controllers\FiliereController;
 use App\Http\Controllers\FormateurController;
+use App\Http\Controllers\GeneralAppController;
 use App\Http\Controllers\GroupeController;
 use App\Http\Controllers\ModuleController;
 // use App\Models\Avancement;
@@ -41,6 +42,9 @@ Route::withoutMiddleware([VerifyCsrfToken::class])->group(function(){
         dd($request->input('test'));
         return $request->input('test');
     });
+
+    Route::get('/calendrierefms/{regional?}',[GeneralAppController::class,'calendrierEfms']);
+    Route::get('/etatsmodules', [GeneralAppController::class, 'etatsModules']);
 
     Route::put('/avancements/{avancement}', [AvancementController::class,'update']);
 

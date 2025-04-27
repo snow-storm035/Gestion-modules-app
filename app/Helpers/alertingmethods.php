@@ -14,12 +14,12 @@ if (!function_exists('moduleEnRetard')) {
         // in case of update we might want to check before updating
         // dd($avancement);
         $main_nbhparsemaine = $new_nbhparsemaine != 0 ? $new_nbhparsemaine : $avancement['nbh_par_semaine_total'];
-        dd($main_nbhparsemaine);
+        // dd($main_nbhparsemaine);
         if($main_nbhparsemaine != 0){
             $nbrSemaines = ceil($mhrestante / $main_nbhparsemaine);
             // dd($nbrSemaines);
             $dateFinPrevu = Carbon::now()->addWeeks($nbrSemaines);
-            $dates_gape = $dateFinPrevu->diffInDays(Carbon::parse($avancement['date_efm_normal'])); // -> dateefm - datefinprevu > 0
+            $dates_gape = $dateFinPrevu->diffInDays(Carbon::parse($avancement['date_efm_prevu'])); // -> dateefm - datefinprevu > 0
             // dd($dates_gape,$dateFinPrevu->toDateString());
             // dd($dateFinPrevu->toDateString(),$avancement['dateEfmPrevu']);
             if ($dates_gape < 0) {

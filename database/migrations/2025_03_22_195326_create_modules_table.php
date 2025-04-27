@@ -42,8 +42,8 @@ return new class extends Migration
             // $table->date('fin_module')->nullable();
 
             // dates efms :
-            $table->date('date_efm_normal')->nullable();
-            $table->date('date_efm_rattrapage')->nullable();
+            // $table->date('date_efm_prevu')->nullable();
+            // $table->date('date_efm_reelle')->nullable();
 
             
 

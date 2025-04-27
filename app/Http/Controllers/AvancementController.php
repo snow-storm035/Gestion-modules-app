@@ -40,7 +40,7 @@ class AvancementController extends Controller
 
                 $dateDebut = Carbon::parse($m['debut_module']);
 
-                $dateEfm = Carbon::parse($m['date_efm_normal']);
+                $dateEfm = Carbon::parse($m['date_efm_prevu']);
 
                 // différence entre les dates en semaines :
                 $nbsemaines = floor($dateDebut->diffInWeeks($dateEfm));
@@ -433,7 +433,7 @@ class AvancementController extends Controller
                 'nbhparsemainetotal' => 'required|numeric|min:0'
             ]);
 
-            $min_nbhparsemaine = proposerNbHeuresParSemaines(Carbon::parse($avancement['date_efm_normal']),mhrestante($avancement));
+            $min_nbhparsemaine = proposerNbHeuresParSemaines(Carbon::parse($avancement['date_efm_prevu']),mhrestante($avancement));
 
             if($validated){
                 $new_nbh_par_semaine_total = $request->input('nbhparsemainetotal');

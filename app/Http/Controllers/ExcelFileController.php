@@ -32,14 +32,16 @@ class ExcelFileController extends Controller
                 // dd(!$filieres && !$formateurs && !$groupes && !$modules);
                 // dd($filieres ,$formateurs ,$groupes ,$modules);
 
-                if (!$filieres && !$formateurs && !$groupes && !$modules) //checking if there is data before running these functions
+                if (!$filieres || !$formateurs || !$groupes || !$modules) //checking if there is data before running these functions
                 {
                     getFilieres($data);
                     getFormateurs($data);
                     getGroupes($data);
                     getModules($data);
                 }
-                
+                else{
+                    throw new Exception('must fill other tables too');
+                }
                 getAvancements($data);
 
                 return response()->json(['success' => 'operation completed'], 200);

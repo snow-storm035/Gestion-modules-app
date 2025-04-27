@@ -130,12 +130,18 @@ if (!function_exists('getModules')) {
                 'nbh_sync_total' => (float) $item['nbh_sync_total'],
                 'nbh_async_total' => (float) $item['nbh_async_total'],
                 'nbh_total_global' => (float) $item['nbh_total_global'],
+
+                'semestre' => ($item['nbh_total_s1'] != 0 && $item['nbh_total_s2'] != 0) ? "année" : (($item['nbh_total_s2'] == 0) ? "s1" : "s2")
             ];
         }, $data);
+
 
         $modules_unique = array_unique($modules, SORT_REGULAR);
 
         foreach ($modules_unique as $module) {
+            // if($module["semestre"] == "s1"){
+            //     dd($module["semestre"],$module['libelle_module']);
+            // }
             Module::firstOrCreate($module);
         }
     }
@@ -337,7 +343,7 @@ if(!function_exists('updateDatesFromFile')){
                 'matricule' => ($item['matricule']) ? $item['matricule'] : "none",
                 'code_groupe' => $item['code_groupe'],
                 'debut_module' => $item['debut_module'],
-                'date_efm_normal' => Carbon::parse($item['fin_module'])->toDateString(),
+                'date_efm_prevu' => Carbon::parse($item['fin_module'])->toDateString(),
             ];
         }, $data);
         // dd($dates_modules);
@@ -370,7 +376,7 @@ if(!function_exists('updateDatesFromFile')){
             ])
             ->update([
                 'debut_module' => $record['debut_module'] ? $record['debut_module'] : $item['debut_module'],
-                'date_efm_normal' => $record['date_efm_normal'] ? $record['date_efm_normal'] : $item['date_efm_normal']
+                'date_efm_prevu' => $record['date_efm_prevu'] ? $record['date_efm_prevu'] : $item['date_efm_prevu']
             ]);
         }
     }
