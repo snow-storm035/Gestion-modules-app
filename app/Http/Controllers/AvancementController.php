@@ -231,10 +231,10 @@ class AvancementController extends Controller
         // module filter :
         $modules = array_map(function ($item) {
             return [
-                'code_module' => $item['code_module'],
-                // 'libelle' => $item['nom_filiere']
+                'code' => [$item['code_filiere'], $item['code_module']],
+                'libelle' => $item['libelle_module']
             ];
-        }, $filiere ? $filiere->modules()->get()->toArray() : Groupe::all()->toArray());
+        }, $filiere ? $filiere->modules()->get()->toArray() : Module::all()->toArray());
         // dd($modules);
 
 
@@ -254,6 +254,16 @@ class AvancementController extends Controller
         dd($niveaux_unique);
 
         
+
+
+
+        // filtering logic :
+
+        
+
+
+
+
 
         // 
         // dd($avancements);

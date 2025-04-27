@@ -78,7 +78,7 @@ if (!function_exists('verifierAvancements')) {
                     "code_module" => $avancement['code_module'],
                     "code_groupe" => $avancement['code_groupe'],
                     "matricule" => $avancement['matricule'],
-                    "etat" => "en presque fini",
+                    "etat" => "presque fini",
                     "mhrestante" => $mhrestante,
                 ]);
                 $user = User::find(1);

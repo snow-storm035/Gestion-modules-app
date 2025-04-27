@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Avancement;
 use App\Models\Groupe;
 use App\Services\ExcelServices;
+use Exception;
 use Illuminate\Http\Request;
 
 class GroupeController extends Controller
@@ -17,6 +18,15 @@ class GroupeController extends Controller
         //
         // $groupes = Groupe::all();
 
+    }
+
+    public function nbrgroupes(){
+        try{
+            $nbrgroupes = count(Groupe::all()->toArray());
+            return response()->json(['nbrgroupes' => $nbrgroupes],200);
+        }catch(Exception $e){
+            return response()->json(['error' => $e->getMessage()]);
+        }
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Filiere;
 use App\Services\ExcelServices;
+use Exception;
 use Illuminate\Http\Request;
 
 class FiliereController extends Controller
@@ -14,15 +15,38 @@ class FiliereController extends Controller
     public function index(Request $request)
     {
         //
-        $filieres = Filiere::latest()->get();
-        $filieres_avancements = [];
-        foreach($filieres as $filiere)
-        {
-            $filieres_avancements[] = [
-               $filiere->code_filiere => calculerTauxMoyenFiliere($filiere)
-            ];
+        try{
+            $filieres = Filiere::latest()->get();
+            $filieres_avancements = [];
+            foreach($filieres as $filiere)
+            {
+                $filieres_avancements[] = calculerTauxMoyenFiliere($filiere);
+            }
+            $dataExtended = array_merge(...$filieres_avancements); 
+    
+            if($request->has('topthree') && $request->input('topthree') === "ok"){
+                // array_slice()
+    
+                $topthree = array_slice(array_sorted($dataExtended,'taux_avancement',true),0,3);
+                // dd($topthree);
+                return response()->json($topthree,200);
+            }
+            // dd($filieres_avancements);
+            return response()->json($dataExtended,200);
+        }catch(Exception $e){
+            return response()->json(['error' => $e->getMessage()]);
         }
-        return response()->json($filieres_avancements,200);
+    }
+
+    public function totalNbrFilieres(){
+
+        try{
+            $nbrfilieres = count(Filiere::all()->toArray());
+            // dd($nbrfilieres);
+            return response()->json(['nbrfilieres' => $nbrfilieres],200);
+        }catch(Exception $e){
+            return response()->json(['error' => $e->getMessage()]);
+        }
     }
 
     /**

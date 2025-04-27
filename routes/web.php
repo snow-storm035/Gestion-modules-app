@@ -43,6 +43,9 @@ Route::withoutMiddleware([VerifyCsrfToken::class])->group(function(){
         return $request->input('test');
     });
 
+    Route::get('/nbrfilieres', [FiliereController::class,'nbrfilieres']);
+    Route::get('/nbrgroupes', [GroupeController::class,'nbrgroupes']);
+
     Route::get('/calendrierefms/{regional?}',[GeneralAppController::class,'calendrierEfms']);
     Route::get('/etatsmodules', [GeneralAppController::class, 'etatsModules']);
 
