@@ -186,15 +186,15 @@ import { useState } from "react";
 
 // Enhanced validation schema with password confirmation
 const registerSchema = z.object({
-  username: z.string()
+  name: z.string()
     .min(3, "Username must be at least 3 characters")
     .max(20, "Username must be less than 20 characters"),
   email: z.string()
     .email("Invalid email address"),
   password: z.string()
-    .min(8, "Password must be at least 8 characters")
-    .regex(/[A-Z]/, "Must contain at least one uppercase letter")
-    .regex(/[0-9]/, "Must contain at least one number"),
+    .min(8, "Password must be at least 8 characters"),
+    // .regex(/[A-Z]/, "Must contain at least one uppercase letter")
+    // .regex(/[0-9]/, "Must contain at least one number"),
   password_confirmation: z.string()
 }).refine(data => data.password === data.password_confirmation, {
   message: "Passwords don't match",
@@ -219,12 +219,13 @@ export default function Register() {
     setServerError(null);
     console.log(data)
     try {
+      console.log(data)
       // Get CSRF cookie first
       await axiosClient.get("/sanctum/csrf-cookie");
       
       // Register request with password confirmation
       const response = await axiosClient.post("/register", {
-        username: data.username,
+        name: data.name,
         email: data.email,
         password: data.password,
         password_confirmation: data.password_confirmation
@@ -234,7 +235,9 @@ export default function Register() {
         navigate("/login");
       }
     } catch (error) {
+       
       if (error.response?.status === 422) {
+        console.log('Full validation errors:', error.response.data.errors);
         // Handle Laravel validation errors
         const errors = error.response.data.errors;
         Object.keys(errors).forEach(key => {
@@ -265,13 +268,13 @@ export default function Register() {
           <div className="form-group">
             <input
               type="text"
-              id="username"
-              placeholder="Enter username"
-              className={`form-input ${errors.username ? "error" : ""}`}
-              {...register("username")}
+              id="name"
+              placeholder="Enter name"
+              className={`form-input ${errors.name ? "error" : ""}`}
+              {...register("name")}
             />
-            {errors.username && (
-              <span className="text-danger">{errors.username.message}</span>
+            {errors.name && (
+              <span className="text-danger">{errors.name.message}</span>
             )}
           </div>
           
