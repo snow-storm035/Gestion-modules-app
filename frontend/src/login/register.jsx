@@ -78,7 +78,7 @@ export default function Register() {
     resolver: zodResolver(registerSchema)
   });
 
-  const onSubmit = async (data) => {
+  const submitForm = async (data) => {
     setServerError(null);
     
     try {
@@ -117,7 +117,7 @@ export default function Register() {
           <div className="error-message">{serverError}</div>
         )}
         
-        <form className="register-form" onSubmit={handleSubmit(onSubmit)}>
+        <form className="register-form" onSubmit={handleSubmit(submitForm)}>
           <div className="form-group">
             <input
               type="text"
