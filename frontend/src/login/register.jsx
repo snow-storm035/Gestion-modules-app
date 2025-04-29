@@ -217,7 +217,7 @@ export default function Register() {
 
   const submitForm = async (data) => {
     setServerError(null);
-    
+    console.log(data)
     try {
       // Get CSRF cookie first
       await axiosClient.get("/sanctum/csrf-cookie");
