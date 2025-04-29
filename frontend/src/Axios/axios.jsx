@@ -3,6 +3,7 @@ import axios from 'axios';
 const axiosClient = axios.create({
   baseURL: 'http://localhost:8000',
   withCredentials: true, // Required for Breeze/Sanctum cookies
+  withXSRFToken:true,
   headers: {
     'Accept': 'application/json',
     'Content-Type': 'application/json',
