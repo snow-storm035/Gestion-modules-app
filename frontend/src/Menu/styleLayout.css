@@ -186,3 +186,95 @@ background-color:var(--dark-grey);
 
 }
 
+
+
+
+
+
+/* messge alert */
+.alert-icon div{
+    background-color:red;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    position: relative;
+    
+}
+.alert-bubble{
+display: flex;
+gap:5px;
+align-items: center;
+position: absolute;
+bottom: 0;
+right: 0;
+
+}
+.alert-bubble .alert-message-bubble{
+
+border-radius:10px 0  20px 10px;
+background-color: rgba(244, 47, 47, 0.956);
+width: 600px;
+padding: 5px;
+height: 40px;
+
+
+
+}
+.alert-bubble .alert-message-bubble p{
+margin-top: 3px;
+margin-left: 10px;
+}
+
+.alert-bubble .alert-message-bubble .btn-alert-details{
+background-color: white;
+padding: 6px;
+border-radius: 8px;
+color:black;
+
+
+}
+.alert-icon div .faBell{
+
+background-color: red;
+padding: 5px;
+width: 35px;
+height: 35px;
+border:2px solid white;
+border-radius: 50%; 
+
+
+}
+.alert-icon .alert-number{
+ width: 20px;
+ height: 20px;
+ background-color:rgb(147, 4, 4);
+ border-radius: 50%;
+ position: absolute;
+ top: 0;
+ left: 0;
+ color: white;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+}
+.faBell{
+    color: rgb(147, 4, 4);
+}
+
+/* .alert-message-bubble{
+background-color: rgb(190, 107, 107)(186, 81, 81);
+height: 50px;
+width: 80%;
+
+} */
+
+.btn-bubble{
+    border-radius: 50%;
+    border: none;
+    outline: none;
+}

@@ -1,5 +1,6 @@
 import "../style/styleRegister.css";
 import { useDarkMode } from '../DarkModeProvider/DarkModeContext';
+import { useNavigate } from "react-router-dom";
 export default function Register() {
     const { darkMode } = useDarkMode();
   return (
@@ -38,7 +39,7 @@ export default function Register() {
             />
           </div>
           
-          <button type="submit" className="register-button">
+          <button  type="submit" className="register-button">
             Register
           </button>
         </form>

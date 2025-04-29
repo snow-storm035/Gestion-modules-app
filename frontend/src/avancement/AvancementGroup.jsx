@@ -34,7 +34,9 @@ const AvancemnetGroup = () => {
       nbh_par_semaine_realisee: 4.0,
       date_debut: '2023-09-01',
       date_fin: '2023-12-15',
-      taux_realise: 82.5
+      taux_realise: 82.5,
+      semestre:"S1"
+      
     },
     {
       id: 2,
@@ -46,7 +48,8 @@ const AvancemnetGroup = () => {
       nbh_par_semaine_realisee: 3.5,
       date_debut: '2023-10-01',
       date_fin: '2024-01-20',
-      taux_realise: 68.3
+      taux_realise: 68.3,
+      semestre:"S1"
     },
     {
       id: 3,
@@ -58,7 +61,8 @@ const AvancemnetGroup = () => {
       nbh_par_semaine_realisee: 5.0,
       date_debut: '2023-11-01',
       date_fin: '2024-02-10',
-      taux_realise: 91.2
+      taux_realise: 91.2,
+      semestre:"S2"
     },
     {
       id: 4,
@@ -70,7 +74,8 @@ const AvancemnetGroup = () => {
       nbh_par_semaine_realisee: 2.5,
       date_debut: '2024-01-15',
       date_fin: '2024-04-30',
-      taux_realise: 75.0
+      taux_realise: 75.0,
+      semestre:"S1"
     },
     {
       id: 5,
@@ -82,7 +87,8 @@ const AvancemnetGroup = () => {
       nbh_par_semaine_realisee: 3.0,
       date_debut: '2024-02-01',
       date_fin: '2024-05-15',
-      taux_realise: 60.8
+      taux_realise: 60.8,
+      semestre:"S1"
     },
     {
       id: 6,
@@ -94,7 +100,8 @@ const AvancemnetGroup = () => {
       nbh_par_semaine_realisee: 2.0,
       date_debut: '2024-03-10',
       date_fin: '2024-06-20',
-      taux_realise: 45.5
+      taux_realise: 45.5,
+      semestre:"S1"
     },
     {
       id: 7,
@@ -106,7 +113,8 @@ const AvancemnetGroup = () => {
       nbh_par_semaine_realisee: 4.5,
       date_debut: '2024-04-05',
       date_fin: '2024-07-10',
-      taux_realise: 88.7
+      taux_realise: 88.7,
+      semestre:"S1"
     },
     {
       id: 8,
@@ -118,7 +126,8 @@ const AvancemnetGroup = () => {
       nbh_par_semaine_realisee: 5.0,
       date_debut: '2024-05-01',
       date_fin: '2024-08-15',
-      taux_realise: 95.3
+      taux_realise: 95.3,
+      semestre:"S2"
     },
     {
       id: 9,
@@ -130,7 +139,8 @@ const AvancemnetGroup = () => {
       nbh_par_semaine_realisee: 3.5,
       date_debut: '2024-06-01',
       date_fin: '2024-09-10',
-      taux_realise: 72.1
+      taux_realise: 72.1,
+      semestre:"S2"
     },
     {
       id: 10,
@@ -142,7 +152,8 @@ const AvancemnetGroup = () => {
       nbh_par_semaine_realisee: 4.0,
       date_debut: '2024-07-01',
       date_fin: '2024-10-15',
-      taux_realise: 79.9
+      taux_realise: 79.9,
+      semestre:"S1"
     }
   ];
 
@@ -152,7 +163,9 @@ const AvancemnetGroup = () => {
     groupe: '',
     niveau: '',
     formateur: '',
-    annee_formation: ''
+    annee_formation: '',
+    semestre:''
+    
   });
 
   // Extract unique values for filters
@@ -161,6 +174,7 @@ const AvancemnetGroup = () => {
   const groupes = [...new Set(documentsAvencemnet.map(doc => doc.groupe.nom))];
   const annee_formation = [...new Set(documentsAvencemnet.map(doc => doc.groupe.annee_formation))];
   const niveaux = ['TS', 'T'];
+  const semestre = ['S1', 'S2'];
   const formateurs = [...new Set(documentsAvencemnet.map(doc => doc.formateur.nom))];
 
   // Filter function
@@ -171,7 +185,8 @@ const AvancemnetGroup = () => {
       (filters.groupe === '' || doc.groupe.nom === filters.groupe) &&
       (filters.niveau === '' || doc.niveau === filters.niveau) &&
       (filters.formateur === '' || doc.formateur.nom === filters.formateur) &&
-      (filters.annee_formation === '' || doc.groupe.annee_formation === filters.annee_formation)
+      (filters.annee_formation === '' || doc.groupe.annee_formation === filters.annee_formation)&&
+      (filters.semestre === '' || doc.semestre === filters.semestre)
     );
   });
   // Handle filter change
@@ -212,7 +227,8 @@ const AvancemnetGroup = () => {
       groupe: '',
       niveau: '',
       annee_formation: '',
-      formateur: ''
+      formateur: '',
+      semestre:''
     });
   };
   // code fellter by toux realise 
@@ -370,6 +386,25 @@ const AvancemnetGroup = () => {
 
               </datalist>
             </div>
+            {/* Formateur Filter */}
+            <div className="filter-group">
+
+              <input
+                list="semestre"
+                id="semestreFilter"
+                name="semestreFilter"
+                value={filters.formateur}
+                onChange={(e) => handleFilterChange('semestre', e.target.value)}
+                className="filter-select"
+                placeholder="semestre"
+              />
+              <datalist id="semestre">
+                {semestre.map(semestre => (
+                  <option key={semestre} value={semestre} />
+                ))}
+
+              </datalist>
+            </div>
 
             {/* Reset Button */}
             <button onClick={resetFilters} className="reset-btn">
@@ -407,8 +442,7 @@ const AvancemnetGroup = () => {
                         <th>Code module</th>
                         <th>formateur</th>
                         <th>nbh_par_semaine</th>
-                        <th>date début</th>
-                        <th>date efm prévu</th>
+  
 
                         <th
                           className="sortable-header"
@@ -436,8 +470,6 @@ const AvancemnetGroup = () => {
                           <td>{avince.module.code}</td>
                           <td>{avince.formateur.nom}</td>
                           <td>{avince.nbh_par_semaine_realisee}</td>
-                          <td>{avince.date_debut}</td>
-                          <td>{avince.date_fin}</td>
                           <td>{avince.taux_realise}</td>
                           <td>
                             <button className="btn btn-sm btn-outline-secondary">

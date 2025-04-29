@@ -8,6 +8,7 @@
     font-family: 'Arial', sans-serif;
     background-image: url("../image/background.jpg");  
     background-size: cover;
+    /* color: black !important; */
 }
     
   
@@ -25,6 +26,7 @@
     /* border-image: linear-gradient(135deg, #3E8EFD, #0F9B98) 1; */
     border-color: #3E8EFD; 
     border-radius:20px;
+  
  
 
   }
@@ -76,6 +78,8 @@
     transition: all 0.3s ease;
     box-sizing: border-box;
     color: #333;
+    /* padding: 500px; */
+
   }
   
   .form-input:focus {
@@ -84,6 +88,7 @@
     border-color: red;
     background-color: rgba(255, 255, 255, 0.95);
     box-shadow: 1px 1px 10px #3E8EFD;
+    color: black;
   }
   
   /* Optional: Add placeholder styling */

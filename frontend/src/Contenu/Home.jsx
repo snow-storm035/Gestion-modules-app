@@ -42,12 +42,12 @@ export default function Home() {
             <div  className={darkMode?"alert-container":"alert-container alert-container-dark-mode"}>
 
               {/* <div className="button-container"> */}
-                <button className="status-button presque-finis " onClick={()=>navigate("/alerts")}>
+                <button className="status-button presque-finis " onClick={()=>navigate("/app/alerts")}>
                   <span className="count">5</span>
                   <span className="label">Modules presque finis</span>
                 </button>
 
-                <button className="status-button en-retards" onClick={()=>navigate("/alerts")}>
+                <button className="status-button en-retards" onClick={()=>navigate("/app/alerts")}>
                   <span className="count">3</span>
                   <span className="label">Modules en retard</span>
                 </button>
@@ -62,7 +62,7 @@ export default function Home() {
 
             <div className={darkMode ? "completed-modules-container" : "completed-modules-container completed-modules-container-dark"}>
               <p>États modules</p>
-              <button className="navigation-button details-button-date" onClick={()=>navigate("/etatmodel")}>
+              <button className="navigation-button details-button-date" onClick={()=>navigate("/app/etatmodel")}>
                {">>"}
               </button>
             </div>
@@ -100,11 +100,11 @@ export default function Home() {
             </li>
           </ul>
 
-          <button className=" view-details-btn details-button-date" onClick={()=>navigate("/calendrierEfm")}>
+          <button className=" view-details-btn details-button-date" onClick={()=>navigate("/app/calendrierEfm")}>
           Détails {">>"} 
           </button>
         </div>
-        <a href="importerfichierexcel" className="link-go-page-avoncemnt">
+        <a href="app/importerfichierexcel" className="link-go-page-avoncemnt">
           <div className="import-file-exele-avoncement">
             <img src={downloadImage} alt="download" className="image-download" />
             <p>

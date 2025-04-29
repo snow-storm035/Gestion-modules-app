@@ -1,5 +1,5 @@
 // import { useState } from 'react'
- import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+ import { BrowserRouter as Router, Routes, Route, RouterProvider } from "react-router-dom";
 // import Menu from './Menu/Menu'
 //  import Contenu from './Menu/Layout'
  import Layout from './Menu/Layout';// import reactLogo from './assets/react.svg'
@@ -20,13 +20,14 @@ import AvencementFiliere from "./Filieres/avencementFilieres";
 import DetailsAvencemnet from "./group/DetailsAvencemnet";
 import CalendrierEfm from "./model/calendrierEfm";
 import Etatmodel from "./model/etatmodel";
+import { router } from "./router/router";
 
 function App() {
   // const [count, setCount] = useState(0)
 
   return (
    <>
-    <Router>
+    {/* <Router>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home/>} />
@@ -45,11 +46,12 @@ function App() {
           <Route path="detailsAvencemnet" element={<DetailsAvencemnet />} />
         </Route>
       </Routes>
-    </Router>  
+    </Router>   */}
     {/* <Welcome/> */}
     {/* <Login/> */}
     {/* <Register/>  */}
     {/* <DarkModeToggle/> */}
+    <RouterProvider router={router}/>
      </>
   )
 }

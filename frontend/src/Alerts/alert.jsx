@@ -33,7 +33,9 @@ const Alerts = () => {
             status: 'En cours',
             regional: "oui",
             mh_restante: 18,
-            date_fin_prevu: '2023-12-30'
+            date_fin_prevu: '2023-12-30',
+            create_at:"2023-12-30"
+            
         },
 
         {
@@ -45,7 +47,8 @@ const Alerts = () => {
             status: 'Planifié',
             regional: "non",
             mh_restante: 120,
-            date_fin_prevu: '2024-03-01'
+            date_fin_prevu: '2024-03-01',
+            create_at:"2023-12-30"
         },
         {
             id: 3,
@@ -56,7 +59,8 @@ const Alerts = () => {
             status: 'Terminé',
             regional: "oui",
             mh_restante: 0,
-            date_fin_prevu: '2024-02-10'
+            date_fin_prevu: '2024-02-10',
+            create_at:"2023-12-30"
         },
         {
             id: 4,
@@ -67,7 +71,8 @@ const Alerts = () => {
             status: 'En cours',
             regional: "non",
             mh_restante: 25,
-            date_fin_prevu: '2024-05-15'
+            date_fin_prevu: '2024-05-15',
+            create_at:"2023-12-30"
         },
         {
             id: 5,
@@ -78,7 +83,8 @@ const Alerts = () => {
             status: 'En cours',
             regional: "oui",
             mh_restante: 40,
-            date_fin_prevu: '2024-06-01'
+            date_fin_prevu: '2024-06-01',
+            create_at:"2023-12-30"
         },
         {
             id: 6,
@@ -89,7 +95,8 @@ const Alerts = () => {
             status: 'En cours',
             regional: "non",
             mh_restante: 55,
-            date_fin_prevu: '2024-07-10'
+            date_fin_prevu: '2024-07-10',
+            create_at:"2023-12-30"
         },
         {
             id: 7,
@@ -100,7 +107,8 @@ const Alerts = () => {
             status: 'En cours',
             regional: "oui",
             mh_restante: 12,
-            date_fin_prevu: '2024-07-20'
+            date_fin_prevu: '2024-07-20',
+            create_at:"2023-12-30"
         },
         {
             id: 8,
@@ -111,7 +119,8 @@ const Alerts = () => {
             status: 'Terminé',
             regional: "oui",
             mh_restante: 0,
-            date_fin_prevu: '2024-08-15'
+            date_fin_prevu: '2024-08-15',
+            create_at:"2023-12-30"
         },
         {
             id: 9,
@@ -122,7 +131,8 @@ const Alerts = () => {
             status: 'En cours',
             regional: "non",
             mh_restante: 28,
-            date_fin_prevu: '2024-09-30'
+            date_fin_prevu: '2024-09-30',
+            create_at:"2023-12-30"
         },
         {
             id: 10,
@@ -133,7 +143,8 @@ const Alerts = () => {
             status: 'Planifié',
             regional: "oui",
             mh_restante: 80,
-            date_fin_prevu: '2024-11-01'
+            date_fin_prevu: '2024-11-01',
+            create_at:"2023-12-30"
         },
         {
             id: 11,
@@ -144,7 +155,8 @@ const Alerts = () => {
             status: 'En cours',
             regional: "oui",
             mh_restante: 18,
-            date_fin_prevu: '2023-12-30'
+            date_fin_prevu: '2023-12-30',
+            create_at:"2023-12-30"
         },
         {
             id: 12,
@@ -155,7 +167,8 @@ const Alerts = () => {
             status: 'En cours',
             regional: "oui",
             mh_restante: 18,
-            date_fin_prevu: '2023-12-30'
+            date_fin_prevu: '2023-12-30',
+            create_at:"2023-12-30"
         }
     ];
 
@@ -307,6 +320,7 @@ const Alerts = () => {
                                             <th>état</th>
                                             <th>date fin prévu</th>
                                             <th>mh restante</th>
+                                            <th>dates d’alerte</th>
                                             <th>Actions </th>
                                         </tr>
                                     </thead>
@@ -319,6 +333,7 @@ const Alerts = () => {
                                                 <td>{avince.regional}</td>
                                                 <td>{avince.status}</td>
                                                 <td>{avince.date_fin_prevu}</td>
+                                                <td>{avince.create_at}</td>
                                                 <td>{avince.mh_restante}</td>
 
                                                 <td>
