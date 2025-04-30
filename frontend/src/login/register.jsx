@@ -230,8 +230,8 @@ export default function Register() {
         password: data.password,
         password_confirmation: data.password_confirmation
       });
-      
       if (response.status === 201 || response.status === 200) {
+        console.log(response.status)
         navigate("/login");
       }
     } catch (error) {
