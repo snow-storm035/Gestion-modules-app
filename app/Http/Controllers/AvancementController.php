@@ -251,7 +251,7 @@ class AvancementController extends Controller
             return $item['niveau'];
         }, Filiere::orderBy('niveau')->get()->toArray());
         $niveaux_unique = array_unique($niveaux, SORT_REGULAR);
-        dd($niveaux_unique);
+        // dd($niveaux_unique);
 
         
 
@@ -272,7 +272,7 @@ class AvancementController extends Controller
         //     dd($a);
         // }
 
-        $avancements = Avancement::paginate(10);
+        $avancements = Avancement::all();
 
 
 
