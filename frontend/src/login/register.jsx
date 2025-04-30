@@ -215,9 +215,9 @@ export default function Register() {
     resolver: zodResolver(registerSchema)
   });
 
-  const onSubmit = async (data) => {
+  const submitForm = async (data) => {
     setServerError(null);
-    
+    console.log(data)
     try {
       console.log(data)
       // Get CSRF cookie first
@@ -230,8 +230,8 @@ export default function Register() {
         password: data.password,
         password_confirmation: data.password_confirmation
       });
-      
       if (response.status === 201 || response.status === 200) {
+        console.log(response.status)
         navigate("/login");
       }
     } catch (error) {
@@ -264,7 +264,7 @@ export default function Register() {
           <div className="error-message">{serverError}</div>
         )}
         
-        <form className="register-form" onSubmit={handleSubmit(onSubmit)}>
+        <form className="register-form" onSubmit={handleSubmit(submitForm)}>
           <div className="form-group">
             <input
               type="text"

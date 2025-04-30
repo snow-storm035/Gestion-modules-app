@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Alert;
+use App\Models\Filiere;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -13,27 +14,51 @@ class AlertController extends Controller
      */
     public function index()
     {
-        //
+        //m
         $alerts = Alert::all();
 
-        return response()->json(['alerts' => $alerts],200);
+        // filiere filter
+        $filieres = array_map(function ($item) {
+            // dd($item);
+            return [
+                'code_filiere' => $item['code_filiere'],
+                'libelle' => $item['nom_filiere']
+            ];
+        }, Filiere::all()->toArray());
+
+        // niveau filter :
+        $niveaux = array_map(function ($item) {
+            return $item['niveau'];
+        }, Filiere::orderBy('niveau')->get()->toArray());
+        $niveaux_unique = array_unique($niveaux, SORT_REGULAR);
+
+        return response()->json([
+            'alerts' => $alerts,
+            'filters' => [
+                'filieres' => $filieres,
+                'niveaux' => $niveaux_unique,
+                'regional' => ['oui', 'non']
+            ]
+
+        ], 200);
     }
 
 
-    public function alertsCount(Request $request){
-        try{
+    public function alertsCount(Request $request)
+    {
+        try {
             global $alerts_count;
-            if($request->has('alert_type') && ($request->input('alert_type') === "enretard" || $request->input('alert_type') === "presquefinie")){
-                if($request->input('alert_type') === "enretard"){
-                    $alerts_count = count(Alert::where('etat','en retard')->get()->toArray());
-                }else{
-                    $alerts_count = count(Alert::where('etat','presque fini')->get()->toArray());
+            if ($request->has('alert_type') && ($request->input('alert_type') === "enretard" || $request->input('alert_type') === "presquefinie")) {
+                if ($request->input('alert_type') === "enretard") {
+                    $alerts_count = count(Alert::where('etat', 'en retard')->get()->toArray());
+                } else {
+                    $alerts_count = count(Alert::where('etat', 'presque fini')->get()->toArray());
                 }
-                return response()->json(['alerts_count' => $alerts_count],200);
-            }else{
+                return response()->json(['alerts_count' => $alerts_count], 200);
+            } else {
                 throw new Exception("alert type wasn't specified or invalid");
             }
-        }catch(Exception $e){
+        } catch (Exception $e) {
             return response()->json(['error' => $e->getMessage()]);
         }
     }

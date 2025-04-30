@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Avancement;
+use App\Models\Filiere;
+use App\Models\Groupe;
 use App\Models\Module;
 use Illuminate\Http\Request;
 
@@ -13,33 +15,59 @@ class GeneralAppController extends Controller
     {
         // dd($request->route('regional'));
         if ($request->has('brief')) {
-            $modules = Module::where('regional','O')
+            $modules = Module::where('regional', 'O')
                 ->get();
             // dd($modules);
             // $modules_codes = array_map(function($item){
             //     return $item['code_modules'];
             // },$modules->toArray());
             $calendrier_regional = [];
-            foreach($modules as $module){
+            foreach ($modules as $module) {
                 $calendrier_regional[] = Avancement::select('code_filiere', 'code_module', 'date_efm_prevu')
                     ->where('code_module', $module['code_module'])
                     ->where('code_filiere', $module['code_filiere'])
-                    ->where('date_efm_prevu','<>',null)
+                    ->where('date_efm_prevu', '<>', null)
                     ->groupBy('code_filiere', 'code_module', 'date_efm_prevu')
                     ->orderBy('date_efm_prevu', 'desc')
                     ->first();
                 // dd($calendrier_regional, $module);
             }
-            $calendrier_regional_clean = array_filter($calendrier_regional, function ($item){
+            $calendrier_regional_clean = array_filter($calendrier_regional, function ($item) {
                 return $item !== null;
             });
             // dd($calendrier_regional);
 
             // dd(count($modules->toArray()));
-            return response()->json(['calendrierBref' => $calendrier_regional_clean],200);
+            return response()->json(['calendrierBref' => $calendrier_regional_clean], 200);
             // dd($avancements);
         } else {
-            $avancements = Avancement::paginate(10);
+
+            // send filters :
+
+            // filieres
+            $filieres = array_map(function ($item) {
+                // dd($item);
+                return [
+                    'code_filiere' => $item['code_filiere'],
+                    'libelle' => $item['nom_filiere']
+                ];
+            }, Filiere::all()->toArray());
+            // annee formation filter :
+
+            $annees = array_map(function ($item) {
+                return $item['annee_formation'];
+            }, Groupe::orderBy('annee_formation')->get()->toArray());
+            $annees_unique = array_unique($annees, SORT_REGULAR);
+            // dd($annees_unique);
+
+            // niveau filter :
+            $niveaux = array_map(function ($item) {
+                return $item['niveau'];
+            }, Filiere::orderBy('niveau')->get()->toArray());
+            $niveaux_unique = array_unique($niveaux, SORT_REGULAR);
+
+
+            $avancements = Avancement::all();
             dd($avancements);
             $calendrier = array_map(function ($item) {
                 return [
@@ -51,17 +79,64 @@ class GeneralAppController extends Controller
                 ];
             }, $avancements->toArray());
 
-            return response()->json(['calendrierEfms' => $calendrier],200);
-
+            return response()->json([
+                'calendrierEfms' => $calendrier,
+                'filters' => [
+                    'filieres' => $filieres,
+                    'annees_formation' => $annees_unique,
+                    'niveaux' => $niveaux_unique,
+                ]
+        
+        ], 200);
         }
     }
 
-    public function etatsModules() {
+    public function etatsModules()
+    {
         $avancements = Avancement::all();
 
-        $avancementsStats = array_map(function($item){
-            $module = Module::where('code_module',$item['code_module'])
-                ->where('code_filiere',$item['code_filiere'])
+        // filiere filter
+        $filieres = array_map(function ($item) {
+            // dd($item);
+            return [
+                'code_filiere' => $item['code_filiere'],
+                'libelle' => $item['nom_filiere']
+            ];
+        }, Filiere::all()->toArray());
+
+        // groupe filter
+        $filiere = null;
+
+        // dd($request);
+        // if ($request->has('filiere')) {
+        //     $filiere = Filiere::where('code_filiere', $request->input('filiere'))->first();
+
+        //     $avancements = Avancement::where('code_filiere', $filiere['code_filiere']);
+        //     // dd("here");
+        //     // dd($filiere->groupes()->get());
+        // }
+
+        $groupes = array_map(function ($item) {
+            return [
+                'code_groupe' => $item['code_groupe'],
+                // 'libelle' => $item['nom_filiere']
+            ];
+        }, $filiere ? $filiere->groupes()->get()->toArray() : Groupe::all()->toArray());
+        // dd($groupes);
+
+        // module filter :
+        $modules = array_map(function ($item) {
+            return [
+                'code' => [$item['code_filiere'], $item['code_module']],
+                'libelle' => $item['libelle_module']
+            ];
+        }, $filiere ? $filiere->modules()->get()->toArray() : Module::all()->toArray());
+        // dd($modules);
+
+
+        $avancementsStats = array_map(function ($item) {
+            $module = Module::where('code_module', $item['code_module'])
+                ->where('code_filiere', $item['code_filiere'])
                 ->first();
             // dd(gettype($item));
             // dd([
@@ -78,10 +153,18 @@ class GeneralAppController extends Controller
                 'regional' => $module['regional'] === "O" ? "oui" : "non",
                 'etat' => getModuleState($item, $module),
             ];
-        },$avancements->toArray());
+        }, $avancements->toArray());
 
         // dd($avancementsStats);
 
-        return response()->json(['modulesstats' => $avancementsStats],200);
+        return response()->json([
+            'modulesstats' => $avancementsStats,
+            'filters' => [
+                'filieres' => $filieres,
+                'groupes' => $groupes,
+                'modules' => $modules,
+                'regional' => ['oui', 'non']
+            ]
+        ], 200);
     }
 }
