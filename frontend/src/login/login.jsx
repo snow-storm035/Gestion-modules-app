@@ -103,7 +103,7 @@ import { z } from "zod";
 import axiosClient from "../Axios/axios";
 import { Button } from "react-bootstrap";
 import {  Loader } from "lucide-react";
-import { ForgotPassword } from "./forgetPassword";
+import ForgotPasswordPage from "./ForgotPasswordPage";
 // import ForgotPassword from "./forgetPassword";
 
 const loginSchema = z.object({
@@ -189,8 +189,8 @@ export default function Login() {
             {errors.password && (
               <span className="text-danger">{errors.password.message}</span>
             )}
-            {/* <a href="#" className="forgot-password">Forgot password?</a> */}
-            <ForgotPassword/>
+            <a href="forgot-password" className="forgot-password">Forgot password?</a>
+          
           </div>
           
           <Button type="submit" disabled={isSubmitting}>

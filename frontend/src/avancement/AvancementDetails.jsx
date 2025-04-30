@@ -6,6 +6,7 @@ import "../style/AvancementDetails.css";
 import { useDarkMode } from '../DarkModeProvider/DarkModeContext';
 const AvancementDetails = ({ moduleData }) => {
 const {darkMode}=useDarkMode();
+
   const [GroupDet, setGroupDet] = useState({
     id: 10,
     groupe: {

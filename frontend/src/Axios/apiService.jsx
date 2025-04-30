@@ -1,0 +1,261 @@
+import axiosClient from './axios';
+
+const apiService = {
+  // Auth endpoints
+  login: async (credentials) => {
+    try {
+      const response = await axiosClient.post('/login', credentials);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+
+  logout: async () => {
+    try {
+      const response = await axiosClient.post('/logout');
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+
+  register: async (userData) => {
+    try {
+      const response = await axiosClient.post('/register', userData);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+
+  forgotPassword: async (email) => {
+    try {
+      const response = await axiosClient.post('/forgot-password', { email });
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+
+  resetPassword: async (data) => {
+    try {
+      const response = await axiosClient.post('/reset-password', data);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+
+  getUser: async () => {
+    try {
+      const response = await axiosClient.get('/api/user');
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+
+  getCsrfCookie: async () => {
+    try {
+      const response = await axiosClient.get('/sanctum/csrf-cookie');
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+
+  // Alerts endpoints
+  getAlerts: async () => {
+    try {
+      const response = await axiosClient.get('/alerts');
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+
+  createAlert: async (alertData) => {
+    try {
+      const response = await axiosClient.post('/alerts', alertData);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+
+  getAlert: async (id) => {
+    try {
+      const response = await axiosClient.get(`/alerts/${id}`);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+
+  updateAlert: async (id, alertData) => {
+    try {
+      const response = await axiosClient.put(`/alerts/${id}`, alertData);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+
+  deleteAlert: async (id) => {
+    try {
+      const response = await axiosClient.delete(`/alerts/${id}`);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+
+  getAlertsCount: async () => {
+    try {
+      const response = await axiosClient.get('/nbralerts');
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+
+  // Filiere endpoints
+  getFilieres: async () => {
+    try {
+      const response = await axiosClient.get('/filieres');
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+
+  getFilieresCount: async () => {
+    try {
+      const response = await axiosClient.get('/nbrfilieres');
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+
+  // Groupe endpoints
+  getGroupesCount: async () => {
+    try {
+      const response = await axiosClient.get('/nbrgroupes');
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+
+  // Avancement endpoints
+  getAvancements: async () => {
+    try {
+      const response = await axiosClient.get('/index');
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+
+  getAvancement: async (groupe, module) => {
+    try {
+      const response = await axiosClient.get(`/avancements/${groupe}/${module}`);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+
+  updateAvancement: async (id, data) => {
+    try {
+      const response = await axiosClient.put(`/avancements/${id}`, data);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+
+  storeAvancement: async (data) => {
+    try {
+      const response = await axiosClient.post('/store', data);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+
+  calculateTauxAvancement: async () => {
+    try {
+      const response = await axiosClient.get('/all');
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+
+  changeNbHeures: async (data) => {
+    try {
+      const response = await axiosClient.put('/changerhoraires', data);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+
+  // Users endpoint
+  getUsers: async () => {
+    try {
+      const response = await axiosClient.get('/users');
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+
+  // General endpoints
+  getCalendrierEfms: async (regional) => {
+    try {
+      const response = await axiosClient.get(`/calendrierefms/${regional || ''}`);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+
+  getEtatsModules: async () => {
+    try {
+      const response = await axiosClient.get('/etatsmodules');
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+
+  getNotifications: async () => {
+    try {
+      const response = await axiosClient.get('/api/notifications');
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+
+  uploadStats: async (file) => {
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      const response = await axiosClient.post('/uploadstats', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  }
+};
+
+export default apiService;

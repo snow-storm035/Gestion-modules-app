@@ -20,3 +20,17 @@ Route::middleware(['auth:sanctum'])->group(function () {
         ]);
     });
 });
+
+
+use App\Models\User;
+
+Route::middleware('auth:sanctum')->group(function () {
+    // Add this new route
+    Route::get('/users', function () {
+        return response()->json([
+            'users' => User::select('id', 'name', 'email', 'created_at')->get()
+        ]);
+    });
+    
+    // Your existing API routes...
+});

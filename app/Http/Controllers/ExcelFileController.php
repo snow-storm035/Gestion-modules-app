@@ -39,9 +39,9 @@ class ExcelFileController extends Controller
                     getGroupes($data);
                     getModules($data);
                 }
-                else{
-                    throw new Exception('must fill other tables too');
-                }
+                // else{
+                //     // throw new Exception('must fill other tables too');
+                // }
                 getAvancements($data);
 
                 return response()->json(['success' => 'operation completed'], 200);

@@ -8,7 +8,8 @@ const axiosClient = axios.create({
     'Accept': 'application/json',
     'Content-Type': 'application/json',
     'X-Requested-With': 'XMLHttpRequest'
-  }
+  },
+  timeout: 10000 // 10 seconds timeout
 });
 
 // Add CSRF token interceptor for Breeze
