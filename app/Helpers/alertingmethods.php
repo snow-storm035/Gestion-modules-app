@@ -22,6 +22,7 @@ if (!function_exists('moduleEnRetard')) {
             $dates_gape = $dateFinPrevu->diffInDays(Carbon::parse($avancement['date_efm_prevu'])); // -> dateefm - datefinprevu > 0
             // dd($dates_gape,$dateFinPrevu->toDateString());
             // dd($dateFinPrevu->toDateString(),$avancement['dateEfmPrevu']);
+            dd('hi?');
             if ($dates_gape < 0) {
                 // dd("inside",($dates_gape < 0));
                 // Alert::create([
@@ -31,7 +32,7 @@ if (!function_exists('moduleEnRetard')) {
                 //     "etat" => "en retard",
                 //     "mhrestante" => $mhrestante ,
                 // ]);
-                return true; // càd en retard
+                return $dateFinPrevu; // càd en retard
             }
         }
         return false;
@@ -42,6 +43,7 @@ if (!function_exists('modulePresqueFinis')) {
     {
         // dd(calculerTauxAvancement($avancement));
         if (calculerTauxAvancement($avancement) > 90 && strtolower($avancement['efm_realise']) === "non") {
+            // dd('hi?46');
             return true;
             // Alert::create([
             //     "code_module" => $avancement['code_module'],
@@ -64,20 +66,23 @@ if (!function_exists('verifierAvancements')) {
             if (moduleEnRetard($mhrestante, $avancement)) {
                 Alert::create([
                     "avancement_id" => $avancement['id'],
+                    "code_filiere" => $avancement['code_filiere'],
                     "code_module" => $avancement['code_module'],
                     "code_groupe" => $avancement['code_groupe'],
-                    "matricule" => $avancement['matricule'],
                     "etat" => "en retard",
                     "mhrestante" => $mhrestante,
+                    "date_fin_prevu" => moduleEnRetard($mhrestante, $avancement) // this either will get a 0 or certain date
                 ]);
                 $user = User::find(1);
                 $user->notify(new ModuleEnRetard($avancement));
             } else if (modulePresqueFinis($mhrestante, $avancement)) {
                 Alert::create([
                     "avancement_id" => $avancement['id'],
+                    "code_filiere" => $avancement['code_filiere'],
                     "code_module" => $avancement['code_module'],
                     "code_groupe" => $avancement['code_groupe'],
-                    "matricule" => $avancement['matricule'],
+                    // "matricule" => $avancement['matricule'],
+                    "date_fin_prevu" => $avancement['fin_module'],
                     "etat" => "presque fini",
                     "mhrestante" => $mhrestante,
                 ]);

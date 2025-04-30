@@ -15,11 +15,14 @@ return new class extends Migration
         Schema::create('alerts', function (Blueprint $table) {
             $table->id();
             // $table->string('avancement_id');
+            $table->string('code_filiere');
             $table->string('code_groupe');
             $table->string('code_module');
-            $table->string('matricule');
+
+            // $table->string('matricule');
             $table->string('etat')->nullable();
             $table->float('mhrestante')->nullable();
+            $table->date('date_fin_prevu')->nullable();
 
             $table->foreignId('avancement_id')
                 ->constrained()

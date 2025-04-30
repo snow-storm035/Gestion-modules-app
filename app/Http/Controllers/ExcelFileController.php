@@ -43,7 +43,7 @@ class ExcelFileController extends Controller
                 //     throw new Exception('must fill other tables too');
                 // }
                 getAvancements($data);
-
+                // dd("before the storm");
                 return response()->json(['success' => 'operation completed'], 200);
 
             } else if ($request->input('type') === 'dates_modules') {

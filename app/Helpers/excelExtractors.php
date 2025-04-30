@@ -189,12 +189,13 @@ if (!function_exists('getAvancements')) {
                 // $taux_avancement = calculerTauxAvancement($correspondant);
 
                 if (!isModuleHoursCompleted($correspondant['nbh_total_realisee']-50, $total) && $correspondant['debut_module'] !== null && $correspondant['fin_module'] === null) {
+                    $mhrestante = ($module['nbh_p_total'] + $module['nbh_sync_total']) - $item['nbh_realisee_global'];
                     $nbh_par_semaine_p = $correspondant['nbhp_realisee'] - $item['nbh_realisee_p'];
                     $nbh_par_semaine_sync = $correspondant['nbhsync_realisee'] - $item['nbh_realisee_sync'];
                     $nbh_par_semaine_total = $correspondant['nbh_total_realisee'] - $item['nbh_realisee_global'];
 
                     // calculer la date fin prévu :
-                    $dateFin = calculerDateFinModule($total, $nbh_par_semaine_total, $correspondant['debut_module']);
+                    $dateFin = calculerDateFinModule($mhrestante, $nbh_par_semaine_total, $correspondant['debut_module']);
                     // dd($nbh_par_semaine,$correspondant);
                     // dd($dateFin->toDateString());
                 }
@@ -272,7 +273,9 @@ if (!function_exists('getAvancements')) {
             // echo "<pre>".print_r(array_keys($a))."</pre>";
         }
         // dd($avancements_unique);
-        try {
+        // dd('way before');
+        // try {
+
             $i = 0;
             foreach ($avancements_unique as $avancement) {
                 // $fillableColumns = (new \App\Models\Avancement)->getFillable();
@@ -321,13 +324,17 @@ if (!function_exists('getAvancements')) {
             }
             updateTauxAvancement();
             // verifier avancements:
-            verifierAvancements();
+                // dd("before");
+                verifierAvancements();
+                // dd("after");
 
-        } catch (Exception $e) {
-            throw new Error("error here $i");
-            // return response()->json(['error here' => $i]);
-            // dd($avancement);
-        }
+
+        // } catch (Exception $e) {
+        //     // dd('throwing error yay');
+        //     throw new Error("error here $i");
+        //     // return response()->json(['error here' => "keep dreaming"],500);
+        //     // dd($avancement);
+        // }
     }
 }
 
