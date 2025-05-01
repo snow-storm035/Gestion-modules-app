@@ -14,6 +14,7 @@ use Exception;
 use Mockery\Undefined;
 
 use function PHPUnit\Framework\isNull;
+use function PHPUnit\Framework\returnSelf;
 
 class AvancementController extends Controller
 {
@@ -191,103 +192,166 @@ class AvancementController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+//     public function index(Request $request)
 
-    {
-        //
-        // $data = ExcelServices::convertExcelToJson($request);
+//     {
+//         //
+//         // $data = ExcelServices::convertExcelToJson($request);
+// return "sdfghjkl;";
+//         global $avancements;
 
-        global $avancements;
+//         // filiere filter
+//         $filieres = array_map(function ($item) {
+//             // dd($item);
+//             return [
+//                 'code_filiere' => $item['code_filiere'],
+//                 'libelle' => $item['nom_filiere']
+//             ];
+//         },
+//          Filiere::all()->toArray());
 
-        // filiere filter
-        $filieres = array_map(function ($item) {
-            // dd($item);
-            return [
-                'code_filiere' => $item['code_filiere'],
-                'libelle' => $item['nom_filiere']
-            ];
-        }, Filiere::all()->toArray());
+//         // groupe filter
+//         $filiere = null;
 
-        // groupe filter
-        $filiere = null;
+//         // dd($request);
+//         if ($request->has('filiere')) {
+//             $filiere = Filiere::where('code_filiere', $request->input('filiere'))->first();
 
-        // dd($request);
-        if ($request->has('filiere')) {
-            $filiere = Filiere::where('code_filiere', $request->input('filiere'))->first();
+//             $avancements = Avancement::where('code_filiere',$filiere['code_filiere']);
+//             // dd("here");
+//             // dd($filiere->groupes()->get());
+//         }
 
-            $avancements = Avancement::where('code_filiere',$filiere['code_filiere']);
-            // dd("here");
-            // dd($filiere->groupes()->get());
+//         $groupes = array_map(function ($item) {
+//             return [
+//                 'code_groupe' => $item['code_groupe'],
+//                 // 'libelle' => $item['nom_filiere']
+//             ];
+//         }, $filiere ? $filiere->groupes()->get()->toArray() : Groupe::all()->toArray());
+//         // dd($groupes);
+
+//         // module filter :
+//         $modules = array_map(function ($item) {
+//             return [
+//                 'code' => [$item['code_filiere'], $item['code_module']],
+//                 'libelle' => $item['libelle_module']
+//             ];
+//         }, $filiere ? $filiere->modules()->get()->toArray() : Module::all()->toArray());
+//         // dd($modules);
+
+
+//         // annee formation filter :
+
+//         $annees = array_map(function ($item) {
+//             return $item['annee_formation'];
+//         }, Groupe::orderBy('annee_formation')->get()->toArray());
+//         $annees_unique = array_unique($annees, SORT_REGULAR);
+//         // dd($annees_unique);
+
+//         // niveau filter :
+//         $niveaux = array_map(function ($item) {
+//             return $item['niveau'];
+//         }, Filiere::orderBy('niveau')->get()->toArray());
+//         $niveaux_unique = array_unique($niveaux, SORT_REGULAR);
+//         dd($niveaux_unique);
+
+        
+
+
+
+//         // filtering logic :
+
+        
+
+
+
+
+
+//         // 
+//         // dd($avancements);
+//         // dd()
+//         // foreach ($avancements as $a) {
+//         //     dd($a);
+//         // }
+
+//         $avancements = Avancement::paginate(10);
+
+
+
+//         return response()->json([
+//             "avancements" => $avancements,
+//             "filters" => [
+//                 'filieres' => $filieres,
+//                 'groupes' => $groupes,
+//                 'modules' => $modules,
+//                 'annees_formation' => $annees_unique,
+//                 'niveaux' => $niveaux_unique,
+//             ]
+//         ],200);
+//     }
+
+public function index(Request $request)
+{
+    // return "1234567890-";
+    // Initialize base query
+    $avancementsQuery = Avancement::query();
+    $filiere = null;
+
+    // Filiere filter
+    if ($request->has('filiere')) {
+        $filiere = Filiere::where('code_filiere', $request->input('filiere'))->first();
+        if ($filiere) {
+            $avancementsQuery->where('code_filiere', $filiere->code_filiere);
         }
-
-        $groupes = array_map(function ($item) {
-            return [
-                'code_groupe' => $item['code_groupe'],
-                // 'libelle' => $item['nom_filiere']
-            ];
-        }, $filiere ? $filiere->groupes()->get()->toArray() : Groupe::all()->toArray());
-        // dd($groupes);
-
-        // module filter :
-        $modules = array_map(function ($item) {
-            return [
-                'code' => [$item['code_filiere'], $item['code_module']],
-                'libelle' => $item['libelle_module']
-            ];
-        }, $filiere ? $filiere->modules()->get()->toArray() : Module::all()->toArray());
-        // dd($modules);
-
-
-        // annee formation filter :
-
-        $annees = array_map(function ($item) {
-            return $item['annee_formation'];
-        }, Groupe::orderBy('annee_formation')->get()->toArray());
-        $annees_unique = array_unique($annees, SORT_REGULAR);
-        // dd($annees_unique);
-
-        // niveau filter :
-        $niveaux = array_map(function ($item) {
-            return $item['niveau'];
-        }, Filiere::orderBy('niveau')->get()->toArray());
-        $niveaux_unique = array_unique($niveaux, SORT_REGULAR);
-        // dd($niveaux_unique);
-
-        
-
-
-
-        // filtering logic :
-
-        
-
-
-
-
-
-        // 
-        // dd($avancements);
-        // dd()
-        // foreach ($avancements as $a) {
-        //     dd($a);
-        // }
-
-        $avancements = Avancement::all();
-
-
-
-        return response()->json([
-            "avancements" => $avancements,
-            "filters" => [
-                'filieres' => $filieres,
-                'groupes' => $groupes,
-                'modules' => $modules,
-                'annees_formation' => $annees_unique,
-                'niveaux' => $niveaux_unique,
-            ]
-        ],200);
     }
 
+    // Get filters data
+    $filieres = Filiere::all()->map(function($item) {
+        return [
+            'code_filiere' => $item->code_filiere,
+            'libelle' => $item->nom_filiere
+        ];
+    })->toArray();
+
+    $groupes = $filiere 
+        ? $filiere->groupes->map(function($groupe) {
+            return ['code_groupe' => $groupe->code_groupe];
+          })->toArray()
+        : Groupe::all()->map(function($groupe) {
+            return ['code_groupe' => $groupe->code_groupe];
+          })->toArray();
+
+    $modules = $filiere
+        ? $filiere->modules->map(function($module) {
+            return [
+                'code' => [$module->code_filiere, $module->code_module],
+                'libelle' => $module->libelle_module
+            ];
+          })->toArray()
+        : Module::all()->map(function($module) {
+            return [
+                'code' => [$module->code_filiere, $module->code_module],
+                'libelle' => $module->libelle_module
+            ];
+          })->toArray();
+
+    $annees_unique = Groupe::distinct()->orderBy('annee_formation')->pluck('annee_formation');
+    $niveaux_unique = Filiere::distinct()->orderBy('niveau')->pluck('niveau');
+
+    // Paginate results
+    $avancements = $avancementsQuery->paginate(10);
+
+    return response()->json([
+        "avancements" => $avancements,
+        "filters" => [
+            'filieres' => $filieres,
+            'groupes' => $groupes,
+            'modules' => $modules,
+            'annees_formation' => $annees_unique,
+            'niveaux' => $niveaux_unique,
+        ]
+    ], 200);
+}
     /**
      * Show the form for creating a new resource.
      */

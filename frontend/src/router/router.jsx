@@ -14,6 +14,8 @@ import Home from "../Contenu/Home";
 import Layout from "../Menu/Layout";
 import PageNotFound from "../PageNotFound/pageNotFound";
 import Welcome from "../login/welcome";
+import ResetPasswordPage from "../login/ResetPasswordPage";
+import ForgotPasswordPage from "../login/ForgotPasswordPage";
 
 export const dashbord = "/student/dashbord";
 
@@ -30,6 +32,14 @@ export const router = createBrowserRouter([
   {
     path: "/register",
     element: <Register />,
+  },
+  {
+    path: "/reset-password",
+    element: <ResetPasswordPage />,
+  },
+  {
+    path: "/forgot-password",
+    element: <ForgotPasswordPage />,
   },
 
   // Protected routes (with layout)

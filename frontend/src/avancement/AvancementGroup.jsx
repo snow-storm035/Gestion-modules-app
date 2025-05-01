@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaChalkboardTeacher, FaSortAmountDown, FaSortAmountUp } from 'react-icons/fa';// import { useState } from 'react';
 import "../style/AvancemnetGroup.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,7 +8,11 @@ import { Button } from 'react-bootstrap';// onClick={toggleDarkMode}
 // className="darkmode"
 // aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
 import { useNavigate } from 'react-router-dom';
+import apiService from '../Axios/apiService';
 const AvancemnetGroup = () => {
+  const [avvecwww, setAvvecwww] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const { darkMode } = useDarkMode();
@@ -19,6 +23,32 @@ const AvancemnetGroup = () => {
   const postPerPage = 8;
   const lastPostindex = currentPage * postPerPage;
   const firstPostindex = lastPostindex - postPerPage;
+
+
+        // Data fetching
+        useEffect(() => {
+          console.log("avencement;'")
+          const fetchData = async () => {
+              try {
+                  setLoading(true);
+                  await apiService.getCsrfCookie();
+                  const response = await apiService.getAvancements();
+                  console.log("getAvancements:",response.avancements.data)
+                  // setAvvecwww(response. || []);
+                  // console.log("alerts:",alerts)
+              } catch (err) {
+                  setError(err.message);
+                  console.error('Error fetching data:', err);
+              } finally {
+                  setLoading(false);
+              }
+          };
+  
+          fetchData();
+      }, []); // Empty dependency array means it runs once on mount
+      
+ 
+        //   end code fetch data
 
   // Sample data - replace with your actual data
 
@@ -157,6 +187,15 @@ const AvancemnetGroup = () => {
     }
   ];
 
+    // Extract unique values for filters
+    const filieres = [...new Set(documentsAvencemnet.map(doc => doc.filière.nom))];
+    const modules = [...new Set(documentsAvencemnet.map(doc => doc.module.nom))];
+    const groupes = [...new Set(documentsAvencemnet.map(doc => doc.groupe.nom))];
+    const annee_formation = [...new Set(documentsAvencemnet.map(doc => doc.groupe.annee_formation))];
+    const niveaux = ['TS', 'T'];
+    const semestre = ['S1', 'S2'];
+    const formateurs = [...new Set(documentsAvencemnet.map(doc => doc.formateur.nom))];
+  
   const [filters, setFilters] = useState({
     filiere: '',
     module: '',
@@ -168,14 +207,6 @@ const AvancemnetGroup = () => {
     
   });
 
-  // Extract unique values for filters
-  const filieres = [...new Set(documentsAvencemnet.map(doc => doc.filière.nom))];
-  const modules = [...new Set(documentsAvencemnet.map(doc => doc.module.nom))];
-  const groupes = [...new Set(documentsAvencemnet.map(doc => doc.groupe.nom))];
-  const annee_formation = [...new Set(documentsAvencemnet.map(doc => doc.groupe.annee_formation))];
-  const niveaux = ['TS', 'T'];
-  const semestre = ['S1', 'S2'];
-  const formateurs = [...new Set(documentsAvencemnet.map(doc => doc.formateur.nom))];
 
   // Filter function
   const filterFiliereModuleGroupniveauFourmateur = documentsAvencemnet.filter(doc => {
@@ -194,30 +225,6 @@ const AvancemnetGroup = () => {
     setFilters(prev => ({ ...prev, [filterName]: value }));
     setCurrentPage(1)
   }
-  // const Avancement = ({ moduleData }) => {
-  // const Avancement = () => {
-  // Sample data structure matching your schema
-  // const defaultData = {
-  //   id: 1,
-  //   code_module: '300',
-  //   code_filiere: '',
-  //   matricule: 'none',
-  //   code_groupe: '',
-  //   nbh_par_semaine_realisee: 2.5,
-  //   date_debut: null,
-  //   date_fin: null,
-  //   nbhp_realisee: 0,
-  //   nbhsync_realisee: 0,
-  //   nbh_total_realisee: 0,
-  //   nbcc_realisee: 0,
-  //   efm_realise: 'non',
-  //   formateurs: 'NON',
-  //   mh_presentiel: 7,
-  //   mh_distance: 4,
-  //   nombre_total: 3,
-  //  ...moduleData // Override with passed props
-
-  // };
   // }
   // Reset all filters
   const resetFilters = () => {
@@ -254,6 +261,8 @@ const AvancemnetGroup = () => {
   const filteredavoncesWithsplice = sortedDocuments.slice(firstPostindex, lastPostindex)
   // console.log("filteredavoncesWithsplice################################################")
   // console.log(filteredavoncesWithsplice)
+  if (loading) return <div>Loading users...</div>;
+  if (error) return <div>Error: {error}</div>;
   return (
     <>
 

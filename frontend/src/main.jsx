@@ -7,12 +7,13 @@ import App from './App.jsx'
 import { DarkModeProvider } from './DarkModeProvider/DarkModeContext.jsx'
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    {/* <BrowserRouter> */}
-    <DarkModeProvider>
+
+ 
+<>
+<DarkModeProvider>
     <App />
 
     </DarkModeProvider>
-    {/* </BrowserRouter> */}
-  </StrictMode>,
+</>
+
 )

@@ -40,7 +40,7 @@ class ExcelFileController extends Controller
                     getModules($data);
                 }
                 // else{
-                //     throw new Exception('must fill other tables too');
+                //     // throw new Exception('must fill other tables too');
                 // }
                 getAvancements($data);
                 // dd("before the storm");
