@@ -147,6 +147,7 @@ class GeneralAppController extends Controller
             //     'etat' => getModuleState($item, $module),
             // ]);
             return [
+                'code_filiere' => $item['code_filiere'],
                 'code_groupe' => $item['code_groupe'],
                 'code_module' => $item['code_module'],
                 'libelle_module' => $module['libelle_module'],

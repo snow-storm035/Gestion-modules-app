@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Alert;
 use App\Models\Filiere;
+use App\Models\Module;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -16,6 +17,19 @@ class AlertController extends Controller
     {
         //m
         $alerts = Alert::all();
+
+
+        $displayedAlerts = array_map(function($item){
+            $module = Module::where([
+                ['code_filiere','=',$item['code_filiere']],
+                ['code_module','=',$item['code_module']]
+            ])->first();
+
+            $niveau = Filiere::where('code_filiere',$item['code_filiere'])->first()->niveau;
+            return [...$item,'regional' => $module['regional'], 'niveau' => $niveau];
+        },$alerts->toArray());
+
+        // dd($alerts);
 
         // filiere filter
         $filieres = array_map(function ($item) {
@@ -33,7 +47,7 @@ class AlertController extends Controller
         $niveaux_unique = array_unique($niveaux, SORT_REGULAR);
 
         return response()->json([
-            'alerts' => $alerts,
+            'alerts' => $displayedAlerts,
             'filters' => [
                 'filieres' => $filieres,
                 'niveaux' => $niveaux_unique,
