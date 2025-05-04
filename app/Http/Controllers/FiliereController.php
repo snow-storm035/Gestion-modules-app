@@ -55,7 +55,15 @@ class FiliereController extends Controller
                 return response()->json($topthree, 200);
             }
             // dd($filieres_avancements);
-            return response()->json(array_merge($dataExtended,[
+            // return response()->json(array_merge($dataExtended,[
+            //     'filieres' => $filieres,
+            //     'secteurs' => $secteurs_unique,
+            //     'niveaux' => $niveaux_unique,
+            //     'regional' => ['oui', 'non']
+            // ]), 200);
+            // this code changed but not before use name modules in information
+            return response()->json(array_merge([
+                'modules'=>$dataExtended,
                 'filieres' => $filieres,
                 'secteurs' => $secteurs_unique,
                 'niveaux' => $niveaux_unique,
