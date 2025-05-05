@@ -17,6 +17,8 @@ Route::get('/', function () {
     return ['Laravel' => app()->version()];
 });
 
+Route::withoutMiddleware([VerifyCsrfToken::class])->group(function(){
+
 // Route::withoutMiddleware([VerifyCsrfToken::class])->group(function(){
     Route::get('/index', [AvancementController::class, 'index']);
     Route::post('/store', [AvancementController::class, 'store']);
@@ -57,7 +59,7 @@ Route::get('/', function () {
     Route::put('/avancements/{avancement}', [AvancementController::class,'update']);
 
     Route::post('/uploadstats',[ExcelFileController::class,'extractAllData']);
-// });
+});
 
 // Route::post('/index', [AvancementController::class, 'index'])
 // ->withoutMiddleware([VerifyCsrfToken::class]);

@@ -64,7 +64,7 @@ if (!function_exists('verifierAvancements')) {
             $mhrestante = mhrestante($avancement);
             // dd($avancement);
             if (moduleEnRetard($mhrestante, $avancement)) {
-                Alert::create([
+                Alert::createOrFirst([
                     "avancement_id" => $avancement['id'],
                     "code_filiere" => $avancement['code_filiere'],
                     "code_module" => $avancement['code_module'],
@@ -76,7 +76,7 @@ if (!function_exists('verifierAvancements')) {
                 $user = User::find(1);
                 $user->notify(new ModuleEnRetard($avancement));
             } else if (modulePresqueFinis($mhrestante, $avancement)) {
-                Alert::create([
+                Alert::createOrFirst([
                     "avancement_id" => $avancement['id'],
                     "code_filiere" => $avancement['code_filiere'],
                     "code_module" => $avancement['code_module'],

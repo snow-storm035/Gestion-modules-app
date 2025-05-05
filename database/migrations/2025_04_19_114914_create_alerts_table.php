@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('code_groupe');
             $table->string('code_module');
 
+            $table->unique(['code_filiere','code_groupe','code_module']);
+
             // $table->string('matricule');
             $table->string('etat')->nullable();
             $table->float('mhrestante')->nullable();
