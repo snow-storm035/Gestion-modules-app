@@ -5,7 +5,7 @@ import excelIcon from "../image/excel.png";
 import { useState } from "react";
 import { useDarkMode } from "../DarkModeProvider/DarkModeContext";
 // import {storeAvancement} from "../Axios/apiService/storeAvancement"
-import uploadStats from '../Axios/apiService';
+// import uploadStats from '../Axios/apiService';
 import apiService from "../Axios/apiService";
 
 export default function ImporterFichierExcel() {
@@ -29,7 +29,7 @@ export default function ImporterFichierExcel() {
       alert("Fichier importé avec succès !");
     } catch (error) {
       console.error("Erreur lors de l'import :", error);
-      alert("Une erreur est survenue lors de l'import.");
+      // alert("Une erreur est survenue lors de l'import.");
     }
   };
 

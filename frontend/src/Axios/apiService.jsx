@@ -249,7 +249,8 @@ const apiService = {
       const response = await axiosClient.post('/uploadstats', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
-        }
+        },
+        withCredentials: true // utile si tu utilises Laravel Sanctum
       });
       return response.data;
     } catch (error) {
