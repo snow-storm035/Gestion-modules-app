@@ -110,7 +110,7 @@ class ExcelServices {
             // dd($jsonData);
             return $json;
         }catch(Exception $e){
-            return $e->getMessage();
+            throw new Error($e->getMessage());
             // return response()->json(["error" => "failed to convert excel file"]);
         }   
     }

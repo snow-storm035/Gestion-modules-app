@@ -49,16 +49,7 @@ console.log("excelFile:",typeImport)
       <h1>Importer fichier Excel :</h1>
       <div className="form-choisir-fichier">
         <img src={excelIcon} alt="Excel Icon" className="file-excel" />
-        <form onSubmit={handleSubmitExcel} encType="multipart/form-data" method="post">
-          <select
-            value={typeImport}
-            onChange={(e) => setTypeImport(e.target.value)}
-            className="select-type"
-          >
-            <option value="dates_modules">Dates Modules</option>
-            <option value="avancements">Avancements</option>
-          </select>
-
+        <form onSubmit={handleSubmitExcel} encType="">
           <input
             type="file"
             accept=".xlsx,.xls,.csv"
