@@ -48,7 +48,7 @@ export default function ImporterFichierExcel() {
       <h1>Importer fichier Excel :</h1>
       <div className="form-choisir-fichier">
         <img src={excelIcon} alt="Excel Icon" className="file-excel" />
-        <form onSubmit={handleSubmitExcel}>
+        <form onSubmit={handleSubmitExcel} encType="">
           <input
             type="file"
             placeholder="choisir un fichier"

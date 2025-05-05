@@ -51,7 +51,7 @@ class AlertController extends Controller
             'filters' => [
                 'filieres' => $filieres,
                 'niveaux' => $niveaux_unique,
-                'regional' => ['oui', 'non']
+                'regional' => ['O', 'N']
             ]
 
         ], 200);
