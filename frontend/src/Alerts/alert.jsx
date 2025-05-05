@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
 import { useDarkMode } from "../DarkModeProvider/DarkModeContext";
-import { useNavigate } from 'react-router-dom';
+import { data, useNavigate } from 'react-router-dom';
 import apiService from '../Axios/apiService';
 
 const Alerts = () => {
@@ -15,44 +15,16 @@ const Alerts = () => {
     regional: []
   });
   const [filters, setFilters] = useState({
-    filiere: '',
+    code_filiere: '',
     niveau: '',
-    regional: '',
-    etat: ''
+    regional: ''
+ 
   });
   const [currentPage, setCurrentPage] = useState(1);
   const postPerPage = 8;
   const navigate = useNavigate();
   const { darkMode } = useDarkMode();
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       setLoading(true);
-  //       await apiService.getCsrfCookie();
-  //       const response = await apiService.getAlerts();
-  //       console.log("response.filieres: ",response.filters)
-  //       setAlerts(response.alerts || []);
-  //       console.log('alerts:',response.alerts)
-  //       const filieresWithCodes = response.filters.filieres.map(f => ({
-  //         ...f,
-  //         groupes: response.filters.groupes.filter(g => g.code_groupe.startsWith(f.code_filiere.split('_')[1]))
-  //       }));
-        
-  //       setFiltersData({
-  //         filieres: filieresWithCodes,
-  //         niveaux: Object.values(response.filters.niveaux),
-  //         regional: response.filters.regional || []
-  //       });
-  //     } catch (err) {
-  //       setError(err.message);
-  //       console.error('Error fetching alerts:', err);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -94,29 +66,29 @@ const Alerts = () => {
     fetchData();
   }, []);
 
-  useEffect(()=>{
-    console.log("alerts from useefct tow:",alerts)
-  },[alerts])
-//   const processedAlerts = alerts.map(alert => {
-//     const filiere = filtersData.filieres.find(f => 
-//       f.groupes?.some(g => g.code_groupe === alert.code_groupe)
-//     );
-//     return {
-//       ...alert,
-//       filiere: filiere || { code_filiere: 'N/A', libelle: 'N/A' },
-//       date_fin_prevu: alert.date_fin_prevu || 'N/A',
-//       created_at: alert.created_at ? new Date(alert.created_at).toLocaleDateString() : 'N/A'
-//     };
-//   });
+  // useEffect(()=>{
+  //   console.log("alerts from useefct tow:",alerts)
+  // },[alerts])
+  // const processedAlerts = alerts.map(alert => {
+  //   const filiere = filtersData.filieres.find(f => 
+  //     f.groupes?.some(g => g.code_groupe === alert.code_groupe)
+  //   );
+  //   return {
+  //     ...alert,
+  //     filiere: filiere || { code_filiere: 'N/A', libelle: 'N/A' },
+  //     date_fin_prevu: alert.date_fin_prevu || 'N/A',
+  //     created_at: alert.created_at ? new Date(alert.created_at).toLocaleDateString() : 'N/A'
+  //   };
+  // });
 
-//   const filteredAlerts = filters.filter(alert => 
-//     (filters.filiere === '' || alert.filiere.libelle === filters.filiere) &&
-//     (filters.niveau === '' || alert.filiere.code_filiere.endsWith(filters.niveau)) &&
-//     (filters.regional === '' || alert.regional === filters.regional) &&
-//     (filters.etat === '' || alert.etat === filters.etat)
-//   );
+  const filteredAlerts = alerts.filter(alert => 
+    (filters.code_filiere === '' || alert.code_filiere === filters.code_filiere) &&
+    (filters.niveau === '' || alert.niveau) &&
+    (filters.regional === '' || alert.regional === filters.regional) 
+   
+  );
 
-  const paginatedAlerts = alerts.slice(
+  const paginatedAlerts = filteredAlerts.slice(
     (currentPage - 1) * postPerPage,
     currentPage * postPerPage
   );
@@ -138,13 +110,13 @@ const Alerts = () => {
                 id="filiereFilter"
                 name="filiereFilter"
                 value={filters.filiere}
-                onChange={(e) => setFilters(p => ({...p, filiere: e.target.value}))}
+                onChange={(e) => setFilters(p => ({...p, code_filiere: e.target.value}))}
                 className="filter-select"
-                placeholder="Filière"
+                placeholder="Code Filière"
               />
               <datalist id="filieres">
                 {filtersData.filieres.map(f => (
-                  <option key={f.code_filiere} value={f.libelle} />
+                  <option key={f.code_filiere} value={f.code_filiere} />
                 ))}
               </datalist>
             </div>
@@ -183,22 +155,7 @@ const Alerts = () => {
               </datalist>
             </div>
 
-            <div className="filter-group">
-              <input
-                list="etats"
-                id="etatFilter"
-                name="etatFilter"
-                value={filters.etat}
-                onChange={(e) => setFilters(p => ({...p, etat: e.target.value}))}
-                className="filter-select"
-                placeholder="État"
-              />
-              <datalist id="etats">
-                <option value="presque fini" />
-                <option value="non" />
-                <option value="oui" />
-              </datalist>
-            </div>
+
 
             <button 
               onClick={() => setFilters({ 
@@ -266,16 +223,16 @@ updated_at
                     {paginatedAlerts.length > 0 ? (
                       paginatedAlerts.map(alert => (
                         <tr key={alert.id}>
-                          {/* <td>{alert.filiere.code_filiere}</td> */}
-                          <td>not returen from backend</td>
+                          <td>{alert.code_filiere}</td>
+                          {/* <td>not returen from backend</td> */}
                           <td>{alert.code_groupe}</td>
                           <td>{alert.code_module}</td>
-                          {/* <td>{alert.regional || 'N/A'}</td> */}
-                          <td>{"alert.regional || 'N/A'"}</td>
+                          <td>{alert.regional || 'N/A'}</td>
+                          {/* <td>{"alert.regional || 'N/A'"}</td> */}
                           <td>{alert.etat}</td>
                           <td>{alert.date_fin_prevu}</td>
                           <td>{alert.mhrestante}</td>
-                          <td>{alert.created_at}</td>
+                          <td>{new Date(alert.created_at).toLocaleDateString()}</td>
                           <td>
                             <button 
                               className="btn btn-sm btn-outline-secondary"

@@ -1,35 +1,36 @@
-
-// import "./ImporterFichierExcel.css";
-import "../style/ImporterFichierExcel.css";
-import excelIcon from "../image/excel.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDarkMode } from "../DarkModeProvider/DarkModeContext";
-// import {storeAvancement} from "../Axios/apiService/storeAvancement"
-// import uploadStats from '../Axios/apiService';
+import excelIcon from "../image/excel.png";
 import apiService from "../Axios/apiService";
-
+import "../style/ImporterFichierExcel.css"
 export default function ImporterFichierExcel() {
   const { darkMode } = useDarkMode();
   const [excelFile, setExcelFile] = useState(null);
+  const [typeImport, setTypeImport] = useState("dates_modules"); // valeur par défaut
 
   const handleSubmitExcel = async (e) => {
     e.preventDefault();
-
+console.log("excelFile:",excelFile)
+console.log("excelFile:",typeImport)
     if (!excelFile) {
       alert("Veuillez sélectionner un fichier Excel.");
       return;
     }
 
-    const formData = new FormData();
-    formData.append("file", excelFile);
+    // const formData = new FormData();
+    // formData.append("file", excelFile);
+    // formData.append("type", typeImport); // envoyer le type
 
     try {
-      const result = await apiService.uploadStats(formData);
+      await apiService.getCsrfCookie()
+      console.log("excelFile:",excelFile)
+      console.log("typeImport:",typeImport)
+      const result = await apiService.uploadStats(excelFile,typeImport);
       console.log("Réponse du serveur :", result);
       alert("Fichier importé avec succès !");
     } catch (error) {
       console.error("Erreur lors de l'import :", error);
-      // alert("Une erreur est survenue lors de l'import.");
+      alert("Une erreur est survenue lors de l'import.");
     }
   };
 
@@ -48,10 +49,18 @@ export default function ImporterFichierExcel() {
       <h1>Importer fichier Excel :</h1>
       <div className="form-choisir-fichier">
         <img src={excelIcon} alt="Excel Icon" className="file-excel" />
-        <form onSubmit={handleSubmitExcel}>
+        <form onSubmit={handleSubmitExcel} encType="multipart/form-data" method="post">
+          <select
+            value={typeImport}
+            onChange={(e) => setTypeImport(e.target.value)}
+            className="select-type"
+          >
+            <option value="dates_modules">Dates Modules</option>
+            <option value="avancements">Avancements</option>
+          </select>
+
           <input
             type="file"
-            placeholder="choisir un fichier"
             accept=".xlsx,.xls,.csv"
             onChange={handleExcelChange}
             className="file-input"

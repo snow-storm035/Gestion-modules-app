@@ -242,10 +242,11 @@ const apiService = {
     }
   },
 
-  uploadStats: async (file) => {
+  uploadStats: async (file,type) => {
     try {
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append('excelfile', file);
+      formData.append('type', type);
       const response = await axiosClient.post('/uploadstats', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
