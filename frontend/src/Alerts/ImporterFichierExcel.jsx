@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDarkMode } from "../DarkModeProvider/DarkModeContext";
 import excelIcon from "../image/excel.png";
 import apiService from "../Axios/apiService";
@@ -10,21 +10,14 @@ export default function ImporterFichierExcel() {
 
   const handleSubmitExcel = async (e) => {
     e.preventDefault();
-console.log("excelFile:",excelFile)
-console.log("excelFile:",typeImport)
+
     if (!excelFile) {
       alert("Veuillez sélectionner un fichier Excel.");
       return;
     }
 
-    // const formData = new FormData();
-    // formData.append("file", excelFile);
-    // formData.append("type", typeImport); // envoyer le type
 
     try {
-      await apiService.getCsrfCookie()
-      console.log("excelFile:",excelFile)
-      console.log("typeImport:",typeImport)
       const result = await apiService.uploadStats(excelFile,typeImport);
       console.log("Réponse du serveur :", result);
       alert("Fichier importé avec succès !");
@@ -45,11 +38,21 @@ console.log("excelFile:",typeImport)
           ? "container-import-file-excel"
           : "container-import-file-excel container-import-file-excel-dark-mode"
       }
-    >
+      
+   >
       <h1>Importer fichier Excel :</h1>
       <div className="form-choisir-fichier">
         <img src={excelIcon} alt="Excel Icon" className="file-excel" />
-        <form onSubmit={handleSubmitExcel} encType="">
+        <form onSubmit={handleSubmitExcel} method="post"   encType="multipart/form-data">
+          <select
+            value={typeImport}
+            onChange={(e) => setTypeImport(e.target.value)}
+            className="select-type"
+          >
+            <option value="dates_modules">Dates Modules</option>
+            <option value="avancements">Avancements</option>
+          </select>
+
           <input
             type="file"
             accept=".xlsx,.xls,.csv"
