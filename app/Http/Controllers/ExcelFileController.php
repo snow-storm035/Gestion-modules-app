@@ -17,7 +17,7 @@ class ExcelFileController extends Controller
     public function extractAllData(Request $request)
     {
         try{
-        dd($request);
+        // dd($request);
         if ($request->has('excelfile')) {
             $jsonData = ExcelServices::convertExcelToJson($request);
 
