@@ -79,10 +79,14 @@ class GeneralAppController extends Controller
             $avancements = Avancement::all();
             // dd($avancements);
             $calendrier = array_map(function ($item) {
+                $regional = Module::where('code_filiere',$item['code_filiere'])
+                ->where('code_module',$item['code_module'])
+                ->first()->regional;
                 return [
                     "code_filiere" => $item['code_filiere'],
                     "code_groupe" => $item['code_groupe'],
                     "code_module" => $item['code_module'],
+                    "regional" => $regional,
                     "date_efm_prevu" => $item['date_efm_prevu'],
                     "date_efm_reelle" => $item['date_efm_reelle'],
                 ];
