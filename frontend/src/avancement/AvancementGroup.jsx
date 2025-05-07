@@ -233,29 +233,29 @@ const AvancemnetGroup = () => {
 
   // Filter function
   const filterFiliereModuleGroupniveauFourmateur = documentsAvencemnet.filter(doc => {
-    console.log("filters.model:",filters.module)
+    console.log("filters.model:", filters.module)
     return (
       // Filière filter (use code_filiere instead of filière.nom)
       (filters.filiere === '' || doc.code_filiere === filters.filiere) &&
-      
+
       // Module filter (use code_module instead of module.nom)
-      (filters.module === '' || doc.code_module === filters.module ) &&
-      
-      
+      (filters.module === '' || doc.code_module === filters.module) &&
+
+
       // Groupe filter (use code_groupe instead of groupe.nom)
       (filters.groupe === '' || doc.code_groupe === filters.groupe) &&
-      
+
       // Niveau filter (extract from code_filiere if needed)
       (filters.niveau === '' || doc.code_filiere.endsWith(`_${filters.niveau}`)) &&
-      
+
       // Formateur filter (use matricule instead of formateur.nom)
       (filters.formateur === '' || doc.matricule === filters.formateur) &&
-      
+
       // Remove annee_formation filter (not present in data)
       // Remove semestre filter (not present in data)
       true // Placeholder for valid conditions
     );
-    
+
   });
   // Handle filter change
   const handleFilterChange = (filterName, value) => {
@@ -337,27 +337,27 @@ const AvancemnetGroup = () => {
               {/* Module Filter */}
 
               <div className="filter-group">
-  <input
-    list="modules"
-    id="modulesFilter"
-    name="modulesFilter"
-    value={filters.module}
-    onChange={(e) => handleFilterChange('module', e.target.value)}
-    className="filter-select"
-    placeholder="modules"
-  />
-  <datalist id="modules">
-    {filters1234.modules.map((module, index) => (
-      <option
-        key={index}
-        // value={module.code} // This is what gets submitted (hidden from user)
-      >
-        {/* This is what the user sees in the dropdown */}
-        {`${module.code[1]} - ${module.libelle}`}
-      </option>
-    ))}
-  </datalist>
-</div>
+                <input
+                  list="modules"
+                  id="modulesFilter"
+                  name="modulesFilter"
+                  value={filters.module}
+                  onChange={(e) => handleFilterChange('module', e.target.value)}
+                  className="filter-select"
+                  placeholder="modules"
+                />
+                <datalist id="modules">
+                  {filters1234.modules.map((module, index) => (
+                    <option
+                      key={index}
+                    // value={module.code} // This is what gets submitted (hidden from user)
+                    >
+                      {/* This is what the user sees in the dropdown */}
+                      {`${module.code[1]} - ${module.libelle}`}
+                    </option>
+                  ))}
+                </datalist>
+              </div>
 
               {/* Groupe Filter */}
 
@@ -587,10 +587,12 @@ updated_at
                             <button className="btn btn-sm btn-outline-secondary">
                               <FontAwesomeIcon
                                 onClick={() => {
-                                  navigate("/avancementDetail")
+                                  navigate(`/app/avancementDetail/${avince.code_groupe}/${avince.code_module}`);
                                 }}
-                                icon={faEye} />
+                                icon={faEye}
+                              />
                             </button>
+
                           </td>
                         </tr>
                       ))}

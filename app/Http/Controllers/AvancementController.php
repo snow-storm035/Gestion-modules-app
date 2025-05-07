@@ -79,6 +79,7 @@ class AvancementController extends Controller
                 // dd(gettype($dateDebut),gettype($dateEfm),$dateDebut, $diffWeeks, gettype($diffWeeks));
             }
         }
+        // this comontier
         dd($modules_stats);
     }
 
