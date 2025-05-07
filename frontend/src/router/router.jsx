@@ -69,9 +69,10 @@ export const router = createBrowserRouter([
         element: <AvancemnetGroup />,
       },
       {
-        path: "avancementDetail", // `/app/avancementDetail`
+        path: "avancementDetail/:groupe/:module",
         element: <AvancementDetails />,
       },
+      
       {
         path: "avencementFiliere", // `/app/avencementFiliere`
         element: <AvencementFiliere />,
@@ -93,6 +94,7 @@ export const router = createBrowserRouter([
         element: <UpdateModuleStatu />,
       },
       {
+
         path: "detailsAvencemnet", // `/app/detailsAvencemnet`
         element: <DetailsAvencemnet />,
       },

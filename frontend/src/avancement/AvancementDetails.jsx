@@ -1,62 +1,86 @@
-
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaChartLine, FaCalendarAlt, FaChalkboardTeacher, FaBook, FaUsers, FaCheckCircle, FaTimesCircle, FaClipboardCheck, FaSave, FaEdit } from 'react-icons/fa';
 import "../style/AvancementDetails.css";
 import { useDarkMode } from '../DarkModeProvider/DarkModeContext';
-const AvancementDetails = ({ moduleData }) => {
-const {darkMode}=useDarkMode();
+import { useParams } from 'react-router-dom';
+import apiService from '../Axios/apiService';
 
-  const [GroupDet, setGroupDet] = useState({
-    id: 10,
-    groupe: {
-      code: 'GRP10',
-      nom: 'Groupe J',
-      annee_formation: '2024-2025'
-    },
-    module: {
-      code: 'M310',
-      nom: 'Docker & Kubernetes'
-    },
-    filière: {
-      code: 'FIL109',
-      nom: 'Gestion de Projet'
-    },
-    nbh_par_semaine_realisee: 3,
-    efm_realise: false,
-    date_debut: '2025/03/01',
-    date_fin: null,
-    nbhp_realisee: 50,
-    nbhsync_realisee: 10,
-    nbh_total_realisee: 60,
-    recommandation: 5,
-    contrôle_continue_réalisé: 1,
-    masse_horaire: {
-      présentielle: 90,
-      synchrone: 30,
-      totale: 120
-    }
-  });
-
-  const [nweHoures, setNweHoures] = useState(GroupDet.nbh_par_semaine_realisee);
+const AvancementDetails = () => {
+  const { darkMode } = useDarkMode();
+  const { groupe, module } = useParams();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [avancement, setAvancement] = useState(null);
+  const [nweHoures, setNweHoures] = useState(0);
   const [isEditing, setIsEditing] = useState(false);
 
-  const handlesouvgarder = () => {
-    if (!(isNaN(nweHoures) && nweHoures !== 0)) {
-      setGroupDet((prv) => ({ ...prv, nbh_par_semaine_realisee: nweHoures }));
-      setIsEditing(false);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        await apiService.getCsrfCookie();
+        const response = await apiService.getAvancement(groupe, module);
+        setAvancement(response.avancement);
+        setNweHoures(response.avancement.nbh_par_semaine_total);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [groupe, module]);
+
+  
+  const handlesouvgarder = async () => {
+    if (!isNaN(nweHoures) && nweHoures !== 0) {
+      try {
+        await apiService.changeNbHeures({
+          avancement: {
+            code_module: module,
+            code_groupe: groupe,
+            matricule: avancement.matricule,
+          },
+          nbh_par_semaine: nweHoures,
+        });
+  
+        // Fetch the updated data
+        await apiService.getCsrfCookie();
+        const response = await apiService.getAvancement(groupe, module);
+        setAvancement(response.avancement);
+        setNweHoures(response.avancement.nbh_par_semaine_total);
+  
+        setIsEditing(false);
+        alert('Les heures ont été mises à jour avec succès.');
+      } catch (err) {
+        setError(err.message || 'Erreur lors de la mise à jour des heures.');
+      }
     }
   };
+  
+  
+  
+
+  // const handlesouvgarder = () => {
+  //   if (!(isNaN(nweHoures) && nweHoures !== 0)) {
+  //     setAvancement(prev => ({ ...prev, nbh_par_semaine_total: nweHoures }));
+  //     setIsEditing(false);
+  //     // Here you would typically call an API to save the changes
+  //   }
+  // };
 
   const handelModifier = () => {
     setIsEditing(true);
   };
 
+  if (loading) return <div className="avancement-container">Loading...</div>;
+  if (error) return <div className="avancement-container">Error: {error}</div>;
+  if (!avancement) return <div className="avancement-container">No data found</div>;
+
   return (
     <div className="avancement-container">
-      {/* Top Section */}
-      <div className={darkMode?"top-section":"top-section top-section-dark-mode-section"} >
-        <h1 className="page-title color-all-text">Groupe : {GroupDet.groupe.code}</h1>
+      <div className={darkMode ? "top-section" : "top-section top-section-dark-mode-section"}>
+        <h1 className="page-title color-all-text">Groupe : {avancement.code_groupe}</h1>
 
         <div className="stats-grid">
           {/* Module Information */}
@@ -66,20 +90,18 @@ const {darkMode}=useDarkMode();
             </div>
             <div className="stat-content">
               <h3 className='color-all-text'>Module</h3>
-              <p className='color-all-text'>{GroupDet.module.code || 'Not specified'}</p>
-              <p className="subtext color-all-text">{GroupDet.module.nom}</p>
+              <p className='color-all-text'>{avancement.code_module || 'Not specified'}</p>
             </div>
           </div>
 
-          {/* Formateur Information - Removed as not in new structure */}
+          {/* Filière Information */}
           <div className="stat-card">
             <div className="stat-icon">
               <FaChalkboardTeacher />
             </div>
             <div className="stat-content">
               <h3 className='color-all-text'>Filière</h3>
-              <p className='color-all-text'>{GroupDet.filière.code || 'Not specified'}</p>
-              <p className="subtext color-all-text">{GroupDet.filière.nom}</p>
+              <p className='color-all-text'>{avancement.code_filiere || 'Not specified'}</p>
             </div>
           </div>
 
@@ -90,10 +112,10 @@ const {darkMode}=useDarkMode();
             </div>
             <div className="stat-content">
               <h3 className='color-all-text'>Groupe</h3>
-              <p className='color-all-text'>{GroupDet.groupe.code || 'Not specified'}</p>
-              <p className="subtext color-all-text">{GroupDet.groupe.nom}</p>
+              <p className='color-all-text'>{avancement.code_groupe || 'Not specified'}</p>
             </div>
           </div>
+
           {/* Contrôle Continue Information */}
           <div className="stat-card">
             <div className="stat-icon">
@@ -101,7 +123,7 @@ const {darkMode}=useDarkMode();
             </div>
             <div className="stat-content">
               <h3 className='color-all-text'>Contrôle Continue</h3>
-              <p className="highlight color-all-text">{GroupDet.contrôle_continue_réalisé}</p>
+              <p className="highlight color-all-text">{avancement.nbcc_realisee}</p>
               <p className="subtext color-all-text">Réalisé(s)</p>
             </div>
           </div>
@@ -114,13 +136,13 @@ const {darkMode}=useDarkMode();
             <div className="stat-content">
               <h3 className='color-all-text'>Schedule</h3>
               <p className='color-all-text'>
-                date debut: {GroupDet.date_debut
-                  ? new Date(GroupDet.date_debut).toLocaleDateString()
+                date debut: {avancement.debut_module
+                  ? new Date(avancement.debut_module).toLocaleDateString()
                   : 'No start date'}
               </p>
               <p className='color-all-text'>
-                date fin: {GroupDet.date_fin
-                  ? new Date(GroupDet.date_fin).toLocaleDateString()
+                date fin: {avancement.fin_module
+                  ? new Date(avancement.fin_module).toLocaleDateString()
                   : 'No end date'}
               </p>
             </div>
@@ -136,19 +158,19 @@ const {darkMode}=useDarkMode();
               <div className="hours-grid">
                 <div>
                   <p className='color-all-text'>Weekly</p>
-                  <p className="highlight color-all-text">{GroupDet.nbh_par_semaine_realisee} h</p>
+                  <p className="highlight color-all-text">{avancement.nbh_par_semaine_total} h</p>
                 </div>
                 <div>
                   <p className='color-all-text'>Presential</p>
-                  <p className="highlight color-all-text">{GroupDet.nbhp_realisee} h</p>
+                  <p className="highlight color-all-text">{avancement.nbhp_realisee} h</p>
                 </div>
                 <div>
                   <p className='color-all-text'>Sync</p>
-                  <p className="highlight color-all-text">{GroupDet.nbhsync_realisee} h</p>
+                  <p className="highlight color-all-text">{avancement.nbhsync_realisee} h</p>
                 </div>
                 <div>
                   <p className='color-all-text'>Total</p>
-                  <p className="highlight color-all-text">{GroupDet.nbh_total_realisee} h</p>
+                  <p className="highlight color-all-text">{avancement.nbh_total_realisee} h</p>
                 </div>
               </div>
             </div>
@@ -157,44 +179,20 @@ const {darkMode}=useDarkMode();
           {/* EFM Status */}
           <div className="stat-card">
             <div className="stat-icon">
-              {GroupDet.efm_realise ? <FaCheckCircle /> : <FaTimesCircle />}
+              {avancement.efm_realise === "oui" ? <FaCheckCircle /> : <FaTimesCircle />}
             </div>
             <div className="stat-content">
               <h3 className='color-all-text'>EFM Status</h3>
-              <p className={GroupDet.efm_realise ? 'status-completed color-all-text' : 'status-pending color-all-text'}>
-                {GroupDet.efm_realise ? 'Completed' : 'Pending'}
+              <p className={avancement.efm_realise === "oui" ? 'status-completed color-all-text' : 'status-pending color-all-text'}>
+                {avancement.efm_realise === "oui" ? 'Completed' : 'Pending'}
               </p>
-              <p className="subtext color-all-text">CC: {GroupDet.contrôle_continue_réalisé}</p>
+              <p className="subtext color-all-text">CC: {avancement.nbcc_realisee}</p>
             </div>
           </div>
 
-          {/* Masse Horaire Information */}
-          <div className="stat-card wide">
-            <div className="stat-icon">
-              <FaChartLine />
-            </div>
-            <div className="stat-content">
-              <h3 className='color-all-text'>Masse Horaire</h3>
-              <div className="hours-grid">
-                <div>
-                  <p className='color-all-text'>Présentielle</p>
-                  <p className="highlight color-all-text">{GroupDet.masse_horaire.présentielle} h</p>
-                </div>
-                <div>
-                  <p className='color-all-text'>Synchrone</p>
-                  <p className="highlight color-all-text">{GroupDet.masse_horaire.synchrone} h</p>
-                </div>
-                <div>
-                  <p className='color-all-text'>Totale</p>
-                  <p className="highlight color-all-text">{GroupDet.masse_horaire.totale} h</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* &apos; */}
           {/* Hours Modification Section */}
-          <div className={darkMode?"hours-modification-section ":"hours-modification-section hours-modification-section-dark-mode"}>
-            <h3 className='color-all-text'>Modifier Nombre  d&apos;heures par semaine :</h3>
+          <div className={darkMode ? "hours-modification-section" : "hours-modification-section hours-modification-section-dark-mode"}>
+            <h3 className='color-all-text'>Modifier Nombre d&apos;heures par semaine :</h3>
             <div className="hours-modification-controls">
               {isEditing ? (
                 <>
@@ -211,7 +209,7 @@ const {darkMode}=useDarkMode();
                 </>
               ) : (
                 <>
-                  <span className="current-hours">{GroupDet.nbh_par_semaine_realisee} heures</span>
+                  <span className="current-hours">{avancement.nbh_par_semaine_total} heures</span>
                   <button className="btn-modifier-hours" onClick={handelModifier}>
                     <FaEdit /> Modifier
                   </button>

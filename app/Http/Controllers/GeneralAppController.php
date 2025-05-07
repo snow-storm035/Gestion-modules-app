@@ -13,14 +13,17 @@ class GeneralAppController extends Controller
     //
     public function calendrierEfms(Request $request)
     {
+        // dd("1234567890-sdfghjkl");
         // dd($request->route('regional'));
         if ($request->has('brief')) {
             $modules = Module::where('regional', 'O')
                 ->get();
-            // dd($modules);
+            //  dd($modules);
             // $modules_codes = array_map(function($item){
             //     return $item['code_modules'];
             // },$modules->toArray());
+
+            // first code 
             $calendrier_regional = [];
             foreach ($modules as $module) {
                 $calendrier_regional[] = Avancement::select('code_filiere', 'code_module', 'date_efm_prevu')
@@ -30,11 +33,17 @@ class GeneralAppController extends Controller
                     ->groupBy('code_filiere', 'code_module', 'date_efm_prevu')
                     ->orderBy('date_efm_prevu', 'desc')
                     ->first();
-                // dd($calendrier_regional, $module);
+                dd($calendrier_regional, $module);
             }
+            // dd("`1234567890-");
             $calendrier_regional_clean = array_filter($calendrier_regional, function ($item) {
                 return $item !== null;
             });
+
+
+
+
+
             // dd($calendrier_regional);
 
             // dd(count($modules->toArray()));
@@ -89,7 +98,7 @@ class GeneralAppController extends Controller
                     "date_efm_reelle" => $item['date_efm_reelle'],
                 ];
             }, $avancements->toArray());
-
+        //    dd("11234567890");
             return response()->json([
                 'calendrierEfms' => $calendrier,
                 'filters' => [
@@ -101,6 +110,11 @@ class GeneralAppController extends Controller
             ], 200);
         }
     }
+
+
+
+
+
 
     public function etatsModules()
     {
@@ -167,6 +181,7 @@ class GeneralAppController extends Controller
             ];
         }, $avancements->toArray());
 
+        // dd("1234567890");
         // dd($avancementsStats);
 
         return response()->json([
