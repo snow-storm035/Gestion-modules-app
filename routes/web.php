@@ -19,6 +19,7 @@ Route::get('/', function () {
 
 Route::withoutMiddleware([VerifyCsrfToken::class])->group(function(){
 
+// Route::withoutMiddleware([VerifyCsrfToken::class])->group(function(){
     Route::get('/index', [AvancementController::class, 'index']);
     Route::post('/store', [AvancementController::class, 'store']);
     Route::get('/all', [AvancementController::class, 'calculerTauxAvancement']);

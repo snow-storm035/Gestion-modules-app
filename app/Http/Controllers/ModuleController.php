@@ -30,7 +30,7 @@ class ModuleController extends Controller
     public function store(Request $request)
     {
         //
-    dd("model conttroler ");
+    // dd("model conttroler ");
         if($request->has('excelfile')){
             $jsonData = ExcelServices::convertExcelToJson($request);
             

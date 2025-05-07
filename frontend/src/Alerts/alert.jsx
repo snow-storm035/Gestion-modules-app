@@ -1,3 +1,5 @@
+
+
 import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
@@ -15,52 +17,22 @@ const Alerts = () => {
     regional: []
   });
   const [filters, setFilters] = useState({
-    filiere: '',
+    code_filiere: '',
     niveau: '',
-    regional: '',
-    etat: ''
+    
+    regional: ''
   });
   const [currentPage, setCurrentPage] = useState(1);
   const postPerPage = 8;
   const navigate = useNavigate();
   const { darkMode } = useDarkMode();
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       setLoading(true);
-  //       await apiService.getCsrfCookie();
-  //       const response = await apiService.getAlerts();
-  //       console.log("response.filieres: ",response.filters)
-  //       setAlerts(response.alerts || []);
-  //       console.log('alerts:',response.alerts)
-  //       const filieresWithCodes = response.filters.filieres.map(f => ({
-  //         ...f,
-  //         groupes: response.filters.groupes.filter(g => g.code_groupe.startsWith(f.code_filiere.split('_')[1]))
-  //       }));
-        
-  //       setFiltersData({
-  //         filieres: filieresWithCodes,
-  //         niveaux: Object.values(response.filters.niveaux),
-  //         regional: response.filters.regional || []
-  //       });
-  //     } catch (err) {
-  //       setError(err.message);
-  //       console.error('Error fetching alerts:', err);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
         await apiService.getCsrfCookie();
         const response = await apiService.getAlerts();
-        console.log("response slerts:",response)
-        // Safely handle the response data
         const receivedAlerts = response.alerts || [];
         const receivedFilters = response.filters || {
           filieres: [],
@@ -69,24 +41,21 @@ const Alerts = () => {
           regional: []
         };
 
-        // Process filieres with groupes only if groupes exist
         const filieresWithCodes = receivedFilters.filieres.map(f => ({
           ...f,
-          groupes: receivedFilters.groupes 
+          groupes: receivedFilters.groupes
             ? receivedFilters.groupes.filter(g => g.code_groupe.startsWith(f.code_filiere.split('_')[1]))
             : []
         }));
-        
+
         setAlerts(receivedAlerts);
         setFiltersData({
           filieres: filieresWithCodes,
           niveaux: Object.values(receivedFilters.niveaux || {}),
-          regional: receivedFilters.regional || [],
-          groupes: receivedFilters.groupes || []
+          regional: receivedFilters.regional || []
         });
       } catch (err) {
         setError(err.message);
-        console.error('Error fetching alerts:', err);
       } finally {
         setLoading(false);
       }
@@ -94,29 +63,35 @@ const Alerts = () => {
     fetchData();
   }, []);
 
-  useEffect(()=>{
-    console.log("alerts from useefct tow:",alerts)
-  },[alerts])
-//   const processedAlerts = alerts.map(alert => {
-//     const filiere = filtersData.filieres.find(f => 
-//       f.groupes?.some(g => g.code_groupe === alert.code_groupe)
-//     );
-//     return {
-//       ...alert,
-//       filiere: filiere || { code_filiere: 'N/A', libelle: 'N/A' },
-//       date_fin_prevu: alert.date_fin_prevu || 'N/A',
-//       created_at: alert.created_at ? new Date(alert.created_at).toLocaleDateString() : 'N/A'
-//     };
-//   });
+  const handleFilterChange = (filterName, value) => {
+    console.log("filters:",filters)
+    setFilters(prevFilters => ({
+      ...prevFilters,
+      [filterName]: value
+    }));
+  };
 
-//   const filteredAlerts = filters.filter(alert => 
-//     (filters.filiere === '' || alert.filiere.libelle === filters.filiere) &&
-//     (filters.niveau === '' || alert.filiere.code_filiere.endsWith(filters.niveau)) &&
-//     (filters.regional === '' || alert.regional === filters.regional) &&
-//     (filters.etat === '' || alert.etat === filters.etat)
-//   );
-
-  const paginatedAlerts = alerts.slice(
+  const filteredAlerts = alerts.filter(alert =>
+    (filters.code_filiere === '' || alert.code_filiere === filters.code_filiere) &&
+    (filters.niveau === '' || alert.niveau === filters.niveau) &&
+    (filters.regional === '' || alert.regional === filters.regional)
+  );
+  
+//   {
+//     "id": 1,
+//     "code_filiere": "AGC_COMPT_BP",
+//     "code_groupe": "COMPT301",
+//     "code_module": "M311",
+//     "etat": "presque fini",
+//     "mhrestante": 0,
+//     "date_fin_prevu": null,
+//     "avancement_id": 50,
+//     "created_at": "2025-05-05T14:28:57.000000Z",
+//     "updated_at": "2025-05-05T14:28:57.000000Z",
+//     "regional": "N",
+//     "niveau": "BP"
+// },
+  const paginatedAlerts = filteredAlerts.slice(
     (currentPage - 1) * postPerPage,
     currentPage * postPerPage
   );
@@ -126,201 +101,153 @@ const Alerts = () => {
 
   return (
     <>
-   
-   {alerts.length > 0 ? (<div className={`container-fluid-alets ${darkMode ? 'dark-mode' : ''}`}>
-      {filtersData.filieres.length > 0 && (
-        <div className={darkMode ? "filter-container-alets" : "filter-container-alets filter-container-darkmode-alets"}>
-          <h2>Alerts:</h2>
-          <div className="filter-controls">
-            <div className="filter-group">
-              <input
-                list="filieres"
-                id="filiereFilter"
-                name="filiereFilter"
-                value={filters.filiere}
-                onChange={(e) => setFilters(p => ({...p, filiere: e.target.value}))}
-                className="filter-select"
-                placeholder="Filière"
-              />
-              <datalist id="filieres">
-                {filtersData.filieres.map(f => (
-                  <option key={f.code_filiere} value={f.libelle} />
-                ))}
-              </datalist>
-            </div>
+      {alerts.length > 0 && (
+        <div className={`container-fluid-alets ${darkMode ? 'dark-mode' : ''}`}>
+          {filtersData.filieres.length > 0 && (
+            <div className={darkMode ? "filter-container-alets" : "filter-container-alets filter-container-darkmode-alets"}>
+              <h2>Alerts:</h2>
+              <div className="filter-controls">
+                <div className="filter-group">
+                  <input
+                    list="filieres"
+                    id="filiereFilter"
+                    name="filiereFilter"
+                    value={filters.code_filiere}
+                    onChange={(e) => handleFilterChange('code_filiere', e.target.value)}
+                    className="filter-select"
+                    placeholder="Code Filière"
+                  />
+                  <datalist id="filieres">
+                    {filtersData.filieres.map(f => (
+                      <option key={f.code_filiere} value={f.code_filiere} />
+                    ))}
+                  </datalist>
+                </div>
 
-            <div className="filter-group">
-              <input
-                list="niveaux"
-                id="niveauFilter"
-                name="niveauFilter"
-                value={filters.niveau}
-                onChange={(e) => setFilters(p => ({...p, niveau: e.target.value}))}
-                className="filter-select"
-                placeholder="Niveau"
-              />
-              <datalist id="niveaux">
-                {filtersData.niveaux.map((n, index) => (
-                  <option key={`niveau-${index}`} value={n} />
-                ))}
-              </datalist>
-            </div>
+                <div className="filter-group">
+                  <input
+                    list="niveaux"
+                    id="niveauFilter"
+                    name="niveauFilter"
+                    value={filters.niveau}
+                    onChange={(e) => handleFilterChange('niveau', e.target.value)}
+                    className="filter-select"
+                    placeholder="Niveau"
+                  />
+                  <datalist id="niveaux">
+                    {filtersData.niveaux.map((n, index) => (
+                      <option key={`niveau-${index}`} value={n} />
+                    ))}
+                  </datalist>
+                </div>
 
-            <div className="filter-group">
-              <input
-                list="regionalOptions"
-                id="regionalFilter"
-                name="regionalFilter"
-                value={filters.regional}
-                onChange={(e) => setFilters(p => ({...p, regional: e.target.value}))}
-                className="filter-select"
-                placeholder="Regional"
-              />
-              <datalist id="regionalOptions">
-                {filtersData.regional.map((r, index) => (
-                  <option key={`regional-${index}`} value={r} />
-                ))}
-              </datalist>
-            </div>
+                <div className="filter-group">
+                  <input
+                    list="regionalOptions"
+                    id="regionalFilter"
+                    name="regionalFilter"
+                    value={filters.regional}
+                    onChange={(e) => handleFilterChange('regional', e.target.value)}
+                    className="filter-select"
+                    placeholder="Regional"
+                  />
+                  <datalist id="regionalOptions">
+                    {filtersData.regional.map((r, index) => (
+                      <option key={`regional-${index}`} value={r} />
+                    ))}
+                  </datalist>
+                </div>
 
-            <div className="filter-group">
-              <input
-                list="etats"
-                id="etatFilter"
-                name="etatFilter"
-                value={filters.etat}
-                onChange={(e) => setFilters(p => ({...p, etat: e.target.value}))}
-                className="filter-select"
-                placeholder="État"
-              />
-              <datalist id="etats">
-                <option value="presque fini" />
-                <option value="non" />
-                <option value="oui" />
-              </datalist>
+                <button
+                  onClick={() => setFilters({
+                    code_filiere: '',
+                    niveau: '',
+                    regional: ''
+                  })}
+                  className="reset-btn"
+                >
+                  Réinitialiser
+                </button>
+              </div>
             </div>
+          )}
 
-            <button 
-              onClick={() => setFilters({ 
-                filiere: '', 
-                niveau: '', 
-                regional: '',
-                etat: '' 
-              })} 
-              className="reset-btn"
-            >
-              Réinitialiser
-            </button>
+          <div className="row">
+            <div className="col-12">
+              <div className={darkMode ? "card-alets mb-4" : "card-alets mb-4 card-alets-dark-mode"}>
+                <div className={darkMode ? "card-body-alets" : "card-body-alets card-body_dark_alets"}>
+                  <div className="table-responsive">
+                    <table className={darkMode ? "table table-striped" : "table table-dark table-striped"}>
+                      <thead>
+                        <tr>
+                          <th>code filière</th>
+                          <th>Code groupe</th>
+                          <th>Code module</th>
+                          <th>régionale</th>
+                          <th>état</th>
+                          <th>date fin prévu</th>
+                          <th>mh restante</th>
+                          <th>dates d'alerte</th>
+                          <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {paginatedAlerts.length > 0 ? (
+                          paginatedAlerts.map(alert => (
+                            <tr key={alert.id}>
+                              <td>{alert.code_filiere}</td>
+                              <td>{alert.code_groupe}</td>
+                              <td>{alert.code_module}</td>
+                              <td>{alert.regional || 'N/A'}</td>
+                              <td>{alert.etat}</td>
+                              <td>{alert.date_fin_prevu}</td>
+                              <td>{alert.mhrestante}</td>
+                              <td>{new Date(alert.created_at).toLocaleDateString()}</td>
+                              <td>
+                                <button
+                                  className="btn btn-sm btn-outline-secondary"
+                                  onClick={() => navigate('/avancementDetail')}
+                                >
+                                  <FontAwesomeIcon icon={faEye} />
+                                </button>
+                              </td>
+                            </tr>
+                          ))
+                        ) : (
+                          <tr>
+                            <td colSpan="9" className="text-center">No alerts found</td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div className="pagination-container-alerts">
+                    <button
+                      className="pagination-btn-alerts"
+                      disabled={currentPage === 1}
+                      onClick={() => setCurrentPage(p => p - 1)}
+                    >
+                      Previous
+                    </button>
+                    <span className="current-page-alerts">Page {currentPage}</span>
+                    <button
+                      className="pagination-btn-alerts"
+                      disabled={paginatedAlerts.length < postPerPage}
+                      onClick={() => setCurrentPage(p => p + 1)}
+                    >
+                      Next
+                    </button>
+                  </div>
+
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       )}
-
-      <div className="row">
-        <div className="col-12">
-          <div className={darkMode ? "card-alets mb-4" : "card-alets mb-4 card-alets-dark-mode"}>
-            <div className={darkMode ? "card-body-alets" : "card-body-alets card-body_dark_alets"}>
-              <div className="table-responsive">
-                <table className={darkMode ? "table table-striped" : "table table-dark table-striped"}>
-                  <thead>
-                    <tr>
-                      <th>code filière</th>
-                      <th>Code groupe</th>
-                      <th>Code module</th>
-                      <th>régionale</th>
-                      <th>état</th>
-                      <th>date fin prévu</th>
-                      <th>mh restante</th>
-                      <th>dates d'alerte</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    
-{/* avancement_id
-: 
-50
-code_groupe
-: 
-"COMPT301"
-code_module
-: 
-"M311"
-created_at
-: 
-"2025-04-30T15:46:24.000000Z"
-etat
-: 
-"presque fini"
-id
-: 
-1
-matricule
-: 
-"12201"
-mhrestante
-: 
-0
-updated_at
-: 
-"2025-04-30T15:46:24.000000Z" */}
-                    {paginatedAlerts.length > 0 ? (
-                      paginatedAlerts.map(alert => (
-                        <tr key={alert.id}>
-                          {/* <td>{alert.filiere.code_filiere}</td> */}
-                          <td>not returen from backend</td>
-                          <td>{alert.code_groupe}</td>
-                          <td>{alert.code_module}</td>
-                          {/* <td>{alert.regional || 'N/A'}</td> */}
-                          <td>{"alert.regional || 'N/A'"}</td>
-                          <td>{alert.etat}</td>
-                          <td>{alert.date_fin_prevu}</td>
-                          <td>{alert.mhrestante}</td>
-                          <td>{alert.created_at}</td>
-                          <td>
-                            <button 
-                              className="btn btn-sm btn-outline-secondary"
-                              onClick={() => navigate('/avancementDetail')}
-                            >
-                              <FontAwesomeIcon icon={faEye} />
-                            </button>
-                          </td>
-                        </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td colSpan="9" className="text-center">No alerts found</td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-
-              <div className="pagination-container-alerts">
-                <button
-                  className="pagination-btn-alerts"
-                  disabled={currentPage === 1}
-                  onClick={() => setCurrentPage(p => p - 1)}
-                >
-                  Previous
-                </button>
-                <span className="current-page-alerts">Page {currentPage}</span>
-                <button
-                  className="pagination-btn-alerts"
-                  disabled={paginatedAlerts.length < postPerPage}
-                  onClick={() => setCurrentPage(p => p + 1)}
-                >
-                  Next
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>):
-    ""
-}
-</>
-);
+    </>
+  );
 };
 
 export default Alerts;
