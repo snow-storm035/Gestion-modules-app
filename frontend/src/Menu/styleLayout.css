@@ -166,11 +166,26 @@ ul {
 .darkModeAndlogout .logout ,.darkmode{
     border: none;
     font-size: 20px;
+    /* padding-bottom: 10px; */
     background: inherit;
     padding-left: 10px;
     color: var(--main-white);
     cursor: pointer;
+ /* margin-bottom: 100px; */
 }
+.darkModeAndlogout .logA ,.styledarkmode{
+display: flex;
+align-items: baseline;
+/* justify-items: center; */
+
+ 
+}
+/* .darkModeAndlogout .styledarkmode{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ 
+} */
 
 .contenu {
     background-color: var(--main-grey);

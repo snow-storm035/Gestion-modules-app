@@ -357,7 +357,7 @@ const CalendrierEfm = () => {
         annees_formation: []
     });
     const [filters, setFilters] = useState({
-        filiere: '',
+        code_filiere: '',
         niveau: '',
         annee_formation: ''
     });
@@ -377,7 +377,7 @@ const CalendrierEfm = () => {
                 setLoading(true);
                 await apiService.getCsrfCookie(); // If Laravel Sanctum is used
                 const response = await apiService.getCalendrierEfms();
- console.log("response:",response)
+                // console.log("response:", response)
                 setCalendrierEfms(response.calendrierEfms || []);
                 setFiltersData({
                     filieres: response.filters?.filieres || [],
@@ -394,9 +394,12 @@ const CalendrierEfm = () => {
 
         fetchData();
     }, []);
-
+    // useEffect(() => {
+    //     console.log("test calendrierEfms", calendrierEfms)
+    //     console.log("test filtersData", filtersData)
+    // }, [calendrierEfms, filtersData])
     // Filter function based on the selected filters
-    const filterFiliere = calendrierEfms.filter(doc => {
+    const calendrierEfmsfilterFiliere = calendrierEfms.filter(doc => {
         return (
             (filters.code_filiere === '' || doc.code_filiere === filters.code_filiere) &&
             (filters.annee_formation === '' || doc.annee_formation === filters.annee_formation) &&
@@ -405,12 +408,12 @@ const CalendrierEfm = () => {
     });
 
     // Filter data based on the search term
-    const filteredAlert = filterFiliere.filter(filterFilieremodelGroup =>
+    const filterecalendrierEfmsfilterFiliere1 = calendrierEfmsfilterFiliere.filter(filterFilieremodelGroup =>
         filterFilieremodelGroup.code_filiere.toLowerCase().includes(searchTerm.toLowerCase()) ||
         filterFilieremodelGroup.code_module.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    const filteredAlertsWithsplice = filteredAlert.slice(firstPostindex, lastPostindex);
+    const filteredcalandrerefmsWithsplice = filterecalendrierEfmsfilterFiliere1.slice(firstPostindex, lastPostindex);
 
     // Handle filter changes
     const handleFilterChange = (filterName, value) => {
@@ -426,7 +429,9 @@ const CalendrierEfm = () => {
             annee_formation: ''
         });
     };
-
+    if (loading) return <div>Loading modules...</div>;
+    if (error) return <div>Error: {error}</div>;
+    //  console.log("louding....",calendrierEfmsfilterFiliere)
     return (
         <div className="container-fluid-alets">
             <div className={darkMode ? "filter-container-alets" : "filter-container-alets filter-container-darkmode-alets"}>
@@ -498,30 +503,56 @@ const CalendrierEfm = () => {
                 <div className="col-12">
                     <div className={darkMode ? "card-CalendrierEfm mb-4" : "card-CalendrierEfm mb-4 card-CalendrierEfm-dark-mode"}>
                         <div className={darkMode ? "card-body" : "card-body card-body_dark_alets"}>
-                            <table className={darkMode ? "table table-striped" : "table table-dark table-striped"}>
-                                <thead>
-                                    <tr>
-                                        <th>code filière</th>
-                                        <th>code groupe</th>
-                                        <th>Code module</th>
-                                        <th>régionale</th>
-                                        <th>date efm prévu</th>
-                                        <th>date efm réelle</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {filteredAlertsWithsplice.map((avince) => (
-                                        <tr key={avince.id}>
-                                            <td>{avince.code_filiere}</td>
-                                            <td>{avince.code_groupe}</td>
-                                            <td>{avince.code_module}</td>
-                                            <td>{avince.regional}</td>
-                                            <td>{avince.date_efm_prevu}</td>
-                                            <td>{avince.date_efm_reelle ? avince.annee_formation : "Date à déterminer"}</td>
+                            {filteredcalandrerefmsWithsplice.length > 0 ?
+                                <table className={darkMode ? "table table-striped" : "table table-dark table-striped"}>
+                                    <thead>
+                                        <tr>
+                                            <th>code filière</th>
+                                            <th>code groupe</th>
+                                            <th>Code module</th>
+                                            <th>régionale</th>
+                                            <th>date efm prévu</th>
+                                            <th>date efm réelle</th>
                                         </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    {/* {filteredcalandrerefmsWithsplice.length > 0 ? (
+                                        <tbody>
+                                            {filteredcalandrerefmsWithsplice.map((avince) =>
+                                                avince.map((sub, idx) => (
+                                                    <tr key={`${sub.id}-${idx}`}>
+                                                        <td>{sub.code_filiere}</td>
+                                                        <td>{sub.code_groupe}</td>
+                                                        <td>{sub.code_module}</td>
+                                                        <td>{sub.regional}</td>
+                                                        <td>{sub.date_efm_prevu}</td>
+                                                        <td>{sub.date_efm_reelle ? sub.date_efm_reelle : "Date à déterminer"}</td>
+                                                    </tr>
+                                                ))
+                                            )}
+                                        </tbody>
+                                    ) : (
+                                        "Not data"
+                                    )} */}
+                                    {filteredcalandrerefmsWithsplice.length > 0 ?
+
+                                        <tbody>
+                                            {filteredcalandrerefmsWithsplice.map((avince) => (
+                                                <tr key={avince.id}>
+                                                    <td>{avince.code_filiere}</td>
+                                                    <td>{avince.code_groupe}</td>
+                                                    <td>{avince.code_module}</td>
+                                                    <td>{avince.regional}</td>
+
+                                                    <td>{avince.date_efm_prevu ?avince.date_efm_prevu : "Date à déterminer"}</td>
+                                                    <td>{avince.date_efm_reelle ?avince.date_efm_reelle : "Date à déterminer"}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody> :
+                                        "Not data"
+                                    }
+                                </table> :
+                                ""
+                            }
                         </div>
 
                         <div className="pagination-container-CalendrierEfm">

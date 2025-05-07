@@ -89,6 +89,7 @@ class AvancementController extends Controller
 
     public function changerNbHeuresParSemaine(Request $request)
     {
+        // dd("1234567890-");
         // dd($request['avancement']['code_module']);
 
         $codeModule = $request['avancement']['code_module'];
