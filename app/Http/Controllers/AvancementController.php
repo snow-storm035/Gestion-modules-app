@@ -483,19 +483,17 @@ class AvancementController extends Controller
             ['code_module', $module]
         ])->first();
 
-        $nom_module = Module::where('code_module', $avancement->code_filiere)
+        $module = Module::where('code_module', $avancement->code_module)
             ->where('code_filiere', $avancement->code_filiere)
-            ->first()
-            ->libelle_module;
-        $nom_filiere = Module::where('code_filiere', $avancement->code_filiere)
-            ->first()
-            ->nom_filiere;
-
+            ->first();
+        $filiere = Filiere::where('code_filiere', $avancement->code_filiere)
+            ->first();
+            // dd($module, $filiere, $avancement->code_filiere);
         return response()->json([
             'avancement' => [
-                ...$avancement,
-                "nom_module" => $nom_module,
-                "nom_filiere" => $nom_filiere
+                ...$avancement->toArray(),
+                "nom_module" => $module['libelle_module'],
+                "nom_filiere" => $filiere['nom_filiere']
             ],
             'recommandation' => $recommandedMh
         ]);
