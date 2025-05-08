@@ -87,10 +87,10 @@ export const router = createBrowserRouter([
         path: "calendrierEfm", // `/app/calendrierEfm`
         element: <CalendrierEfm />,
       },
-      {
-        path: "updateModuleStatu", // `/app/updateModuleStatu`
-        element: <UpdateModuleStatu />,
-      },
+      // {
+      //   path: "updateModuleStatu", // `/app/updateModuleStatu`
+      //   element: <UpdateModuleStatu />,
+      // },
       // {
 
       //   path: "detailsAvencemnet", // `/app/detailsAvencemnet`

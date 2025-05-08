@@ -35,7 +35,7 @@ const AvancemnetGroup = () => {
 
   // const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const postPerPage = 8;
+  const postPerPage = 7;
   const lastPostindex = currentPage * postPerPage;
   const firstPostindex = lastPostindex - postPerPage;
 

@@ -36,9 +36,12 @@
 .filter-controls {
     display: flex;
     gap: 10px;
+    /* justify-content: center; */
+    align-content: baseline;
     align-items: center;
     margin-bottom: 20px;
     flex-wrap: wrap;
+    /* background-color: red; */
 }
 
 .filter-select {
@@ -57,10 +60,12 @@
     border-radius: 4px;
     cursor: pointer;
     white-space: nowrap;
+    width: 150px;
+    margin: 2px;
 }
 
 .reset-btn:hover {
-    background-color: #d32f2f;
+    background-color: rgb(159, 11, 11);
 }
 
 .results-table {
@@ -115,12 +120,7 @@ tr:hover {
 
 }
 
-/* dark modde  */
-/* .card-body_dark_alets {
 
-    background-color: black !important;
-
-} */
 .filter-container-alets h2{
     color: white;
 }
@@ -151,13 +151,14 @@ tr:hover {
 
 
  /* navigate */
-.pagination-container-alerts {
+.pagination-container-alerts1 {
     display: flex;
     justify-content: space-between;
-    margin:5px; /* Equivalent to mt-3 in Bootstrap */
+    align-items: baseline;
+    margin:5px; 
   }
   
-  .pagination-btn-alerts {
+  .pagination-btn-alerts1 {
     border: 1px solid #0d6efd; /* Bootstrap's primary color */
     color: #0d6efd;
     background-color: transparent;
@@ -165,18 +166,20 @@ tr:hover {
     border-radius: 0.25rem;
     cursor: pointer;
     transition: all 0.2s ease;
+    width: 150px;
+    /* background-color: red !important; */
   }
   
-  .pagination-btn-alerts:disabled {
+  .pagination-btn-alerts1:disabled {
     opacity: 0.65;
     cursor: not-allowed;
   }
   
-  .pagination-btn-alerts:hover:not(:disabled) {
+  .pagination-btn-alerts1:hover:not(:disabled) {
     background-color: #0d6efd;
     color: white;
   }
   
-  .current-page-alerts {
+  .current-page-alerts1 {
     color: red;
   }

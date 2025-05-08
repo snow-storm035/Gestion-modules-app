@@ -89,10 +89,12 @@
   border-radius: 4px;
   cursor: pointer;
   margin-left: 10px;
+  margin-bottom: 5px;
+  width: 150px;
 }
 
 .details-button:hover {
-  background-color: #45a049;
+  background-color: #13c4c1;
 }
 /* Details panel */
 .details-panel {

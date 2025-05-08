@@ -155,13 +155,8 @@ ul {
    color: var(--main-white);
 }  
 
-.darkModeAndlogout  {
-    /* background-color:red ; */
-    /* margin: 100px 20px; */
-    margin-bottom: 0;
-
-
-
+.darkModeAndlogout .darkmode:hover {
+   background-color: inherit;
 }
 .darkModeAndlogout .logout ,.darkmode{
     border: none;

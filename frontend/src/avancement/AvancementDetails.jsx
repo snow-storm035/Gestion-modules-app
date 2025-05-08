@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 import apiService from '../Axios/apiService';
 
 const AvancementDetails = () => {
+  // const [keyRunderComponenet ,setKeyRunderComponenet]=useState(1)
   const { darkMode } = useDarkMode();
   const { groupe, module } = useParams();
   const [loading, setLoading] = useState(true);
@@ -18,7 +19,7 @@ const AvancementDetails = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        await apiService.getCsrfCookie();
+        // await apiService.getCsrfCookie();
         const response = await apiService.getAvancement(groupe, module);
         setAvancement(response.avancement);
         setNweHoures(response.avancement.nbh_par_semaine_total);
@@ -29,12 +30,16 @@ const AvancementDetails = () => {
       }
     };
     fetchData();
+      // Then set up polling
+
   }, [groupe, module]);
 
   
   const handlesouvgarder = async () => {
+ 
     if (!isNaN(nweHoures) && nweHoures !== 0) {
       try {
+        await apiService.getCsrfCookie();
         await apiService.changeNbHeures({
           avancement: {
             code_module: module,
@@ -53,6 +58,7 @@ const AvancementDetails = () => {
         setIsEditing(false);
         alert('Les heures ont été mises à jour avec succès.');
       } catch (err) {
+        // setKeyRunderComponenet(prv =>prv +1) 
         setError(err.message || 'Erreur lors de la mise à jour des heures.');
       }
     }
@@ -83,27 +89,38 @@ const AvancementDetails = () => {
         <h1 className="page-title color-all-text">Groupe : {avancement.code_groupe}</h1>
 
         <div className="stats-grid">
-          {/* Module Information */}
-          <div className="stat-card">
-            <div className="stat-icon">
-              <FaBook />
-            </div>
-            <div className="stat-content">
-              <h3 className='color-all-text'>Module</h3>
-              <p className='color-all-text'>{avancement.code_module || 'Not specified'}</p>
-            </div>
-          </div>
+    {/* Module Information */}
+<div className="stat-card">
+  <div className="stat-icon">
+    <FaBook />
+  </div>
+  <div className="stat-content">
+    <h3 className='color-all-text'>Module</h3>
+    <p className='color-all-text'>
+      code: {avancement.code_module || 'Code non spécifié'}
+    </p>
+    <p className='color-all-text'>
+      nom: {avancement.nom_module || 'Nom non spécifié'}
+    </p>
+  </div>
+</div>
 
-          {/* Filière Information */}
-          <div className="stat-card">
-            <div className="stat-icon">
-              <FaChalkboardTeacher />
-            </div>
-            <div className="stat-content">
-              <h3 className='color-all-text'>Filière</h3>
-              <p className='color-all-text'>{avancement.code_filiere || 'Not specified'}</p>
-            </div>
-          </div>
+{/* Filière Information */}
+<div className="stat-card">
+  <div className="stat-icon">
+    <FaChalkboardTeacher />
+  </div>
+  <div className="stat-content">
+    <h3 className='color-all-text'>Filière</h3>
+    <p className='color-all-text'>
+     code: {avancement.code_filiere || 'Code non spécifié'}
+    </p>
+    <p className='color-all-text'>
+     nom: {avancement.nom_filiere || 'Nom non spécifié'}
+    </p>
+  </div>
+</div>
+
 
           {/* Groupe Information */}
           <div className="stat-card">

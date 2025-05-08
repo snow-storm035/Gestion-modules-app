@@ -1,22 +1,11 @@
-/* body{
-    background-color: aquamarine !important;
-} */
-.container-fluid-avancement{
-    /* background-color: red; */
-  margin: 10px 12px 0;
-    /* background-color: var(--main-white); */
-    /* background-color: red; */
 
- /* height: 96vh; */
+.container-fluid-avancement{
+  margin: 10px 12px 0;
+
 }
 
 
-/* .flex-ajouter-avancement {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
 
-} */
 
 
 .card-body-group{
@@ -83,31 +72,11 @@ padding-top: 5px;
     background-color: #d32f2f;
   }
   
-  .results-table {
-    margin-top: 20px;
-    overflow-x: auto;
+  td{
+    padding: 4px !important;
+   text-align: center;
+   align-content: center;
   }
-  
-  table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  th, td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  th {
-    background-color: #f8f9fa;
-    font-weight: bold;
-  }
-  
-  tr:hover {
-    background-color: #f5f5f5;
-  }
-  
   @media (max-width: 768px) {
     .filter-select {
       min-width: 120px;
@@ -149,6 +118,8 @@ padding-top: 5px;
 .pagination-container-groupe {
   display: flex;
   justify-content: space-between;
+  justify-items: baseline;
+  align-items: baseline;
   margin:5px; /* Equivalent to mt-3 in Bootstrap */
 }
 
@@ -156,6 +127,7 @@ padding-top: 5px;
   border: 1px solid #0d6efd; /* Bootstrap's primary color */
   color: #0d6efd;
   background-color: transparent;
+  width: 150px;
   padding: 0.375rem 0.75rem;
   border-radius: 0.25rem;
   cursor: pointer;
