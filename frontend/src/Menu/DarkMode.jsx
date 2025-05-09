@@ -4,7 +4,7 @@ import { useDarkMode } from '../DarkModeProvider/DarkModeContext';
 export default function DarkMode(){
   const { darkMode, toggleDarkMode } = useDarkMode();
     return <>
-   <div>
+   <div className='styledarkmode'>
     {
       darkMode ?(
 

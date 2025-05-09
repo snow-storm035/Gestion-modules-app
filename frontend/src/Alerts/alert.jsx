@@ -6,7 +6,7 @@ import { faEye } from '@fortawesome/free-solid-svg-icons';
 import { useDarkMode } from "../DarkModeProvider/DarkModeContext";
 import { useNavigate } from 'react-router-dom';
 import apiService from '../Axios/apiService';
-
+import "../style/alert.css"
 const Alerts = () => {
   const [alerts, setAlerts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -77,24 +77,12 @@ const Alerts = () => {
     (filters.regional === '' || alert.regional === filters.regional)
   );
   
-//   {
-//     "id": 1,
-//     "code_filiere": "AGC_COMPT_BP",
-//     "code_groupe": "COMPT301",
-//     "code_module": "M311",
-//     "etat": "presque fini",
-//     "mhrestante": 0,
-//     "date_fin_prevu": null,
-//     "avancement_id": 50,
-//     "created_at": "2025-05-05T14:28:57.000000Z",
-//     "updated_at": "2025-05-05T14:28:57.000000Z",
-//     "regional": "N",
-//     "niveau": "BP"
-// },
+
   const paginatedAlerts = filteredAlerts.slice(
     (currentPage - 1) * postPerPage,
     currentPage * postPerPage
   );
+  const totalPages = Math.ceil(filteredAlerts.length / postPerPage);
 
   if (loading) return <div>Loading users...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -222,23 +210,24 @@ const Alerts = () => {
                     </table>
                   </div>
 
-                  <div className="pagination-container-alerts">
-                    <button
-                      className="pagination-btn-alerts"
-                      disabled={currentPage === 1}
-                      onClick={() => setCurrentPage(p => p - 1)}
-                    >
-                      Previous
-                    </button>
-                    <span className="current-page-alerts">Page {currentPage}</span>
-                    <button
-                      className="pagination-btn-alerts"
-                      disabled={paginatedAlerts.length < postPerPage}
-                      onClick={() => setCurrentPage(p => p + 1)}
-                    >
-                      Next
-                    </button>
-                  </div>
+ 
+                              <div className="pagination-container-alerts1">
+              <button
+                className="pagination-btn-alerts1"
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage(prev => prev - 1)}
+              >
+                Précédent
+              </button>
+              <span className="current-page-alerts1">Page {currentPage}</span>
+              <button
+                className="pagination-btn-alerts1"
+                disabled={currentPage > totalPages}
+                onClick={() => setCurrentPage(prev => prev + 1)}
+              >
+                Suivant
+              </button>
+            </div>
 
                 </div>
               </div>

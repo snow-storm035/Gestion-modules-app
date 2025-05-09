@@ -32,7 +32,7 @@ export default function Logout() {
     };
 
     return (
-        <div>
+        <div className='logA'>
             <FontAwesomeIcon 
                 icon={faRightFromBracket} 
                 style={{ fontSize: "20px" }}

@@ -7,7 +7,6 @@ import Alerts from "../Alerts/alert";
 import ImporterFichierExcel from "../Alerts/ImporterFichierExcel";
 import CalendrierEfm from "../model/calendrierEfm";
 import UpdateModuleStatu from "../group/UpdateModuleStatu";
-import DetailsAvencemnet from "../group/DetailsAvencemnet";
 import Login from "../login/login";
 import Register from "../login/register";
 import Home from "../Contenu/Home";
@@ -29,6 +28,14 @@ export const router = createBrowserRouter([
     path: "/login",
     element: <Login />,
   },
+<<<<<<< HEAD
+=======
+  
+  // {
+  //   path: "/test",
+  //   element: <Dashboard />,
+  // },
+>>>>>>> a418b8e354fa65723d5d0c209b3db2a9287c7ae0
   {
     path: "/register",
     element: <Register />,
@@ -79,15 +86,15 @@ export const router = createBrowserRouter([
         path: "calendrierEfm", // `/app/calendrierEfm`
         element: <CalendrierEfm />,
       },
-      {
-        path: "updateModuleStatu", // `/app/updateModuleStatu`
-        element: <UpdateModuleStatu />,
-      },
-      {
+      // {
+      //   path: "updateModuleStatu", // `/app/updateModuleStatu`
+      //   element: <UpdateModuleStatu />,
+      // },
+      // {
 
-        path: "detailsAvencemnet", // `/app/detailsAvencemnet`
-        element: <DetailsAvencemnet />,
-      },
+      //   path: "detailsAvencemnet", // `/app/detailsAvencemnet`
+      //   element: <DetailsAvencemnet />,
+      // },
     ],
   },
 

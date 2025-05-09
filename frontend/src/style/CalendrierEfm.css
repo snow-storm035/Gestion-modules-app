@@ -137,6 +137,7 @@
 .pagination-container-CalendrierEfm {
     display: flex;
     justify-content: space-between;
+    align-items: baseline;
     /* margin-top: 1rem;  */
    margin: 10px ;
   }
@@ -149,6 +150,7 @@
     border-radius: 0.25rem;
     cursor: pointer;
     transition: all 0.2s ease;
+    width: 150px;
   }
   
   .pagination-btn-CalendrierEfm:disabled {

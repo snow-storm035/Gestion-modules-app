@@ -62,7 +62,7 @@ export default function Home() {
 
             <div className={darkMode ? "completed-modules-container" : "completed-modules-container completed-modules-container-dark"}>
               <p>États modules</p>
-              <button className="navigation-button details-button-date" onClick={()=>navigate("/app/etatmodel")}>
+              <button className="navigation-button " onClick={()=>navigate("/app/etatmodel")}>
                {">>"}
               </button>
             </div>

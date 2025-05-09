@@ -11,12 +11,21 @@
     color: black;
 }
 .reset-btn-filiere{
-    background-color: red;
+    /* background-color: red;
     border: none;
     outline: none;
     border-radius: 8px;
     width: 100px;
-    padding: 5px;
+    padding: 5px; */
+    padding: 8px 16px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    white-space: nowrap;
+    width: 150px;
+    margin: 2px;
 }
 .flex-ajouter-filiere {
   
@@ -25,7 +34,11 @@
     align-items: center;
 }
 
-
+td{
+    padding: 4px !important;
+   text-align: center;
+   align-content: center;
+  }
 .card-body-Filiere {
     border-radius: 8px;
     display: flex;
@@ -66,6 +79,7 @@
 .pagination-container-filiere {
     display: flex;
     justify-content: space-between;
+    align-items: baseline;
     /* margin-top: 1rem;  */
    margin: 10px ;
   }
@@ -78,6 +92,7 @@
     border-radius: 0.25rem;
     cursor: pointer;
     transition: all 0.2s ease;
+    width: 150px;
   }
   
   .pagination-btn-filiere:disabled {
