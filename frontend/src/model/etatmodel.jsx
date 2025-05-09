@@ -1,6 +1,6 @@
 
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import "../style/stylelist_model.css";
 import { useDarkMode } from "../DarkModeProvider/DarkModeContext";
 import apiService from '../Axios/apiService';

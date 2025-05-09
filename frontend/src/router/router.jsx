@@ -16,7 +16,6 @@ import PageNotFound from "../PageNotFound/pageNotFound";
 import Welcome from "../login/welcome";
 import ResetPasswordPage from "../login/ResetPasswordPage";
 import ForgotPasswordPage from "../login/ForgotPasswordPage";
-import Dashboard from "../testDash/testpage";
 
 export const dashbord = "/student/dashbord";
 
@@ -30,11 +29,6 @@ export const router = createBrowserRouter([
     path: "/login",
     element: <Login />,
   },
-  
-  {
-    path: "/test",
-    element: <Dashboard />,
-  },
   {
     path: "/register",
     element: <Register />,
@@ -47,10 +41,6 @@ export const router = createBrowserRouter([
     path: "/forgot-password",
     element: <ForgotPasswordPage />,
   },
-
-
-
-  
   // Protected routes (with layout)
   {
     path: "/app", // Base path for all layout-wrapped routes

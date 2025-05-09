@@ -30,7 +30,14 @@ Route::withoutMiddleware([VerifyCsrfToken::class])->group(function(){
     // Route::resource('/groupes',GroupeController::class);
     // Route::resource('/formateurs',FormateurController::class);
     // Route::resource('/filieres',FiliereController::class);
-    Route::get('/filieres',[FiliereController::class,'index']);
+
+
+
+    // send "topthree" parameter inside the request's body with "ok" as it's value
+    Route::get('/filieres',[FiliereController::class,'index']);  
+
+
+    
     Route::resource('/alerts',AlertController::class);
 
     Route::get('/avancements/{groupe}/{module}',[AvancementController::class,'show']);
@@ -49,7 +56,7 @@ Route::withoutMiddleware([VerifyCsrfToken::class])->group(function(){
 
     Route::get('/nbrgroupes', [GroupeController::class,'nbrgroupes']);
 
-    Route::get('/nbralerts', [AlertController::class,'alertsCount']);
+    Route::get('/nbralerts', [AlertController::class,'alertsCount']); // send 'type' via the request's body
     //#########################################################
     
     Route::get('/calendrierefms/{regional?}',[GeneralAppController::class,'calendrierEfms']);

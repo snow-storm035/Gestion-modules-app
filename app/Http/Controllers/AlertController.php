@@ -13,11 +13,14 @@ class AlertController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         //m
-        $alerts = Alert::all();
+        $type = $request->has('type_alert') ? $request->input('type_alert') : null;
 
+        $alerts = $type ? Alert::where('etat', $type)->get() : Alert::all();
+
+        
 
         $displayedAlerts = array_map(function($item){
             $module = Module::where([
@@ -53,7 +56,6 @@ class AlertController extends Controller
                 'niveaux' => $niveaux_unique,
                 'regional' => ['O', 'N']
             ]
-
         ], 200);
     }
 
