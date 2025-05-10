@@ -111,14 +111,31 @@ const apiService = {
     }
   },
 
-  getAlertsCount: async () => {
+  getAlertsCountretard: async () => {
     try {
-      const response = await axiosClient.get('/nbralerts');
+      const response = await axiosClient.get('/nbralerts', {
+        params: {
+          alert_type: 'enretard'
+        }
+      });
       return response.data;
     } catch (error) {
       throw error.response?.data || error.message;
     }
   },
+  getAlertsCountpresquefinie: async () => {
+    try {
+      const response = await axiosClient.get('/nbralerts', {
+        params: {
+          alert_type: 'presquefinie'
+        }
+      });
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+  
 
   // Filiere endpoints
   getFilieres: async () => {
@@ -129,10 +146,24 @@ const apiService = {
       throw error.response?.data || error.message;
     }
   },
+  // Filiere endpoints avancement 
+  // "topthree":"ok"
+  getFilieresAvonment: async () => {
+    try {
+      const response = await axiosClient.get('/filieres', {
+        params: {
+          topthree: 'ok'
+        }
+      });
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
 
   getFilieresCount: async () => {
     try {
-      const response = await axiosClient.get('/nbrfilieres');
+      const response = await axiosClient.get('/totalNbrFilieres');
       return response.data;
     } catch (error) {
       throw error.response?.data || error.message;

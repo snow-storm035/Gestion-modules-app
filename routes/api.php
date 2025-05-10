@@ -12,14 +12,16 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 
 
 
-Route::middleware(['auth:sanctum'])->group(function () {
+// Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/notifications', function (Request $request) {
+        // dd(auth());
+        dd($request->user());
         return response()->json([
-            'notifications' => $request->user()->notifications,
-            'unread_count' => $request->user()->unreadNotifications->count(),
+            'notifications' =>auth()->user()->notifications,
+            'unread_count' => auth()->user()->unreadNotifications->count(),
         ]);
     });
-});
+// });
 
 
 use App\Models\User;

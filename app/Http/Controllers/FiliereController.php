@@ -76,6 +76,7 @@ class FiliereController extends Controller
 
     public function totalNbrFilieres()
     {
+        // dd("1234567890-1");
 
         try {
             $nbrfilieres = count(Filiere::all()->toArray());

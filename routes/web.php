@@ -52,7 +52,7 @@ Route::withoutMiddleware([VerifyCsrfToken::class])->group(function(){
     });
 
     // routes for dashboard's home page:
-    Route::get('/nbrfilieres', [FiliereController::class,'nbrfilieres']);
+    Route::get('/totalNbrFilieres', [FiliereController::class,'totalNbrFilieres']);
 
     Route::get('/nbrgroupes', [GroupeController::class,'nbrgroupes']);
 
