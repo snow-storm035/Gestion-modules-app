@@ -1,6 +1,7 @@
 import "../style/styleHome2.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGreaterThan, faBook, faCodeBranch, faUserGroup } from '@fortawesome/free-solid-svg-icons';
+import {  faGreaterThan, faBook, faCodeBranch ,faUserGroup} from '@fortawesome/free-solid-svg-icons';
+// import CircularProgress from "../CircularProgress/CircularProgress";
 import downloadImage from "../image/download.png";
 import ProgressModules from "../CircularProgress/CircularProgress";
 import { useNavigate } from "react-router-dom";
@@ -54,16 +55,15 @@ export default function Home() {
 
     fetchAlertCounts();
   }, []);
-
-
-  useEffect(() => {
-    console.log("presqueFinisCount:", presqueFinisCount)
-    console.log("presqueFinisCount:", retardCount)
-    console.log("notification:", notification)
-    console.log("calendrierEfms:", calendrierEfms)
-  }, [presqueFinisCount, retardCount, notification, calendrierEfms])
-  if (loading) return <div>Loading home...</div>;
-  if (error) return <div>Error: {error}</div>;
+  
+  
+useEffect(()=>{
+  console.log("presqueFinisCount:",presqueFinisCount)
+  console.log("presqueFinisCount:",retardCount)
+  console.log("notification:",notification)
+},[presqueFinisCount,retardCount,notification])
+if (loading) return <div>Loading home...</div>;
+// if (error) return <div>Error: {error}</div>;
 
   return <>
     <div className="articl-dates-card-section-header-all-div">
