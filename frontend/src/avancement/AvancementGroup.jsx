@@ -350,7 +350,7 @@ const AvancemnetGroup = () => {
                   {filters1234.modules.map((module, index) => (
                     <option
                       key={index}
-                    value={module.code_module} // This is what gets submitted (hidden from user)
+                      value={module.code[1]} // This is what gets submitted (hidden from user)
                     >
                       {/* This is what the user sees in the dropdown */}
                       {`${module.code[1]} - ${module.libelle}`}
@@ -414,10 +414,16 @@ const AvancemnetGroup = () => {
                   className="filter-select"
                   placeholder="Niveaux"
                 />
-                <datalist id="niveau">
+                {/* <datalist id="niveau">
                   {[...new Set(filters1234.niveaux)].map(niveau => (  // Removes duplicates
                     <option key={niveau} value={niveau} />  // Now keys are unique
                   ))}
+                </datalist> */}
+                <datalist id="niveau">
+                  {[...new Set(filters1234.niveaux.filter(n => n && n.trim() !== ''))]
+                    .map((niveau, index) => (
+                      <option key={`${niveau}-${index}`} value={niveau} />
+                    ))}
                 </datalist>
               </div>
 
