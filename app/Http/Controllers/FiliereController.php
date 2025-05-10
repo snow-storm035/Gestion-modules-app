@@ -51,7 +51,7 @@ class FiliereController extends Controller
                 // array_slice()
 
                 $topthree = array_slice(array_sorted($dataExtended, 'taux_avancement', true), 0, 3);
-                // dd($request->user());
+               
                 return response()->json($topthree, 200);
             }
             // dd($filieres_avancements);
@@ -76,11 +76,11 @@ class FiliereController extends Controller
 
     public function totalNbrFilieres()
     {
-        // dd("1234567890-1");
+     
 
         try {
             $nbrfilieres = count(Filiere::all()->toArray());
-            // dd($nbrfilieres);
+           
             return response()->json(['nbrfilieres' => $nbrfilieres], 200);
         } catch (Exception $e) {
             return response()->json(['error' => $e->getMessage()]);

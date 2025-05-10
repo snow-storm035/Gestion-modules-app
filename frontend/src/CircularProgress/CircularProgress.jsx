@@ -58,7 +58,7 @@ import { useEffect, useState } from 'react';
 import './CircularProgress.css';
 import { useNavigate } from 'react-router-dom';
 import { useDarkMode } from "../DarkModeProvider/DarkModeContext";
-import apiService from '../Axios//apiService'; // adjust the path if needed
+import apiService from '../Axios/apiService'; // adjust the path if needed
 
 const ProgressModules = () => {
   const { darkMode } = useDarkMode();

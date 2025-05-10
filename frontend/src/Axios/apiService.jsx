@@ -266,7 +266,7 @@ const apiService = {
 
   getNotifications: async () => {
     try {
-      const response = await axiosClient.get('/api/notifications');
+      const response = await axiosClient.get('/notifications');
       return response.data;
     } catch (error) {
       throw error.response?.data || error.message;

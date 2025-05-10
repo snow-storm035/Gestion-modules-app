@@ -66,11 +66,28 @@ Route::withoutMiddleware([VerifyCsrfToken::class])->group(function(){
     Route::put('/avancements/{avancement}', [AvancementController::class,'update']);
 
     Route::post('/uploadstats',[ExcelFileController::class,'extractAllData']);
+    Route::get('/notifications', function (Request $request) {
+        // dd(auth());
+        // dd($request->user());
+        return response()->json([
+            'notifications' =>auth()->user()->notifications,
+            'unread_count' => auth()->user()->unreadNotifications->count(),
+        ]);
+    });
 });
+
+// Route::middleware(['auth:sanctum'])->group(function () {
+// });
+
+
 
 // Route::post('/index', [AvancementController::class, 'index'])
 // ->withoutMiddleware([VerifyCsrfToken::class]);
 
 // Route::post('/module', [ModuleController::class, 'store'])->withoutMiddleware([VerifyCsrfToken::class]);
 
+
+
 require __DIR__.'/auth.php';
+
+
