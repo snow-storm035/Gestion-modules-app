@@ -86,7 +86,7 @@ if (!function_exists('verifierAvancements')) {
                     "etat" => "presque fini",
                     "mhrestante" => $mhrestante,
                 ]);
-                $user = User::find(1);
+                $user = auth()->user();
                 // dd($user);
                 $user->notify(new ModulePrequeFini($avancement));
             }else {
