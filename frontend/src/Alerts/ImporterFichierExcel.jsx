@@ -2,14 +2,38 @@ import { useState } from "react";
 import { useDarkMode } from "../DarkModeProvider/DarkModeContext";
 import excelIcon from "../image/excel.png";
 import apiService from "../Axios/apiService";
-import "../style/ImporterFichierExcel.css"
+import "../style/ImporterFichierExcel.css";
+import { useAlertContext } from "../context/AlertContext";
+
 export default function ImporterFichierExcel() {
   const { darkMode } = useDarkMode();
   const [excelFile, setExcelFile] = useState(null);
   const [typeImport, setTypeImport] = useState("dates_modules"); // valeur par défaut
+   const { notification2,setNotification2,setLoading,setError, loading, error } = useAlertContext();
+
+
+    const fetchAlertCounts = async () => {
+      try {
+        setLoading(true);
+        await apiService.getCsrfCookie();
+
+        const [notification2] = await Promise.all([
+          apiService.getNotifications(),
+        ]);
+
+        setNotification2(notification2 || []);
+      } catch (err) {
+        console.error('Erreur lors du chargement des alertes :', err);
+        setError('Erreur lors du chargement des alertes.');
+      } finally {
+        setLoading(false);
+      }
+    };
 
   const handleSubmitExcel = async (e) => {
     e.preventDefault();
+
+
 
     if (!excelFile) {
       alert("Veuillez sélectionner un fichier Excel.");
@@ -20,7 +44,16 @@ export default function ImporterFichierExcel() {
     try {
       const result = await apiService.uploadStats(excelFile,typeImport);
       console.log("Réponse du serveur :", result);
+
+ 
+
+
+    fetchAlertCounts();
+  
+
       alert("Fichier importé avec succès !");
+
+
     } catch (error) {
       console.error("Erreur lors de l'import :", error);
       alert("Une erreur est survenue lors de l'import.");

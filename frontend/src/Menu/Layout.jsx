@@ -9,39 +9,42 @@ import DarkMode from "./DarkMode";
 import { useDarkMode } from '../DarkModeProvider/DarkModeContext';
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import apiService from "../Axios/apiService"
+// import apiService from "../Axios/apiService"
+import { useAlertContext } from "../context/AlertContext";
 const Layout = () => {
   const navigate = useNavigate();
-  const [notification, setNotification] = useState({
-    model: "devlopment",
-    notification: true
-  })
+  // const [notification, setNotification] = useState({
+  //   model: "devlopment",
+  //   notification: true
+  // })
   const [heddin, setHeddin] = useState(true)
-  const [notification2, setNotification2] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  useEffect(() => {
-    const fetchAlertCounts = async () => {
-      try {
-        setLoading(true); // optional, if you track global loading
-        await apiService.getCsrfCookie(); // Laravel Sanctum support
+  // const [notification2, setNotification2] = useState([]);
+  const { notification2, loading, error } = useAlertContext();
+  
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState(null);
+  // useEffect(() => {
+  //   const fetchAlertCounts = async () => {
+  //     try {
+  //       setLoading(true); // optional, if you track global loading
+  //       await apiService.getCsrfCookie(); // Laravel Sanctum support
 
-        const [notification2] = await Promise.all([
+  //       const [notification2] = await Promise.all([
 
-          apiService.getNotifications(),
-        ]);
+  //         apiService.getNotifications(),
+  //       ]);
 
-        setNotification2(notification2 || []);
-      } catch (err) {
-        console.error("Erreur lors du chargement des alertes :", err);
-        setError("Erreur lors du chargement des alertes."); // optional
-      } finally {
-        setLoading(false);
-      }
-    };
+  //       setNotification2(notification2 || []);
+  //     } catch (err) {
+  //       console.error("Erreur lors du chargement des alertes :", err);
+  //       setError("Erreur lors du chargement des alertes."); // optional
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchAlertCounts();
-  }, []);
+  //   fetchAlertCounts();
+  // }, []);
 
   useEffect(() => {
     console.log("response notificatoun layout:", notification2)
@@ -74,7 +77,7 @@ const Layout = () => {
   // aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
 
   if (loading) return <div>Loading in layout...</div>;
-  if (error) return <div>Error: {error}</div>;
+  // if (error) return <div>Error: {error}</div>;
   return (
     <div className="countiner">
       <div className="menu">
@@ -120,13 +123,14 @@ const Layout = () => {
     <p>Groupe: {notification2.notifications[0].data.code_groupe}</p>
   </div>
 )} */}
+{/* etat */}
 
       {
-        notification2.notifications.length > 0 ?
+        notification2?.notifications?.length > 0 ?
           <div className="alert-bubble">
             {heddin ?
               <div className="alert-message-bubble">
-                <p >le group <b>{notification2.notifications[0].data.code_groupe}</b> est en retard dans le module <b>{notification2.notifications[0].data.code_module}</b>.
+                <p >le group <b>{notification2.notifications[0].data.code_groupe}</b> est <b>{notification2.notifications[0].data.etat}</b> dans le module <b>{notification2.notifications[0].data.code_module}</b>.
                   <span>
                     <a
                       className="btn-alert-details"

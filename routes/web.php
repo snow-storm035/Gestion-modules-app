@@ -66,7 +66,17 @@ Route::withoutMiddleware([VerifyCsrfToken::class])->group(function () {
     Route::put('/avancements/{avancement}', [AvancementController::class, 'update']);
 
     Route::post('/uploadstats',[ExcelFileController::class,'extractAllData']);
-});
+
+    Route::get('/notifications', function (Request $request) {
+      
+        return response()->json([
+            'notifications' =>auth()->user()->notifications,
+            'unread_count' => auth()->user()->unreadNotifications->count(),
+        ]);
+    }); 
+ });
+
+
 
 // Route::post('/index', [AvancementController::class, 'index'])
 // ->withoutMiddleware([VerifyCsrfToken::class]);
