@@ -33,6 +33,7 @@ const Alerts = () => {
         setLoading(true);
         await apiService.getCsrfCookie();
         const response = await apiService.getAlerts();
+        console.log(response)
         const receivedAlerts = response.alerts || [];
         const receivedFilters = response.filters || {
           filieres: [],
