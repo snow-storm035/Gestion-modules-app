@@ -271,20 +271,21 @@ border-radius: 50%;
  display: flex;
  justify-content: center;
  align-items: center;
+ /* background-color: gold; */
 }
 .faBell{
     color: rgb(147, 4, 4);
 }
 
-/* .alert-message-bubble{
-background-color: rgb(190, 107, 107)(186, 81, 81);
-height: 50px;
-width: 80%;
 
-} */
 
 .btn-bubble{
     border-radius: 50%;
     border: none;
     outline: none;
+    background-color: darkblue;
+    width: 60px;
+    height: 60px;
+    padding: 0;
+
 }

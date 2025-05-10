@@ -6,15 +6,59 @@ import downloadImage from "../image/download.png";
 import ProgressModules from "../CircularProgress/CircularProgress";
 import { useNavigate } from "react-router-dom";
 import { useDarkMode } from "../DarkModeProvider/DarkModeContext";
-// onClick={toggleDarkMode}
-// className="darkmode"
-// aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+import apiService from '../Axios/apiService';
+import { useEffect, useState } from 'react';
+
 
 export default function Home() {
   const navigate=useNavigate();
   const { darkMode } = useDarkMode();
+  const [presqueFinisCount, setPresqueFinisCount] = useState(0);
+  const [retardCount, setRetardCount] = useState(0);
+  const [numberGroup, setNumberGroup] = useState(0);
+  const [numberFiliere, setNumberFiliere] = useState(0);
+  const [notification, setNotification] = useState([]);
 
-
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+    useEffect(() => {
+      const fetchAlertCounts = async () => {
+          try {
+              setLoading(true); // optional, if you track global loading
+              await apiService.getCsrfCookie(); // Laravel Sanctum support
+  
+              const [presque, retard,numberGroup,numberFiliere,notification] = await Promise.all([
+                  apiService.getAlertsCountpresquefinie(),
+                  apiService.getAlertsCountretard(),
+                  apiService.getGroupesCount(),
+                  apiService.getFilieresCount(),
+                  apiService.getNotifications(),
+              ]);
+  
+              setPresqueFinisCount(presque.alerts_count || 0);
+              setRetardCount(retard.alerts_count || 0);
+              setNumberGroup(numberGroup.nbrgroupes || 0);
+              setNumberFiliere(numberFiliere.nbrfilieres || 0);
+              setNotification(notification || []);
+          } catch (err) {
+              console.error("Erreur lors du chargement des alertes :", err);
+              setError("Erreur lors du chargement des alertes."); // optional
+          } finally {
+              setLoading(false);
+          }
+      };
+  
+      fetchAlertCounts();
+  }, []);
+  
+  
+useEffect(()=>{
+  console.log("presqueFinisCount:",presqueFinisCount)
+  console.log("presqueFinisCount:",retardCount)
+  console.log("notification:",notification)
+},[presqueFinisCount,retardCount,notification])
+if (loading) return <div>Loading home...</div>;
+if (error) return <div>Error: {error}</div>;
 
   return <>
     <div className="articl-dates-card-section-header-all-div">
@@ -24,12 +68,12 @@ export default function Home() {
 
         <div className="header">
           <div>
-            <span>20</span>
+            <span>{numberFiliere}</span>
             <FontAwesomeIcon className="faCodeBranch" icon={faCodeBranch} />
             <FontAwesomeIcon className="faGreaterThan" icon={faGreaterThan} />
           </div>
           <div>
-            <span>20</span>
+            <span>{numberGroup}</span>
            
             <FontAwesomeIcon className="faUserGroup" icon={faUserGroup} />
             <FontAwesomeIcon className="faGreaterThan" icon={faGreaterThan} />
@@ -42,27 +86,27 @@ export default function Home() {
             <div  className={darkMode?"alert-container":"alert-container alert-container-dark-mode"}>
 
               {/* <div className="button-container"> */}
-                <button className="status-button presque-finis " onClick={()=>navigate("/app/alerts")}>
-                  <span className="count">5</span>
+                <button className="status-button presque-finis " onClick={()=>navigate("/app/etatmodel")}>
+                  <span className="count">{presqueFinisCount}</span>
                   <span className="label">Modules presque finis</span>
                 </button>
 
-                <button className="status-button en-retards" onClick={()=>navigate("/app/alerts")}>
-                  <span className="count">3</span>
+                <button className="status-button en-retards" onClick={()=>navigate("/app/etatmodel")}>
+                  <span className="count">{retardCount}</span>
                   <span className="label">Modules en retard</span>
                 </button>
               {/* </div> */}
             </div>
             <div className={darkMode ? "module-progress-card" : "module-progress-card module-progress-card-dark"}>
 
-              <h2 className="module-progress-title">Progès des modules</h2>
+              <h2 className="module-progress-title">Progès des filière</h2>
 
               <ProgressModules />
             </div>
 
             <div className={darkMode ? "completed-modules-container" : "completed-modules-container completed-modules-container-dark"}>
               <p>États modules</p>
-              <button className="navigation-button " onClick={()=>navigate("/app/etatmodel")}>
+              <button className="navigation-button details-button-date" onClick={()=>navigate("/app/etatmodel")}>
                {">>"}
               </button>
             </div>

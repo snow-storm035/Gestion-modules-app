@@ -14,7 +14,7 @@ const Layout = () => {
   const navigate=useNavigate();
   const [notification,setNotification] = useState({
     model: "devlopment",
-    notification:false
+    notification:true
   })
   const [heddin, setHeddin] = useState(true)
 
@@ -28,7 +28,7 @@ const Layout = () => {
   }
   const handleClick=()=>{
     handelHeddin();
-    navigate("/alerts")
+    navigate("/app/alerts")
 
   }
   // handel function heddin alert
@@ -88,7 +88,7 @@ const Layout = () => {
     <div className="alert-bubble">
     {heddin ?
       <div className="alert-message-bubble">
-        <p >le group DEV105 est en retard dans le module M105. <span><a className="btn-alert-details" href="/avancementDetail" onClick={handleheddinalert}>Voir dètails</a></span></p>
+        <p >le group DEV105 est en retard dans le module M105. <span><a className="btn-alert-details" href="/app/avancementDetail/CMOSE108/M102 " onClick={handleheddinalert}>Voir dètails</a></span></p>
 
       </div >
       :

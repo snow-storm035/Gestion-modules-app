@@ -350,7 +350,7 @@ const AvancemnetGroup = () => {
                   {filters1234.modules.map((module, index) => (
                     <option
                       key={index}
-                    // value={module.code} // This is what gets submitted (hidden from user)
+                    value={module.code_module} // This is what gets submitted (hidden from user)
                     >
                       {/* This is what the user sees in the dropdown */}
                       {`${module.code[1]} - ${module.libelle}`}
