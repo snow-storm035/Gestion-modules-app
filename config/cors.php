@@ -15,7 +15,8 @@ return [
     |
     */
 
-'paths' => ['*'],
+'paths' => ['*'], // ← أضف المسار
+
 
     'allowed_methods' => ['*'],
 
