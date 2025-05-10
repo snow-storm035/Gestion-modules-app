@@ -13,14 +13,14 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 
 
 // Route::middleware(['auth:sanctum'])->group(function () {
-    Route::get('/notifications', function (Request $request) {
-        // dd(auth());
-        dd($request->user());
-        return response()->json([
-            'notifications' =>auth()->user()->notifications,
-            'unread_count' => auth()->user()->unreadNotifications->count(),
-        ]);
-    });
+//     Route::get('/notifications', function (Request $request) {
+//         // dd(auth());
+//         dd($request->user());
+//         return response()->json([
+//             'notifications' =>auth()->user()->notifications,
+//             'unread_count' => auth()->user()->unreadNotifications->count(),
+//         ]);
+//     });
 // });
 
 

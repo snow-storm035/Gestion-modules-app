@@ -58,7 +58,7 @@ useEffect(()=>{
   console.log("notification:",notification)
 },[presqueFinisCount,retardCount,notification])
 if (loading) return <div>Loading home...</div>;
-if (error) return <div>Error: {error}</div>;
+// if (error) return <div>Error: {error}</div>;
 
   return <>
     <div className="articl-dates-card-section-header-all-div">
