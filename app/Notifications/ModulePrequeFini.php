@@ -52,6 +52,7 @@ class ModulePrequeFini extends Notification
         return [
             //
             "code_groupe" => $this->avancement->code_groupe,
+            "etat" =>  "presque finie",
             "code_module" => $this->avancement->code_module
         ];
     }

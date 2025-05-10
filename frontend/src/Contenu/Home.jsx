@@ -1,7 +1,7 @@
 import "../style/styleHome2.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {  faGreaterThan, faBook, faCodeBranch ,faUserGroup} from '@fortawesome/free-solid-svg-icons';
-import CircularProgress from "../CircularProgress/CircularProgress";
+// import CircularProgress from "../CircularProgress/CircularProgress";
 import downloadImage from "../image/download.png";
 import ProgressModules from "../CircularProgress/CircularProgress";
 import { useNavigate } from "react-router-dom";

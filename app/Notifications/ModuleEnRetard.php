@@ -52,6 +52,7 @@ class ModuleEnRetard extends Notification
         return [
             //
             "code_groupe" => $this->avancement->code_groupe,
+            "etat" =>  "en retard",
             "code_module" => $this->avancement->code_module
         ];
     }

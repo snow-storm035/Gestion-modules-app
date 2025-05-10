@@ -72,7 +72,7 @@ Route::withoutMiddleware([VerifyCsrfToken::class])->group(function () {
         // dd(auth()->user());
 
         return response()->json([
-            'notifications' => auth()->user()->notifications,
+            'notifications' => auth()->user()->notifications->sortByDesc('created_at'),
             'unread_count' => auth()->user()->unreadNotifications->count(),
         ]);
     });
