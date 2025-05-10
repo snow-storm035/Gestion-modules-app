@@ -73,7 +73,7 @@ if (!function_exists('verifierAvancements')) {
                     "mhrestante" => $mhrestante,
                     "date_fin_prevu" => moduleEnRetard($mhrestante, $avancement) // this either will get a 0 or certain date
                 ]);
-                $user = User::find(1);
+                $user = auth()->user();
                 $user->notify(new ModuleEnRetard($avancement));
             } else if (modulePresqueFinis($mhrestante, $avancement)) {
                 Alert::createOrFirst([

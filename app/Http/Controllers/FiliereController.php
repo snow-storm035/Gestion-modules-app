@@ -51,7 +51,7 @@ class FiliereController extends Controller
                 // array_slice()
 
                 $topthree = array_slice(array_sorted($dataExtended, 'taux_avancement', true), 0, 3);
-                // dd($topthree);
+                // dd($request->user());
                 return response()->json($topthree, 200);
             }
             // dd($filieres_avancements);
