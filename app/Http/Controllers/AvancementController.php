@@ -142,7 +142,7 @@ class AvancementController extends Controller
                 ->first();
 
 
-            dd($avancement['nbh_par_semaine_total']);
+            // dd($avancement['nbh_par_semaine_total']);
             // ###################################################
 
             return response()->json(['success' => 'data has been updated successfully'], 200);

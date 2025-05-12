@@ -3,7 +3,7 @@ import { NavLink, Outlet } from "react-router-dom";
 import "./styleLayout.css";
 import LogoOfppt from "../image/logo.png"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouse, faCodeBranch, faBook, faUserGroup, faCircleExclamation, faBell } from '@fortawesome/free-solid-svg-icons';
+import { faHouse, faCodeBranch, faBook, faUserGroup, faCircleExclamation, faBell, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import Logout from "./Logout";
 import DarkMode from "./DarkMode";
 import { useDarkMode } from '../DarkModeProvider/DarkModeContext';
@@ -130,7 +130,10 @@ const Layout = () => {
           <div className="alert-bubble">
             {heddin ?
               <div className="alert-message-bubble">
-                <p >le group <b>{notification2.notifications[0].data.code_groupe}</b> est <b>{notification2.notifications[0].data.etat}</b> dans le module <b>{notification2.notifications[0].data.code_module}</b>.
+                <button className="close_btn" onClick={handelHeddin}>
+                  <FontAwesomeIcon className="fa-regular fa-circle-xmark" icon={faCircleXmark} />
+                </button>
+                <p className="alert-text">le group <b>{notification2.notifications[0].data.code_groupe}</b> est <b>{notification2.notifications[0].data.etat}</b> dans le module <b>{notification2.notifications[0].data.code_module}</b>.
                   <span>
                     <a
                       className="btn-alert-details"
