@@ -195,7 +195,7 @@ const Alerts = () => {
                               <td>
                                 <button
                                   className="btn btn-sm btn-outline-secondary"
-                                  onClick={() => navigate('/avancementDetail')}
+                                  onClick={() => navigate(`/app/avancementDetail/${alert.code_groupe}/${alert.code_module}`)}
                                 >
                                   <FontAwesomeIcon icon={faEye} />
                                 </button>
