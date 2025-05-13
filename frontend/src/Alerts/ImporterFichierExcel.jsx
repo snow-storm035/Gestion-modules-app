@@ -3,13 +3,16 @@ import { useDarkMode } from "../DarkModeProvider/DarkModeContext";
 import excelIcon from "../image/excel.png";
 import apiService from "../Axios/apiService";
 import "../style/ImporterFichierExcel.css";
-import { useAlertContext } from "../context/AlertContext";
+import { AlertContext } from "../context/AlertContext";
+import { Button } from "react-bootstrap";
+import {  Loader } from "lucide-react";
 
 export default function ImporterFichierExcel() {
   const { darkMode } = useDarkMode();
   const [excelFile, setExcelFile] = useState(null);
   const [typeImport, setTypeImport] = useState("dates_modules"); // valeur par défaut
-   const { notification2,setNotification2,setLoading,setError, loading, error } = useAlertContext();
+   const { notification2,setNotification2,setLoading,setError, loading, error } = useContext(AlertContext);
+const [isSubmitting, setIsSubmitting] = useState(false);
 
 
   const fetchAlertCounts = async () => {
@@ -36,7 +39,7 @@ export default function ImporterFichierExcel() {
       alert("Veuillez sélectionner un fichier Excel.");
       return;
     }
-    // setIsSubmitting(true); // Start loader
+    setIsSubmitting(true); // Start loader
     try {
       const result = await apiService.uploadStats(excelFile, typeImport);
       console.log("Réponse du serveur :", result);
@@ -47,7 +50,7 @@ export default function ImporterFichierExcel() {
       console.error("Erreur lors de l'import :", error);
       alert("Une erreur est survenue lors de l'import.");
     } finally {
-      // setIsSubmitting(false); // Stop loader
+      setIsSubmitting(false); // Stop loader
     }
   };
 
@@ -84,18 +87,18 @@ export default function ImporterFichierExcel() {
             className="file-input"
           />
           
-          <input
+          {/* <input
             type="submit"
             value="Valider"
             className="submit-btn"
-          />
+          /> */}
 
 
-{/* 
+
           <Button className="submit-btn" type="submit" disabled={isSubmitting}>
             {isSubmitting && <Loader className="mx-2 my-2 animate-spin" />}
             {isSubmitting ? "Importation..." : "Importer"}
-          </Button> */}
+          </Button>
         </form>
       </div>
     </div>
