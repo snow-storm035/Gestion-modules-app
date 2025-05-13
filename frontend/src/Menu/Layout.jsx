@@ -3,7 +3,7 @@ import { NavLink, Outlet } from "react-router-dom";
 import "./styleLayout.css";
 import LogoOfppt from "../image/logo.png"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouse, faCodeBranch, faBook, faUserGroup, faCircleExclamation, faBell, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import { faHouse, faCodeBranch, faBook, faUserGroup, faCalendar, faCircleExclamation, faBell, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import Logout from "./Logout";
 import DarkMode from "./DarkMode";
 import { useDarkMode } from '../DarkModeProvider/DarkModeContext';
@@ -135,6 +135,7 @@ const Layout = () => {
             <ul>
               <li><NavLink className={({ isActive }) => isActive ? "link_dashbord active-link" : "link_dashbord"} to="/app"> <FontAwesomeIcon className="icon-fontawesome" icon={faHouse} />Acceuil</NavLink></li>
               <li><NavLink className={({ isActive }) => isActive ? "link_dashbord active-link" : "link_dashbord"} to="/app/etatmodel"><FontAwesomeIcon className="icon-fontawesome" icon={faBook} />États modules</NavLink></li>
+              <li><NavLink className={({ isActive }) => isActive ? "link_dashbord active-link" : "link_dashbord"} to="/app/calendrierEfm"><FontAwesomeIcon className="icon-fontawesome" icon={faCalendar} />Calendrier EFMs</NavLink></li>
               <li className="avancements-nav">Avancements</li>
               <li><NavLink className={({ isActive }) => isActive ? "link_dashbord active-link" : "link_dashbord"} to="/app/avancemnetGroup"><FontAwesomeIcon className="icon-fontawesome" icon={faUserGroup} />Groupes</NavLink></li>
               <li><NavLink className={({ isActive }) => isActive ? "link_dashbord active-link" : "link_dashbord"} to="/app/avencementFiliere"><FontAwesomeIcon className="icon-fontawesome" icon={faCodeBranch} />Filières</NavLink></li>
