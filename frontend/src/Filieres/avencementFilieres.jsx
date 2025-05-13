@@ -5,6 +5,7 @@ import "../style/avencementFilieres.css";
 import { useDarkMode } from "../DarkModeProvider/DarkModeContext";
 import { useNavigate } from 'react-router-dom';
 import apiService from '../Axios/apiService';
+import { Loader } from 'lucide-react';
 
 const AvencementFiliere = () => {
   const navigate = useNavigate();
@@ -104,7 +105,24 @@ const AvencementFiliere = () => {
     currentPage * postPerPage
   );
 
-  if (loading) return <div>Loading filieres...</div>;
+if (loading)
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100vh", // Full height center
+        flexDirection: "column",
+        gap: "1rem",
+        fontSize: "1.2rem",
+        color: "#555",
+      }}
+    >
+      <Loader className="animate-spin" size={48} />
+      <span>Chargement de la page filières...</span>
+    </div>
+  );
   if (error) return <div>Error: {error}</div>;
 
   return (

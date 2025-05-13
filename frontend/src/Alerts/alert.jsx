@@ -7,6 +7,7 @@ import { useDarkMode } from "../DarkModeProvider/DarkModeContext";
 import { useNavigate } from 'react-router-dom';
 import apiService from '../Axios/apiService';
 import "../style/alert.css"
+import { Loader } from 'lucide-react';
 const Alerts = () => {
   const [alerts, setAlerts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -85,7 +86,24 @@ const Alerts = () => {
   );
   const totalPages = Math.ceil(filteredAlerts.length / postPerPage);
 
-  if (loading) return <div>Loading users...</div>;
+ if (loading)
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100vh", // Full height center
+        flexDirection: "column",
+        gap: "1rem",
+        fontSize: "1.2rem",
+        color: "#555",
+      }}
+    >
+      <Loader className="animate-spin" size={48} />
+      <span>Chargement de la page alertes...</span>
+    </div>
+  );
   if (error) return <div>Error: {error}</div>;
 
   return (

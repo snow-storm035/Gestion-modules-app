@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 // import apiService from "../Axios/apiService"
 import { AlertContext } from "../context/AlertContext";
 import apiService from "../Axios/apiService";
+import { Loader } from "lucide-react";
 const Layout = () => {
   const navigate = useNavigate();
   // const [notification, setNotification] = useState({
@@ -119,7 +120,24 @@ const Layout = () => {
   // className="darkmode"
   // aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
 
-  if (loading) return <div>Loading in layout...</div>;
+if (loading)
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100vh", // Full height center
+        flexDirection: "column",
+        gap: "1rem",
+        fontSize: "1.2rem",
+        color: "#555",
+      }}
+    >
+      <Loader className="animate-spin" size={48} />
+      <span>Chargement de layout...</span>
+    </div>
+  );
   // if (error) return <div>Error: {error}</div>;
   return (
     <div className="countiner">

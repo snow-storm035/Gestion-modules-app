@@ -4,6 +4,7 @@ import "../style/AvancementDetails.css";
 import { useDarkMode } from '../DarkModeProvider/DarkModeContext';
 import { useParams } from 'react-router-dom';
 import apiService from '../Axios/apiService';
+import { Loader } from 'lucide-react';
 
 const AvancementDetails = () => {
   // const [keyRunderComponenet ,setKeyRunderComponenet]=useState(1)
@@ -79,7 +80,24 @@ const AvancementDetails = () => {
     setIsEditing(true);
   };
 
-  if (loading) return <div className="avancement-container">Loading...</div>;
+  if (loading)
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100vh", // Full height center
+        flexDirection: "column",
+        gap: "1rem",
+        fontSize: "1.2rem",
+        color: "#555",
+      }}
+    >
+      <Loader className="animate-spin" size={48} />
+      <span>Chargement de la page détail avancement ...</span>
+    </div>
+  );
   if (error) return <div className="avancement-container">Error: {error}</div>;
   if (!avancement) return <div className="avancement-container">No data found</div>;
 

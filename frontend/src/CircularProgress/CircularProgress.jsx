@@ -59,6 +59,7 @@ import './CircularProgress.css';
 import { useNavigate } from 'react-router-dom';
 import { useDarkMode } from "../DarkModeProvider/DarkModeContext";
 import apiService from '../Axios/apiService'; // adjust the path if needed
+import { Loader } from 'lucide-react';
 
 const ProgressModules = () => {
   const { darkMode } = useDarkMode();
@@ -87,7 +88,24 @@ const ProgressModules = () => {
 
     fetchAvancement();
   }, []);
-  if (loading) return <div>Loading home...</div>;
+  if (loading)
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        // height: "100vh", // Full height center
+        flexDirection: "column",
+        gap: "1rem",
+        fontSize: "1.2rem",
+        color: "#555",
+      }}
+    >
+      <Loader className="animate-spin" size={24} />
+      <span>Chargement des filières...</span>
+    </div>
+  );
   if (error) return <div>Error: {error}</div>;
   
   return (

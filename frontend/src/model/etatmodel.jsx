@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import "../style/stylelist_model.css";
 import { useDarkMode } from "../DarkModeProvider/DarkModeContext";
 import apiService from '../Axios/apiService';
+import { Loader } from 'lucide-react';
 
 const Etatmodel = () => {
   const { darkMode } = useDarkMode();
@@ -101,7 +102,24 @@ console.log("filtersData models:",filtersData.modules)
   // Paginate the filtered modules
   const paginatedModules = filteredModules.slice(firstPostindex, lastPostindex);
 
-  if (loading) return <div>Loading modules...</div>;
+if (loading)
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100vh", // Full height center
+        flexDirection: "column",
+        gap: "1rem",
+        fontSize: "1.2rem",
+        color: "#555",
+      }}
+    >
+      <Loader className="animate-spin" size={48} />
+      <span>Chargement de la page état modules...</span>
+    </div>
+  );
   if (error) return <div>Error: {error}</div>;
 
   return (
