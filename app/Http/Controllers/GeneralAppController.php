@@ -33,7 +33,7 @@ class GeneralAppController extends Controller
                     ->groupBy('code_filiere', 'code_module', 'date_efm_prevu')
                     ->orderBy('date_efm_prevu', 'desc')
                     ->first();
-                dd($calendrier_regional, $module);
+                // dd($calendrier_regional, $module);
             }
             // dd("`1234567890-");
             $calendrier_regional_clean = array_filter($calendrier_regional, function ($item) {

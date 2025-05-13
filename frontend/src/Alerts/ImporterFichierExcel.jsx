@@ -1,15 +1,15 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useDarkMode } from "../DarkModeProvider/DarkModeContext";
 import excelIcon from "../image/excel.png";
 import apiService from "../Axios/apiService";
 import "../style/ImporterFichierExcel.css";
-import { useAlertContext } from "../context/AlertContext";
+import { AlertContext } from "../context/AlertContext";
 
 export default function ImporterFichierExcel() {
   const { darkMode } = useDarkMode();
   const [excelFile, setExcelFile] = useState(null);
   const [typeImport, setTypeImport] = useState("dates_modules"); // valeur par défaut
-   const { notification2,setNotification2,setLoading,setError, loading, error } = useAlertContext();
+   const { notification2,setNotification2,setLoading,setError, loading, error } = useContext(AlertContext);
 
 
     const fetchAlertCounts = async () => {
