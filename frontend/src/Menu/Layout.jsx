@@ -68,6 +68,13 @@ const Layout = () => {
 
   //   fetchAlertCounts();
   // },[]);
+  const hideNotifcation = () => {
+    if (heddin == true) {
+      setTimeout(() => {
+        setHeddin(false)
+      }, 3000)
+    }
+  }
   useEffect(() => {
     const getNotifications = async () => {
       await apiService.getCsrfCookie();
@@ -78,6 +85,7 @@ const Layout = () => {
       setNotification2(notification2 || []);
     }
     getNotifications()
+    hideNotifcation()
     // console.log("response notificatoun layout:", notification2)
   }, [notification2])
   const handelHeddin = () => {
@@ -87,7 +95,12 @@ const Layout = () => {
       setHeddin(true)
     }
 
+
+
   }
+
+
+
 
   const handleClick = () => {
     handelHeddin();
@@ -159,7 +172,7 @@ const Layout = () => {
       {
         notification2?.notifications?.length > 0 ?
           <div className="alert-bubble">
-            {heddin ?
+            {heddin && notification2?.notifications?.length > 0 ?
               <div className="alert-message-bubble">
                 <button className="close_btn" onClick={handelHeddin}>
                   <FontAwesomeIcon className="fa-regular fa-circle-xmark" icon={faCircleXmark} />
@@ -183,7 +196,7 @@ const Layout = () => {
             <button className="btn-bubble" onClick={handleClick} >
               <div className="alert-icon">
                 <div>
-                  <span className="alert-number"> {notification2.unread_count} </span>
+                  <span className="alert-number"> {notification2.unread_count || 0} </span>
                   <FontAwesomeIcon className="faBell" icon={faBell} />
                 </div>
 
