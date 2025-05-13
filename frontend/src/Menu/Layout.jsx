@@ -11,6 +11,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 // import apiService from "../Axios/apiService"
 import { AlertContext } from "../context/AlertContext";
+import apiService from "../Axios/apiService";
 const Layout = () => {
   const navigate = useNavigate();
   // const [notification, setNotification] = useState({
@@ -19,8 +20,8 @@ const Layout = () => {
   // })
   const [heddin, setHeddin] = useState(true)
   // const [notification2, setNotification2] = useState([]);
-  const { notification2, loading, error, setNotification2 } = useContext(AlertContext);
-  
+  const { notification2, loading, error, setNotification2, setLoading, setError } = useContext(AlertContext);
+
   // const [loading, setLoading] = useState(true);
   // const [error, setError] = useState(null);
   // useEffect(() => {
@@ -46,8 +47,38 @@ const Layout = () => {
   //   fetchAlertCounts();
   // }, []);
 
+  // useEffect(() => {
+  //   const fetchAlertCounts = async () => {
+  //     try {
+  //       setLoading(true);
+  //       await apiService.getCsrfCookie();
+
+  //       const [notification2] = await Promise.all([
+  //         apiService.getNotifications(),
+  //       ]);
+
+  //       setNotification2(notification2 || []);
+  //     } catch (err) {
+  //       console.error('Erreur lors du chargement des alertes :', err);
+  //       setError('Erreur lors du chargement des alertes.');
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchAlertCounts();
+  // },[]);
   useEffect(() => {
-    console.log("response notificatoun layout:", notification2)
+    const getNotifications = async () => {
+      await apiService.getCsrfCookie();
+      const [notification2] = await Promise.all([
+        apiService.getNotifications(),
+      ]);
+
+      setNotification2(notification2 || []);
+    }
+    getNotifications()
+    // console.log("response notificatoun layout:", notification2)
   }, [notification2])
   const handelHeddin = () => {
     if (heddin == true) {
@@ -122,9 +153,9 @@ const Layout = () => {
     <p>Groupe: {notification2.notifications[0].data.code_groupe}</p>
   </div>
 )} */}
-{/* etat */}
+      {/* etat */}
 
-{/* {console.log(notification2)} */}
+      {/* {console.log(notification2)} */}
       {
         notification2?.notifications?.length > 0 ?
           <div className="alert-bubble">
