@@ -80,7 +80,7 @@ class AvancementController extends Controller
             }
         }
         // this comontier
-        dd($modules_stats);
+        // dd($modules_stats);
     }
 
 
@@ -185,7 +185,7 @@ class AvancementController extends Controller
             ];
         }, [...$avancements]);
 
-        dd($taux_realisation);
+        // dd($taux_realisation);
     }
 
 
@@ -256,19 +256,7 @@ class AvancementController extends Controller
     //         }, Filiere::orderBy('niveau')->get()->toArray());
     //         $niveaux_unique = array_unique($niveaux, SORT_REGULAR);
     //         dd($niveaux_unique);
-
-
-
-
-
     //         // filtering logic :
-
-
-
-
-
-
-
     //         // 
     //         // dd($avancements);
     //         // dd()
@@ -413,7 +401,7 @@ class AvancementController extends Controller
                         // calculer la date fin prévu :
                         $dateFin = calculerDateFinModule($total, $nbh_par_semaine, $correspondant['debut_module']);
                         // dd($nbh_par_semaine,$correspondant);
-                        dd($dateFin->toDateString());
+                        // dd($dateFin->toDateString());
                     }
                     // else{
                     //     dd('did not enter if condition');
@@ -461,7 +449,7 @@ class AvancementController extends Controller
                         ['matricule', '=', $avancement['matricule']],
                         ['code_filiere', '=', $avancement['code_filiere']]
                     ], $avancement);
-                    dd('error rise here');
+                    // dd('error rise here');
                 }
             }
 
