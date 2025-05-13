@@ -24,6 +24,9 @@ export default function Home() {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+
+
   useEffect(() => {
     const fetchAlertCounts = async () => {
       try {
@@ -72,12 +75,12 @@ if (loading) return <div>Loading home...</div>;
       <div className="section-header">
 
         <div className="header">
-          <div>
+          <div onClick={() => navigate('avencementFiliere')} className="square-data-buttons">
             <span>{numberFiliere}</span>
             <FontAwesomeIcon className="faCodeBranch" icon={faCodeBranch} />
             <FontAwesomeIcon className="faGreaterThan" icon={faGreaterThan} />
           </div>
-          <div>
+          <div onClick={() => navigate('avancemnetGroup')}>
             <span>{numberGroup}</span>
 
             <FontAwesomeIcon className="faUserGroup" icon={faUserGroup} />
