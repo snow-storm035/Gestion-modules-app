@@ -284,7 +284,7 @@ class AvancementController extends Controller
     {
         // return "1234567890-";
         // Initialize base query
-        $avancementsQuery = Avancement::query();
+        $avancementsQuery = Avancement::all();
         $filiere = null;
 
         // Filiere filter
@@ -329,10 +329,10 @@ class AvancementController extends Controller
         $niveaux_unique = Filiere::distinct()->orderBy('niveau')->pluck('niveau');
 
         // Paginate results
-        $avancements = $avancementsQuery->paginate(10);
+        // $avancements = $avancementsQuery->get();
 
         return response()->json([
-            "avancements" => $avancements,
+            "avancements" => $avancementsQuery, // an error might happen
             "filters" => [
                 'filieres' => $filieres,
                 'groupes' => $groupes,

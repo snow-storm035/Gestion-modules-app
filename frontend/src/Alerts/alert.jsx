@@ -4,11 +4,20 @@ import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
 import { useDarkMode } from "../DarkModeProvider/DarkModeContext";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import apiService from '../Axios/apiService';
 import "../style/alert.css"
 import { Loader } from 'lucide-react';
+
+import { useQuery } from '../Hooks/custom-react-hooks';
+
+
 const Alerts = () => {
+
+  const query = useQuery()
+  const etat = query.get('etat')
+
+  console.log(etat)
   const [alerts, setAlerts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -20,7 +29,7 @@ const Alerts = () => {
   const [filters, setFilters] = useState({
     code_filiere: '',
     niveau: '',
-    
+    etat: '', // + + +
     regional: ''
   });
   const [currentPage, setCurrentPage] = useState(1);
@@ -54,6 +63,7 @@ const Alerts = () => {
         setFiltersData({
           filieres: filieresWithCodes,
           niveaux: Object.values(receivedFilters.niveaux || {}),
+          etat : etat ? etat : "",
           regional: receivedFilters.regional || []
         });
       } catch (err) {
@@ -63,10 +73,10 @@ const Alerts = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [etat]);
 
   const handleFilterChange = (filterName, value) => {
-    console.log("filters:",filters)
+    console.log("filters:", filters)
     setFilters(prevFilters => ({
       ...prevFilters,
       [filterName]: value
@@ -78,7 +88,8 @@ const Alerts = () => {
     (filters.niveau === '' || alert.niveau === filters.niveau) &&
     (filters.regional === '' || alert.regional === filters.regional)
   );
-  
+
+  // console.log('externe filters : '+filters.etat)
 
   const paginatedAlerts = filteredAlerts.slice(
     (currentPage - 1) * postPerPage,
@@ -86,24 +97,24 @@ const Alerts = () => {
   );
   const totalPages = Math.ceil(filteredAlerts.length / postPerPage);
 
- if (loading)
-  return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        height: "100vh", // Full height center
-        flexDirection: "column",
-        gap: "1rem",
-        fontSize: "1.2rem",
-        color: "#555",
-      }}
-    >
-      <Loader className="animate-spin" size={48} />
-      <span>Chargement de la page alertes...</span>
-    </div>
-  );
+  if (loading)
+    return (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "100vh", // Full height center
+          flexDirection: "column",
+          gap: "1rem",
+          fontSize: "1.2rem",
+          color: "#555",
+        }}
+      >
+        <Loader className="animate-spin" size={48} />
+        <span>Chargement de la page alertes...</span>
+      </div>
+    );
   if (error) return <div>Error: {error}</div>;
 
   return (
@@ -194,7 +205,7 @@ const Alerts = () => {
                           <th>état</th>
                           <th>date fin prévu</th>
                           <th>mh restante</th>
-                          <th>dates d'alerte</th>
+                          <th>dates d&apos;alerte</th> {/** &apos; => ' */}
                           <th>Actions</th>
                         </tr>
                       </thead>
@@ -229,24 +240,24 @@ const Alerts = () => {
                     </table>
                   </div>
 
- 
-                              <div className="pagination-container-alerts1">
-              <button
-                className="pagination-btn-alerts1"
-                disabled={currentPage === 1}
-                onClick={() => setCurrentPage(prev => prev - 1)}
-              >
-                Précédent
-              </button>
-              <span className="current-page-alerts1">Page {currentPage}</span>
-              <button
-                className="pagination-btn-alerts1"
-                disabled={currentPage > totalPages}
-                onClick={() => setCurrentPage(prev => prev + 1)}
-              >
-                Suivant
-              </button>
-            </div>
+
+                  <div className="pagination-container-alerts1">
+                    <button
+                      className="pagination-btn-alerts1"
+                      disabled={currentPage === 1}
+                      onClick={() => setCurrentPage(prev => prev - 1)}
+                    >
+                      Précédent
+                    </button>
+                    <span className="current-page-alerts1">Page {currentPage}</span>
+                    <button
+                      className="pagination-btn-alerts1"
+                      disabled={currentPage > totalPages}
+                      onClick={() => setCurrentPage(prev => prev + 1)}
+                    >
+                      Suivant
+                    </button>
+                  </div>
 
                 </div>
               </div>

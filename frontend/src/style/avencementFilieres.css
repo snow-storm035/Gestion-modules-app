@@ -27,6 +27,9 @@
     width: 150px;
     margin: 2px;
 }
+.reset-btn-filiere:hover {
+  background-color: #d32f2f;
+}
 .flex-ajouter-filiere {
   
     display: flex;
@@ -43,7 +46,8 @@ td{
     border-radius: 8px;
     display: flex;
      flex-direction: row;
-    justify-content: space-around;
+    justify-content: flex-start;
+    gap: 10px;
     margin-top: 5px;
     margin-bottom: 5px;
 }
@@ -54,7 +58,8 @@ td{
     outline: none;
     box-shadow: 0 0 6px 4px rgba(128, 128, 128, 0.711);
     
-    
+    padding: 10px;
+    background-color: white;
 }
 
 .card-body-dark-filiere {

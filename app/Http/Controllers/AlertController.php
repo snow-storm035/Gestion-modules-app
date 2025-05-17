@@ -15,12 +15,10 @@ class AlertController extends Controller
      */
     public function index(Request $request)
     {
-        //m
+        //
         $type = $request->has('type_alert') ? $request->input('type_alert') : null;
 
         $alerts = $type ? Alert::where('etat', $type)->get() : Alert::all();
-
-        
 
         $displayedAlerts = array_map(function($item){
             $module = Module::where([

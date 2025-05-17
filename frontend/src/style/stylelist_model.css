@@ -22,7 +22,7 @@ background-color: var(--main-white) !important;
 }
 
 .card-body-model {
-
+    padding: 15px 10px;
     border-radius: 8px;
     background-color: var(--main-white);
   

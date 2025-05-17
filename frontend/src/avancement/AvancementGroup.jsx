@@ -52,8 +52,9 @@ const AvancemnetGroup = () => {
         // console.log("response:",response.filters)
 
         // Directly use the response data rather than relying on the state in the next line
-        const avancementsData = response.avancements.data || [];
+        const avancementsData = response.avancements || [];
         // const setFilters1234dsa =  response.filters ||[];
+        // console.log(response)
         setDocumentsAvencemnet(avancementsData);
         // Set the entire filters object to state
         setFilters1234(response.filters || {

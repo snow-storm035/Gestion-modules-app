@@ -100,7 +100,7 @@ if (loading)
             <FontAwesomeIcon className="faCodeBranch" icon={faCodeBranch} />
             <FontAwesomeIcon className="faGreaterThan" icon={faGreaterThan} />
           </div>
-          <div onClick={() => navigate('avancemnetGroup')}>
+          <div onClick={() => navigate('avancemnetGroup')} className="square-data-buttons">
             <span>{numberGroup}</span>
 
             <FontAwesomeIcon className="faUserGroup" icon={faUserGroup} />
@@ -114,12 +114,12 @@ if (loading)
             <div className={darkMode ? "alert-container" : "alert-container alert-container-dark-mode"}>
 
               {/* <div className="button-container"> */}
-              <button className="status-button presque-finis " onClick={() => navigate("/app/etatmodel")}>
+              <button className="status-button presque-finis " onClick={() => navigate("/app/alerts?etat=presque fini")}>
                 <span className="count">{presqueFinisCount}</span>
                 <span className="label">Modules presque finis</span>
               </button>
 
-              <button className="status-button en-retards" onClick={() => navigate("/app/etatmodel")}>
+              <button className="status-button en-retards" onClick={() => navigate("/app/alerts?etat=en retard")}>
                 <span className="count">{retardCount}</span>
                 <span className="label">Modules en retard</span>
               </button>

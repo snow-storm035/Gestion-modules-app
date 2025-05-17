@@ -18,7 +18,7 @@ return new class extends Migration
 
             $table->string('code_module')->nullable();
             $table->string('code_filiere')->nullable();
-            $table->string('matricule')->default("none")->nullable(); 
+            $table->string('matricule_for')->default("none")->nullable(); 
             $table->string('code_groupe')->nullable();
 
             $table->foreign(["code_filiere","code_module"])
@@ -27,7 +27,7 @@ return new class extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
-            $table->foreign("matricule")
+            $table->foreign("matricule_for")
                 ->references("matricule")
                 ->on('formateurs')
                 ->onDelete('restrict')
