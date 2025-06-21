@@ -55,7 +55,7 @@
 // export default ProgressModules;
 
 import { useEffect, useState } from 'react';
-import './CircularProgress.css';
+import './Progressbars.css';
 import { useNavigate } from 'react-router-dom';
 import { useDarkMode } from "../DarkModeProvider/DarkModeContext";
 import apiService from '../Axios/apiService'; // adjust the path if needed
