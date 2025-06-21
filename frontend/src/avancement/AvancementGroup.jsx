@@ -9,14 +9,21 @@ import { useDarkMode } from "../DarkModeProvider/DarkModeContext";
 import { useNavigate } from 'react-router-dom';
 import apiService from '../Axios/apiService';
 import { Loader } from 'lucide-react';
+import { useQuery } from '../Hooks/custom-react-hooks';
 const AvancemnetGroup = () => {
+
+  const query = useQuery()
+  const filiere = query.get('filiere')
+  const code_module = query.get('module')
+
+
   const [documentsAvencemnet, setDocumentsAvencemnet] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const [filters, setFilters] = useState({
-    filiere: '',
-    module: '',
+    filiere: filiere ? filiere: '',
+    module: code_module ? code_module : '',
     groupe: '',
     niveau: '',
     formateur: '',
@@ -29,7 +36,9 @@ const AvancemnetGroup = () => {
     groupes: [],
     modules: [],
     annees_formation: [],
-    niveaux: []
+    niveaux: [],
+    formateurs: [],
+    semestres: []
   });
   const { darkMode } = useDarkMode();
 
@@ -62,7 +71,9 @@ const AvancemnetGroup = () => {
           groupes: [],
           modules: [],
           annees_formation: [],
-          niveaux: []
+          niveaux: [],
+          formateurs: [],
+          semestres: []
         });
 
 
@@ -227,7 +238,6 @@ const AvancemnetGroup = () => {
   // Extract unique values for filters
 
 
-  const semestre = ['S1', 'S2'];
   // const formateurs = [...new Set(documentsAvencemnet.map(doc => doc.formateur.nom))];
 
 
@@ -251,7 +261,9 @@ const AvancemnetGroup = () => {
       (filters.niveau === '' || doc.code_filiere.endsWith(`_${filters.niveau}`)) &&
 
       // Formateur filter (use matricule instead of formateur.nom)
-      (filters.formateur === '' || doc.matricule === filters.formateur) &&
+      (filters.formateur === '' || doc.nom_formateur === filters.formateur) &&
+      (filters.semestre === '' || doc.semestre === filters.semestre) &&
+      (filters.annee_formation === '' || doc.annee_formation === +filters.annee_formation) &&
 
       // Remove annee_formation filter (not present in data)
       // Remove semestre filter (not present in data)
@@ -276,6 +288,9 @@ const AvancemnetGroup = () => {
       formateur: '',
       semestre: ''
     });
+
+    // replacing the url without refreshing
+    navigate(location.pathname, {replace: true})
   };
   // code fellter by toux realise 
   // const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
@@ -300,24 +315,24 @@ const AvancemnetGroup = () => {
   const filteredavoncesWithsplice = sortedDocuments.slice(firstPostindex, lastPostindex)
   // console.log("filteredavoncesWithsplice################################################")
   // console.log(filteredavoncesWithsplice)
-if (loading)
-  return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        height: "100vh", // Full height center
-        flexDirection: "column",
-        gap: "1rem",
-        fontSize: "1.2rem",
-        color: "#555",
-      }}
-    >
-      <Loader className="animate-spin" size={48} />
-      <span>Chargement de la page avancements groupes ...</span>
-    </div>
-  );
+  if (loading)
+    return (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "100vh", // Full height center
+          flexDirection: "column",
+          gap: "1rem",
+          fontSize: "1.2rem",
+          color: "#555",
+        }}
+      >
+        <Loader className="animate-spin" size={48} />
+        <span>Chargement de la page avancements groupes ...</span>
+      </div>
+    );
   if (error) return <div>Error: {error}</div>;
   return (
     <>
@@ -346,8 +361,10 @@ if (loading)
                   {filters1234.filieres.map(filiere => (
                     <option
                       key={filiere.code_filiere}
-                      value={`${filiere.code_filiere} - ${filiere.libelle}`}
-                    />
+                      value={`${filiere.code_filiere}`}
+                    >
+                      {`${filiere.code_filiere} - ${filiere.libelle}`}
+                    </option>
                   ))}
                 </datalist>
               </div>
@@ -447,7 +464,7 @@ if (loading)
               </div>
 
               {/* Formateur Filter */}
-              {documentsAvencemnet.length > 0 ? <div className="filter-group">
+              {filters1234.formateurs.length > 0 ? <div className="filter-group">
 
                 <input
                   list="formateurs"
@@ -459,14 +476,17 @@ if (loading)
                   placeholder="formateurs"
                 />
                 <datalist id="formateurs">
-                  {documentsAvencemnet.map(data => (
-                    <option key={data.matricule} value={data.matricule} />
+                  {filters1234.formateurs.map(data => (
+
+                    <option key={data.matricule} value={data.nom_formateur} >
+                      {data.matricule} - {data.nom_formateur}
+                    </option>
                   ))}
 
                 </datalist>
               </div> :
                 ""}
-              {/* Formateur Filter */}
+              {/* Semestre Filter */}
               <div className="filter-group">
 
                 <input
@@ -479,7 +499,7 @@ if (loading)
                   placeholder="semestre"
                 />
                 <datalist id="semestre">
-                  {semestre.map(semestre => (
+                  {filters1234.semestres?.map(semestre => (
                     <option key={semestre} value={semestre} />
                   ))}
 
@@ -531,89 +551,51 @@ if (loading)
                       </tr>
                     </thead>
                     {/* code_filiere
-: 
-"GC_GE_TS"
-code_groupe
-: 
-"GE101"
-code_module
-: 
-"M104"
-created_at
-: 
-"2025-04-30T15:46:20.000000Z"
-date_efm_prevu
-: 
-null
-date_efm_reelle
-: 
-null
-debut_module
-: 
-"2020-10-10"
-efm_realise
-: 
-"oui"
-fin_module
-: 
-null
-id
-: 
-1
-matricule
-: 
-"17325"
-nbcc_realisee
-: 
-3
-nbh_par_semaine_p
-: 
-0
-nbh_par_semaine_sync
-: 
-0
-nbh_par_semaine_total
-: 
-0
-nbh_total_realisee
-: 
-120
-nbhp_realisee
-: 
-90
-nbhsync_realisee
-: 
-30
-prec_nbh_total_realisee
-: 
-120
-prec_nbhp_realisee
-: 
-90
-prec_nbhsync_realisee
-: 
-30
-taux_total_realisee
-: 
-100
-updated_at
-: 
-"2025-04-30T15:49:09.000000Z"                     */}
+ 0 => array:27 [▼
+    "id" => 1
+    "code_module" => "M104"
+    "code_filiere" => "GC_GE_TS"
+    "matricule" => "17325"
+    "code_groupe" => "GE101"
+    "nbh_par_semaine_p" => 0.0
+    "nbh_par_semaine_sync" => 0.0
+    "nbh_par_semaine_total" => 0.0
+    "debut_module" => "2020-10-10"
+    "fin_module" => null
+    "date_efm_prevu" => null
+    "date_efm_reelle" => null
+    "nbhp_realisee" => 90.0
+    "nbhsync_realisee" => 30.0
+    "nbh_total_realisee" => 120.0
+    "prec_nbhp_realisee" => 90.0
+    "prec_nbhsync_realisee" => 30.0
+    "prec_nbh_total_realisee" => 120.0
+    "taux_total_realisee" => 100.0
+    "nbcc_realisee" => 3
+    "efm_realise" => "oui"
+    "created_at" => "2025-05-10T16:24:34.000000Z"
+    "updated_at" => "2025-05-23T08:10:19.000000Z"
+    "niveau" => "TS"
+    "nom_formateur" => "FATIMA-EZZAHRA HIRRY"
+    "semestre" => "s1"
+    "annee_formation" => 1
+                    ]*/}
                     <tbody>
                       {filteredavoncesWithsplice.map((avince) => (
                         <tr key={avince.id}>
                           <td>{avince.code_filiere}</td>
                           <td>{avince.code_groupe}</td>
                           <td>{avince.code_module}</td>
-                          <td>{avince.matricule}</td>
+                          <td>{avince.nom_formateur}</td>
                           <td>{avince.nbh_par_semaine_p}</td>
-                          <td>{avince.taux_total_realisee}</td>
+                          <td>{(avince.taux_total_realisee.toFixed(2))}%</td>
                           <td>
-                            <button className="btn btn-sm btn-outline-secondary">
+                            <button className="btn btn-sm btn-outline-secondary"
+                              onClick={() => {
+                                navigate(`/app/avancementDetail/${avince.code_groupe}/${avince.code_module}`);
+                              }}
+                            >
                               <FontAwesomeIcon
-                                onClick={() => {
-                                  navigate(`/app/avancementDetail/${avince.code_groupe}/${avince.code_module}`);
-                                }}
                                 icon={faEye}
                               />
                             </button>
@@ -631,14 +613,16 @@ updated_at
                     disabled={currentPage === 1}
                     onClick={() => setCurrentPage(prev => prev - 1)}
                   >
-                    Previous
+                    Précédent
                   </button>
                   <span className="current-page-groupe">Page {currentPage}</span>
                   <button
                     className="pagination-btn-groupe"
+
+                    disabled={filteredavoncesWithsplice.length < postPerPage}
                     onClick={() => setCurrentPage(prev => prev + 1)}
                   >
-                    Next
+                    Suivant
                   </button>
                 </div>
               </div>

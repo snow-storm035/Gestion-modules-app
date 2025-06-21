@@ -171,7 +171,7 @@ if (loading)
           <div className="import-file-exele-avoncement">
             <img src={downloadImage} alt="download" className="image-download" />
             <p>
-              Importer les avancements
+              Importer les données
             </p>
           </div>
         </a>

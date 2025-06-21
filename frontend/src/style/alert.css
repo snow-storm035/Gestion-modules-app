@@ -54,7 +54,7 @@
 
 .reset-btn {
     padding: 8px 16px;
-    background-color: #f44336;
+    background-color: var(--main-blue);
     color: white;
     border: none;
     border-radius: 4px;
@@ -65,7 +65,7 @@
 }
 
 .reset-btn:hover {
-    background-color: rgb(159, 11, 11);
+    background-color: var(--light-blue);
 }
 
 .results-table {
@@ -181,5 +181,5 @@ tr:hover {
   }
   
   .current-page-alerts1 {
-    color: red;
+    color: var(--main-blue);
   }

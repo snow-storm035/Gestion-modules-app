@@ -200,11 +200,11 @@ if (loading)
                         <td>{item.code_filiere}</td>
                         <td>{item.code_module}</td>
                  
-                        <td>{item.taux_avancement}%</td>
+                        <td>{item.taux_avancement.toFixed(2)}%</td>
                         <td>
                           <button 
                             className='btn-Detail-filiere' 
-                            onClick={() => navigate("/avancemnetGroup")}
+                            onClick={() => navigate("/app/avancemnetGroup?filiere="+item.code_filiere+"&module="+item.code_module)}
                           >
                             Détails
                           </button>

@@ -107,7 +107,7 @@ const CalendrierEfm = () => {
     return (
         <div className="container-fluid-alets">
             <div className={darkMode ? "filter-container-alets" : "filter-container-alets filter-container-darkmode-alets"}>
-                <h2>Dates EFMs régionaux :</h2>
+                <h2>Dates EFMs:</h2>
 
                 <div className="filter-controls">
                     {/* Filiere Filter */}
@@ -233,14 +233,15 @@ const CalendrierEfm = () => {
                                 disabled={currentPage === 1}
                                 onClick={() => setCurrentPage(prev => prev - 1)}
                             >
-                                Previous
+                                Précédent
                             </button>
                             <span className="current-page-CalendrierEfm">Page {currentPage}</span>
                             <button
                                 className="pagination-btn-CalendrierEfm"
+                                disabled={filteredcalandrerefmsWithsplice.length < postPerPage}
                                 onClick={() => setCurrentPage(prev => prev + 1)}
                             >
-                                Next
+                                Suivant
                             </button>
                         </div>
                     </div>

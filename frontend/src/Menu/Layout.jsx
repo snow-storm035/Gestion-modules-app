@@ -111,7 +111,7 @@ const Layout = () => {
   // handel function heddin alert
 
   const handleheddinalert = () => {
-    setNotification((prv) => ({ ...prv, notification: false }))
+    setNotification2((prv) => ({ ...prv, notification: false }))
   }
   const { darkMode } = useDarkMode();
 

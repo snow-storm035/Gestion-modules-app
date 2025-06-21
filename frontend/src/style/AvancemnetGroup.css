@@ -65,7 +65,7 @@
 
 .reset-btn {
   padding: 8px 16px;
-  background-color: #f44336;
+  background-color: var(--main-blue);
   color: white;
   border: none;
   border-radius: 4px;
@@ -74,7 +74,7 @@
 }
 
 .reset-btn:hover {
-  background-color: #d32f2f;
+  background-color: var(--light-blue);
 }
 
 td {
@@ -157,5 +157,5 @@ td {
 }
 
 .current-page-groupe {
-  color: red;
+  color: var(--main-blue);
 }

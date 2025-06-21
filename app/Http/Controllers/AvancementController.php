@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Avancement;
 use App\Models\Filiere;
+use App\Models\Formateur;
 use App\Models\Groupe;
 use App\Models\Module;
 use Illuminate\Http\Request;
@@ -186,6 +187,7 @@ class AvancementController extends Controller
         }, [...$avancements]);
 
         // dd($taux_realisation);
+
     }
 
 
@@ -285,6 +287,39 @@ class AvancementController extends Controller
         // return "1234567890-";
         // Initialize base query
         $avancementsQuery = Avancement::all();
+
+        $avancements_toSend = array_map(function ($a) {
+
+            $module = Module::where('code_module', $a['code_module'])->where('code_filiere', $a['code_filiere'])->first();
+            $formateur = Formateur::where('matricule', $a['matricule'])->first();
+            $filiere = Filiere::where('code_filiere', $a['code_filiere'])->first();
+            $groupe = Groupe::where('code_groupe', $a['code_groupe'])->first();
+
+            return [
+                ...$a,
+
+                'niveau' => $filiere['niveau'],
+                'nom_formateur' => $formateur['nom_formateur'],
+                'semestre' => $module['semestre'],
+                'annee_formation' => $groupe['annee_formation']
+            ];
+        }, $avancementsQuery->toArray());
+
+        // foreach ($avancements_toSend as $a) {
+        //     $module = Module::where('code_module', $a['code_module'])->where('code_filiere', $a['code_filiere'])->first();
+        //     $formateur = Formateur::where('matricule', $a['matricule'])->first();
+        //     $filiere = Filiere::where('code_filiere', $a['code_filiere'])->first();
+        //     $groupe = Groupe::where('code_groupe', $a['code_groupe'])->first();
+
+        //     $a['niveau'] = $filiere['niveau'];
+        //     $a['nom_formateur'] = $formateur['nom_formateur'];
+        //     $a['semestre'] = $module['semestre'];
+        //     $a['annee_formation'] = $groupe['annee_formation'];
+
+        //     dd($a);
+        // }
+
+
         $filiere = null;
 
         // Filiere filter
@@ -325,20 +360,27 @@ class AvancementController extends Controller
                 ];
             })->toArray();
 
+        $formateurs = Formateur::select('matricule', 'nom_formateur')->distinct()->get()->toArray();
+            // dd($formateurs);
+
         $annees_unique = Groupe::distinct()->orderBy('annee_formation')->pluck('annee_formation');
         $niveaux_unique = Filiere::distinct()->orderBy('niveau')->pluck('niveau');
+        $semestres = Module::distinct()->orderBy('semestre')->pluck('semestre');
+        
 
         // Paginate results
         // $avancements = $avancementsQuery->get();
-
+        // dd($avancements_toSend);
         return response()->json([
-            "avancements" => $avancementsQuery, // an error might happen
+            "avancements" => $avancements_toSend, // an error might happen
             "filters" => [
                 'filieres' => $filieres,
                 'groupes' => $groupes,
                 'modules' => $modules,
                 'annees_formation' => $annees_unique,
                 'niveaux' => $niveaux_unique,
+                'formateurs' => $formateurs,
+                'semestres' => $semestres
             ]
         ], 200);
     }
@@ -476,7 +518,7 @@ class AvancementController extends Controller
             ->first();
         $filiere = Filiere::where('code_filiere', $avancement->code_filiere)
             ->first();
-            // dd($module, $filiere, $avancement->code_filiere);
+        // dd($module, $filiere, $avancement->code_filiere);
         return response()->json([
             'avancement' => [
                 ...$avancement->toArray(),

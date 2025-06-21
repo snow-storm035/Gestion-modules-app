@@ -27,7 +27,7 @@ if (!function_exists('mhrestante')) {
             ['code_module', '=', $avancement['code_module']],
             ['code_filiere', '=', $avancement['code_filiere']]
         ])->first();
-        return $avancement['nbh_total_realisee'] - $module['nbh_total_global'];
+        return $module['nbh_total_global'] - $avancement['nbh_total_realisee'];
     }
 }
 
@@ -59,7 +59,11 @@ if (!function_exists('calculerTauxMoyenFiliere')) {
                 $taux = array_map(function ($avancement) {
                     return calculerTauxAvancement($avancement);
                 }, [...$item]);
-                $moyenne = array_sum($taux) / count($taux);
+                if(count($taux) > 0){
+                    $moyenne = array_sum($taux) / count($taux);
+                }else{
+                    $moyenne = 0;
+                }
                 // dd($moyenne);
                 $avancements_filiere[] = [
                     "code_filiere" => $filiere['code_filiere'],

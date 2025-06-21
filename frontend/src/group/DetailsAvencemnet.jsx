@@ -121,7 +121,7 @@ const DetailsAvencemnet = () => {
 
                     </div>
                     <div className="list-item">
-                        {openModifier ? <div><strong>{GroupDet.nbh_par_semaine_realisee}h</strong></div> : <input onChange={(e) => setNweHoures(e.target.value)} className='input-number' type="number" />}
+                        {openModifier ? <div><strong>{GroupDet.nbh_par_semaine_realisee}h</strong></div> : <input onChange={(e) => setNweHoures(e.target.value)} value={GroupDet.nbh_par_semaine_realisee} className='input-number' type="number" />}
 
                     </div>
                 </div>

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
 import { useDarkMode } from "../DarkModeProvider/DarkModeContext";
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import apiService from '../Axios/apiService';
 import "../style/alert.css"
 import { Loader } from 'lucide-react';
@@ -24,13 +24,14 @@ const Alerts = () => {
   const [filtersData, setFiltersData] = useState({
     filieres: [],
     niveaux: [],
-    regional: []
+    regional: [],
+    etats: []
   });
   const [filters, setFilters] = useState({
     code_filiere: '',
     niveau: '',
-    etat: '', // + + +
-    regional: ''
+    etat: etat ? etat : '', // + + +
+    regional: '',
   });
   const [currentPage, setCurrentPage] = useState(1);
   const postPerPage = 8;
@@ -49,7 +50,8 @@ const Alerts = () => {
           filieres: [],
           groupes: [],
           niveaux: {},
-          regional: []
+          regional: [],
+          etats: []
         };
 
         const filieresWithCodes = receivedFilters.filieres.map(f => ({
@@ -63,7 +65,7 @@ const Alerts = () => {
         setFiltersData({
           filieres: filieresWithCodes,
           niveaux: Object.values(receivedFilters.niveaux || {}),
-          etat : etat ? etat : "",
+          etats: receivedFilters.etats || [],
           regional: receivedFilters.regional || []
         });
       } catch (err) {
@@ -73,7 +75,7 @@ const Alerts = () => {
       }
     };
     fetchData();
-  }, [etat]);
+  }, []);
 
   const handleFilterChange = (filterName, value) => {
     console.log("filters:", filters)
@@ -86,8 +88,19 @@ const Alerts = () => {
   const filteredAlerts = alerts.filter(alert =>
     (filters.code_filiere === '' || alert.code_filiere === filters.code_filiere) &&
     (filters.niveau === '' || alert.niveau === filters.niveau) &&
-    (filters.regional === '' || alert.regional === filters.regional)
+    (filters.regional === '' || alert.regional === filters.regional) &&
+    (filters.etat === '' || alert.etat === filters.etat)
   );
+
+  const resetAlertFilters = () => {
+    setFilters({
+      code_filiere: '',
+      niveau: '',
+      regional: '',
+      etat: ''
+    })
+    navigate(location.pathname, {replace : true})
+  }
 
   // console.log('externe filters : '+filters.etat)
 
@@ -175,13 +188,27 @@ const Alerts = () => {
                     ))}
                   </datalist>
                 </div>
+                {/* ETAT FILTER */}
+                <div className="filter-group">
+                  <input
+                    list="etatsOptions"
+                    id="etatFilter"
+                    name="etatFilter"
+                    value={filters.etat}
+                    onChange={(e) => handleFilterChange('etat', e.target.value)}
+                    className="filter-select"
+                    placeholder="etat"
+                  />
+                  <datalist id="etatsOptions">
+                    {filtersData.etats.map((r, index) => (
+                      <option key={index} value={r} />
+                    ))}
+                  </datalist>
+                </div>
 
                 <button
-                  onClick={() => setFilters({
-                    code_filiere: '',
-                    niveau: '',
-                    regional: ''
-                  })}
+                  onClick={() => resetAlertFilters()}
+                  type='button'
                   className="reset-btn"
                 >
                   Réinitialiser

@@ -2,7 +2,7 @@
 
     if(!function_exists('isModuleHoursCompletde')){
         function isModuleHoursCompleted(float $realisation, float $nbheuresTotal){
-            return $realisation === $nbheuresTotal;
+            return $realisation >= $nbheuresTotal;
         }
     }
 

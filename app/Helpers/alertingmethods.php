@@ -15,14 +15,14 @@ if (!function_exists('moduleEnRetard')) {
         // dd($avancement);
         $main_nbhparsemaine = $new_nbhparsemaine != 0 ? $new_nbhparsemaine : $avancement['nbh_par_semaine_total'];
         // dd($main_nbhparsemaine);
-        if($main_nbhparsemaine != 0){
+        if ($main_nbhparsemaine != 0) {
             $nbrSemaines = ceil($mhrestante / $main_nbhparsemaine);
             // dd($nbrSemaines);
             $dateFinPrevu = Carbon::now()->addWeeks($nbrSemaines);
             $dates_gape = $dateFinPrevu->diffInDays(Carbon::parse($avancement['date_efm_prevu'])); // -> dateefm - datefinprevu > 0
             // dd($dates_gape,$dateFinPrevu->toDateString());
             // dd($dateFinPrevu->toDateString(),$avancement['dateEfmPrevu']);
-            dd('hi?');
+            // dd('hi?');
             if ($dates_gape < 0) {
                 // dd("inside",($dates_gape < 0));
                 // Alert::create([
@@ -64,7 +64,7 @@ if (!function_exists('verifierAvancements')) {
             $mhrestante = mhrestante($avancement);
             // dd($avancement);
             if (moduleEnRetard($mhrestante, $avancement)) {
-                Alert::createOrFirst([
+                $alert = Alert::firstOrCreate([
                     "avancement_id" => $avancement['id'],
                     "code_filiere" => $avancement['code_filiere'],
                     "code_module" => $avancement['code_module'],
@@ -73,10 +73,12 @@ if (!function_exists('verifierAvancements')) {
                     "mhrestante" => $mhrestante,
                     "date_fin_prevu" => moduleEnRetard($mhrestante, $avancement) // this either will get a 0 or certain date
                 ]);
-                $user = auth()->user();
-                $user->notify(new ModuleEnRetard($avancement));
+                if ($alert->wasRecentlyCreated) {
+                    $user = auth()->user();
+                    $user->notify(new ModuleEnRetard($avancement));
+                }
             } else if (modulePresqueFinis($mhrestante, $avancement)) {
-                Alert::createOrFirst([
+                $alert = Alert::firstOrCreate([
                     "avancement_id" => $avancement['id'],
                     "code_filiere" => $avancement['code_filiere'],
                     "code_module" => $avancement['code_module'],
@@ -86,11 +88,13 @@ if (!function_exists('verifierAvancements')) {
                     "etat" => "presque fini",
                     "mhrestante" => $mhrestante,
                 ]);
-                $user = auth()->user();
-                // dd($user);
-                $user->notify(new ModulePrequeFini($avancement));
-            }else {
-                continue; 
+                if ($alert->wasRecentlyCreated) {
+                    $user = auth()->user();
+                    // dd($user);
+                    $user->notify(new ModulePrequeFini($avancement));
+                }
+            } else {
+                continue;
             }
         }
     }

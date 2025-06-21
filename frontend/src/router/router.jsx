@@ -1,4 +1,3 @@
-import { createBrowserRouter } from "react-router-dom";
 import Etatmodel from "../model/etatmodel";
 import AvancemnetGroup from "../avancement/AvancementGroup";
 import AvancementDetails from "../avancement/AvancementDetails";
@@ -9,12 +8,13 @@ import CalendrierEfm from "../model/calendrierEfm";
 import UpdateModuleStatu from "../group/UpdateModuleStatu";
 import Login from "../login/login";
 import Register from "../login/register";
-import Home from "../Contenu/Home";
+import Home from "../Homepage/Home";
 import Layout from "../Menu/Layout";
 import PageNotFound from "../PageNotFound/pageNotFound";
 import Welcome from "../login/welcome";
 import ResetPasswordPage from "../login/ResetPasswordPage";
 import ForgotPasswordPage from "../login/ForgotPasswordPage";
+import { createBrowserRouter } from "react-router-dom";
 
 export const dashbord = "/student/dashbord";
 

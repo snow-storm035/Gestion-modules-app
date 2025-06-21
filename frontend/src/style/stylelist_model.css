@@ -89,7 +89,7 @@ td{
   }
   
   .current-page-model {
-    color: red;
+    color: var(--main-blue);
   }
 
 

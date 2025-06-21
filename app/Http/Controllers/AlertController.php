@@ -27,6 +27,9 @@ class AlertController extends Controller
             ])->first();
 
             $niveau = Filiere::where('code_filiere',$item['code_filiere'])->first()->niveau;
+
+            if($item['etat'] === "en retard")
+
             return [...$item,'regional' => $module['regional'], 'niveau' => $niveau];
         },$alerts->toArray());
 
@@ -47,12 +50,15 @@ class AlertController extends Controller
         }, Filiere::orderBy('niveau')->get()->toArray());
         $niveaux_unique = array_unique($niveaux, SORT_REGULAR);
 
+        $etats = ['presque fini', 'en retard'];
+        // dd($etats);
         return response()->json([
             'alerts' => $displayedAlerts,
             'filters' => [
                 'filieres' => $filieres,
                 'niveaux' => $niveaux_unique,
-                'regional' => ['O', 'N']
+                'regional' => ['O', 'N'],
+                'etats' => $etats
             ]
         ], 200);
     }

@@ -6,9 +6,7 @@ use App\Models\Groupe;
 use App\Models\Module;
 use App\Models\Avancement;
 use Carbon\Carbon;
-use PhpParser\PrettyPrinter;
 
-use function PHPUnit\Framework\isString;
 
 if (!function_exists('getFilieres')) {
     function getFilieres($data)

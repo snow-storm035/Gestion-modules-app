@@ -157,9 +157,9 @@ const AvancementDetails = () => {
               <FaClipboardCheck />
             </div>
             <div className="stat-content">
-              <h3 className='color-all-text'>Contrôle Continue</h3>
+              <h3 className='color-all-text'>Contrôle continues réalisés</h3>
               <p className="highlight color-all-text">{avancement.nbcc_realisee}</p>
-              <p className="subtext color-all-text">Réalisé(s)</p>
+              {/* <p className="subtext color-all-text">Réalisé(s)</p> */}
             </div>
           </div>
 
@@ -189,18 +189,18 @@ const AvancementDetails = () => {
               <FaChartLine />
             </div>
             <div className="stat-content">
-              <h3 className='color-all-text'>Hours Completed</h3>
+              <h3 className='color-all-text'>Nombre d&apos;heures complétées</h3>
               <div className="hours-grid">
                 <div>
-                  <p className='color-all-text'>Weekly</p>
+                  <p className='color-all-text'>Nombre d&apos;heures par semaine</p>
                   <p className="highlight color-all-text">{avancement.nbh_par_semaine_total} h</p>
                 </div>
                 <div>
-                  <p className='color-all-text'>Presential</p>
+                  <p className='color-all-text'>Presentiel</p>
                   <p className="highlight color-all-text">{avancement.nbhp_realisee} h</p>
                 </div>
                 <div>
-                  <p className='color-all-text'>Sync</p>
+                  <p className='color-all-text'>À distance (Synchrone)</p>
                   <p className="highlight color-all-text">{avancement.nbhsync_realisee} h</p>
                 </div>
                 <div>
@@ -217,11 +217,11 @@ const AvancementDetails = () => {
               {avancement.efm_realise === "oui" ? <FaCheckCircle /> : <FaTimesCircle />}
             </div>
             <div className="stat-content">
-              <h3 className='color-all-text'>EFM Status</h3>
+              <h3 className='color-all-text'>EFM réalisé ?</h3>
               <p className={avancement.efm_realise === "oui" ? 'status-completed color-all-text' : 'status-pending color-all-text'}>
-                {avancement.efm_realise === "oui" ? 'Completed' : 'Pending'}
+                {avancement.efm_realise === "oui" ? 'Oui' : 'Pas encore'}
               </p>
-              <p className="subtext color-all-text">CC: {avancement.nbcc_realisee}</p>
+              {/* <p className="subtext color-all-text">CC: {avancement.nbcc_realisee}</p> */}
             </div>
           </div>
 
