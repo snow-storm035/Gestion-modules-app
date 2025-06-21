@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useDarkMode } from "../DarkModeProvider/DarkModeContext";
 import "../style/CalendrierEfm.css";
 import apiService from "../Axios/apiService"; // Make sure apiService is correctly imported
@@ -18,14 +18,10 @@ const CalendrierEfm = () => {
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-    const [searchTerm, setSearchTerm] = useState('');
     const { darkMode } = useDarkMode();
     const [currentPage, setCurrentPage] = useState(1);
     const postPerPage = 8;
-    const lastPostindex = currentPage * postPerPage;
-    const firstPostindex = lastPostindex - postPerPage;
 
-    // Fetch data on component mount
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -49,75 +45,65 @@ const CalendrierEfm = () => {
 
         fetchData();
     }, []);
-    // useEffect(() => {
-    //     console.log("test calendrierEfms", calendrierEfms)
-    //     console.log("test filtersData", filtersData)
-    // }, [calendrierEfms, filtersData])
-    // Filter function based on the selected filters
-    const calendrierEfmsfilterFiliere = calendrierEfms.filter(doc => {
-        return (
-            (filters.code_filiere === '' || doc.code_filiere === filters.code_filiere) &&
-            (filters.annee_formation === '' || doc.annee_formation === filters.annee_formation) &&
-            (filters.niveau === '' || doc.niveau === filters.niveau)
-        );
-    });
 
-    // Filter data based on the search term
-    const filterecalendrierEfmsfilterFiliere1 = calendrierEfmsfilterFiliere.filter(filterFilieremodelGroup =>
-        filterFilieremodelGroup.code_filiere.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        filterFilieremodelGroup.code_module.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-
-    const filteredcalandrerefmsWithsplice = filterecalendrierEfmsfilterFiliere1.slice(firstPostindex, lastPostindex);
-
-    // Handle filter changes
     const handleFilterChange = (filterName, value) => {
         setFilters(prev => ({ ...prev, [filterName]: value }));
         setCurrentPage(1);
     };
 
-    // Reset all filters
     const resetFilters = () => {
-        setFilters({
-            code_filiere: '',
-            niveau: '',
-            annee_formation: ''
-        });
+        setFilters({ code_filiere: '', niveau: '', annee_formation: '' });
+        setCurrentPage(1);
     };
+
+    const filteredData = useMemo(() => {
+        return calendrierEfms.filter(doc => 
+            (filters.code_filiere === '' || doc.code_filiere === filters.code_filiere) &&
+            (filters.annee_formation === '' || doc.annee_formation === filters.annee_formation) &&
+            (filters.niveau === '' || doc.niveau === filters.niveau)
+        );
+    }, [calendrierEfms, filters]);
+
+    const paginatedData = useMemo(() => {
+        const firstPostindex = (currentPage - 1) * postPerPage;
+        return filteredData.slice(firstPostindex, firstPostindex + postPerPage);
+    }, [filteredData, currentPage, postPerPage]);
+    
+    const totalPages = Math.ceil(filteredData.length / postPerPage);
+
     if (loading)
-  return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        height: "100vh", // Full height center
-        flexDirection: "column",
-        gap: "1rem",
-        fontSize: "1.2rem",
-        color: "#555",
-      }}
-    >
-      <Loader className="animate-spin" size={48} />
-      <span>Chargement de la page calendrier...</span>
-    </div>
-  );
+        return (
+            <div
+                style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: "100vh", // Full height center
+                    flexDirection: "column",
+                    gap: "1rem",
+                    fontSize: "1.2rem",
+                    color: "#555",
+                }}
+            >
+                <Loader className="animate-spin" size={48} />
+                <span>Chargement de la page calendrier...</span>
+            </div>
+        );
     if (error) return <div>Error: {error}</div>;
-    //  console.log("louding....",calendrierEfmsfilterFiliere)
+
     return (
         <div className="container-fluid-alets">
             <div className={darkMode ? "filter-container-alets" : "filter-container-alets filter-container-darkmode-alets"}>
                 <h2>Dates EFMs:</h2>
 
                 <div className="filter-controls">
-                    {/* Filiere Filter */}
                     <div className="filter-group">
                         <input
                             list="filiere"
                             id="filiereFilter"
                             name="filiereFilter"
-                            value={filters.filiere}
-                            onChange={(e) => handleFilterChange('filiere', e.target.value)}
+                            value={filters.code_filiere || ''}
+                            onChange={(e) => handleFilterChange('code_filiere', e.target.value)}
                             className="filter-select"
                             placeholder="Filiere"
                         />
@@ -134,7 +120,7 @@ const CalendrierEfm = () => {
                             list="niveau"
                             id="niveauFilter"
                             name="niveauFilter"
-                            value={filters.niveau}
+                            value={filters.niveau || ''}
                             onChange={(e) => handleFilterChange('niveau', e.target.value)}
                             className="filter-select"
                             placeholder="Niveau"
@@ -152,7 +138,7 @@ const CalendrierEfm = () => {
                             list="anneeOptions"
                             id="anneeFilter"
                             name="anneeFilter"
-                            value={filters.annee_formation}
+                            value={filters.annee_formation || ''}
                             onChange={(e) => handleFilterChange('annee_formation', e.target.value)}
                             className="filter-select"
                             placeholder="Sélectionner Annee formation"
@@ -175,7 +161,7 @@ const CalendrierEfm = () => {
                 <div className="col-12">
                     <div className={darkMode ? "card-CalendrierEfm mb-4" : "card-CalendrierEfm mb-4 card-CalendrierEfm-dark-mode"}>
                         <div className={darkMode ? "card-body" : "card-body card-body_dark_alets"}>
-                            {filteredcalandrerefmsWithsplice.length > 0 ?
+                            {paginatedData.length > 0 ?
                                 <table className={darkMode ? "table table-striped" : "table table-dark table-striped"}>
                                     <thead>
                                         <tr>
@@ -187,36 +173,16 @@ const CalendrierEfm = () => {
                                             <th>date efm réelle</th>
                                         </tr>
                                     </thead>
-                                    {/* {filteredcalandrerefmsWithsplice.length > 0 ? (
+                                    {paginatedData.length > 0 ?
                                         <tbody>
-                                            {filteredcalandrerefmsWithsplice.map((avince) =>
-                                                avince.map((sub, idx) => (
-                                                    <tr key={`${sub.id}-${idx}`}>
-                                                        <td>{sub.code_filiere}</td>
-                                                        <td>{sub.code_groupe}</td>
-                                                        <td>{sub.code_module}</td>
-                                                        <td>{sub.regional}</td>
-                                                        <td>{sub.date_efm_prevu}</td>
-                                                        <td>{sub.date_efm_reelle ? sub.date_efm_reelle : "Date à déterminer"}</td>
-                                                    </tr>
-                                                ))
-                                            )}
-                                        </tbody>
-                                    ) : (
-                                        "Not data"
-                                    )} */}
-                                    {filteredcalandrerefmsWithsplice.length > 0 ?
-
-                                        <tbody>
-                                            {filteredcalandrerefmsWithsplice.map((avince) => (
+                                            {paginatedData.map((avince) => (
                                                 <tr key={avince.id}>
                                                     <td>{avince.code_filiere}</td>
                                                     <td>{avince.code_groupe}</td>
                                                     <td>{avince.code_module}</td>
                                                     <td>{avince.regional}</td>
-
-                                                    <td>{avince.date_efm_prevu ?avince.date_efm_prevu : "Date à déterminer"}</td>
-                                                    <td>{avince.date_efm_reelle ?avince.date_efm_reelle : "Date à déterminer"}</td>
+                                                    <td>{avince.date_efm_prevu ? avince.date_efm_prevu : "Date à déterminer"}</td>
+                                                    <td>{avince.date_efm_reelle ? avince.date_efm_reelle : "Date à déterminer"}</td>
                                                 </tr>
                                             ))}
                                         </tbody> :
@@ -227,23 +193,25 @@ const CalendrierEfm = () => {
                             }
                         </div>
 
-                        <div className="pagination-container-CalendrierEfm">
-                            <button
-                                className="pagination-btn-CalendrierEfm"
-                                disabled={currentPage === 1}
-                                onClick={() => setCurrentPage(prev => prev - 1)}
-                            >
-                                Précédent
-                            </button>
-                            <span className="current-page-CalendrierEfm">Page {currentPage}</span>
-                            <button
-                                className="pagination-btn-CalendrierEfm"
-                                disabled={filteredcalandrerefmsWithsplice.length < postPerPage}
-                                onClick={() => setCurrentPage(prev => prev + 1)}
-                            >
-                                Suivant
-                            </button>
-                        </div>
+                        {totalPages > 1 && (
+                            <div className="pagination-container-CalendrierEfm">
+                                <button
+                                    className="pagination-btn-CalendrierEfm"
+                                    disabled={currentPage === 1}
+                                    onClick={() => setCurrentPage(prev => prev - 1)}
+                                >
+                                    Précédent
+                                </button>
+                                <span className="current-page-CalendrierEfm">Page {currentPage} sur {totalPages}</span>
+                                <button
+                                    className="pagination-btn-CalendrierEfm"
+                                    disabled={currentPage >= totalPages}
+                                    onClick={() => setCurrentPage(prev => prev + 1)}
+                                >
+                                    Suivant
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
