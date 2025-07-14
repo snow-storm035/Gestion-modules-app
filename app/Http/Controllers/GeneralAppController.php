@@ -6,6 +6,7 @@ use App\Models\Avancement;
 use App\Models\Filiere;
 use App\Models\Groupe;
 use App\Models\Module;
+use App\Models\Formateur;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -126,7 +127,7 @@ class GeneralAppController extends Controller
 
         // filiere filter
         $filieres = array_map(function ($item) {
-            // dd($item);
+     
             return [
                 'code_filiere' => $item['code_filiere'],
                 'libelle' => $item['nom_filiere']
@@ -136,7 +137,7 @@ class GeneralAppController extends Controller
         // groupe filter
         $filiere = null;
 
-        // dd($request);
+    
         // if ($request->has('filiere')) {
         //     $filiere = Filiere::where('code_filiere', $request->input('filiere'))->first();
 
@@ -151,7 +152,7 @@ class GeneralAppController extends Controller
                 // 'libelle' => $item['nom_filiere']
             ];
         }, $filiere ? $filiere->groupes()->get()->toArray() : Groupe::all()->toArray());
-        // dd($groupes);
+ 
 
         // module filter :
         $modules = array_map(function ($item) {
@@ -160,12 +161,13 @@ class GeneralAppController extends Controller
                 'libelle' => $item['libelle_module']
             ];
         }, $filiere ? $filiere->modules()->get()->toArray() : Module::all()->toArray());
-        // dd($modules);
+
 
 
         $avancementsStats = array_map(function ($item) {
             $module = Module::where('code_module', $item['code_module'])
                 ->where('code_filiere', $item['code_filiere'])
+                ->with('filiere')
                 ->first();
             // dd(gettype($item));
             // dd([
@@ -177,6 +179,7 @@ class GeneralAppController extends Controller
             // ]);
             return [
                 'code_filiere' => $item['code_filiere'],
+                'nom_filiere' => $module->filiere->nom_filiere,
                 'code_groupe' => $item['code_groupe'],
                 'code_module' => $item['code_module'],
                 'libelle_module' => $module['libelle_module'],
@@ -197,5 +200,13 @@ class GeneralAppController extends Controller
                 'regional' => ['oui', 'non']
             ]
         ], 200);
+    }
+
+    public function deleteAllData(){
+        $filiere = Filiere::first();
+        $groupe = Groupe::first();
+        $module = Module::first();
+        $formateur = Formateur::first();
+        $avancement = Avancement::first();
     }
 }

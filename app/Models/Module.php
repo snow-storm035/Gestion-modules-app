@@ -39,6 +39,9 @@ class Module extends Model
         "semestre"
     ];
 
+    public function filiere() {
+        return $this->belongsTo(Filiere::class,'code_filiere','code_filiere');
+    }
     public function formateurs(): BelongsToMany
     {
         return $this->belongsToMany(Formateur::class, 'groupe_formateur_module', 'code_module', 'matricule')

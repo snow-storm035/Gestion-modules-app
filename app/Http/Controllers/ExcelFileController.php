@@ -25,20 +25,20 @@ class ExcelFileController extends Controller
             // dd($data);
             if ($request->input('type') === "avancements") {
 
-                $filieres = Filiere::first();
-                $formateurs = Formateur::first();
-                $groupes = Groupe::first();
-                $modules = Module::first();
+                // $filieres = Filiere::first();
+                // $formateurs = Formateur::first();
+                // $groupes = Groupe::first();
+                // $modules = Module::first();
                 // dd(!$filieres && !$formateurs && !$groupes && !$modules);
                 // dd($filieres ,$formateurs ,$groupes ,$modules);
 
-                if (!$filieres || !$formateurs || !$groupes || !$modules) //checking if there is data before running these functions
-                {
+                // if (!$filieres || !$formateurs || !$groupes || !$modules) //checking if there is data before running these functions
+                // {
                     getFilieres($data);
                     getFormateurs($data);
                     getGroupes($data);
                     getModules($data);
-                }
+                // }
                 // else{
                 //     // throw new Exception('must fill other tables too');
                 // }
