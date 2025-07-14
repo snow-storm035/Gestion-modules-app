@@ -233,15 +233,16 @@ if (loading)
                     {paginatedModules.length > 0 ? (
                       paginatedModules.map((module, index) => {
                         // Find the filiere for this module
-                        const filiere = filtersData.filieres.find(f => 
-                          f.groupes?.some(g => g.code_groupe === module.code_groupe)
-                        );
+                        // const filiere = filtersData.filieres.find(f => 
+                        //   f.groupes?.some(g => g.code_groupe === module.code_groupe)
+                        // );
                         
                         return (
                           <tr key={`${module.code_module}-${module.code_groupe}-${index}`}>
                             <td>{module.code_module}</td>
                             <td>{module.code_groupe}</td>
-                            <td>{filiere?.libelle || 'N/A'}</td>
+                            {/* <td>{filiere?.libelle || 'N/A'}</td> */}
+                            <td>{module.nom_filiere}</td>
                             <td>{module.libelle_module}</td>
                             <td>{module.regional}</td>
                             <td>{module.etat}</td>

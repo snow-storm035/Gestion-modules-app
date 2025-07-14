@@ -28,8 +28,6 @@ class AlertController extends Controller
 
             $niveau = Filiere::where('code_filiere',$item['code_filiere'])->first()->niveau;
 
-            if($item['etat'] === "en retard")
-
             return [...$item,'regional' => $module['regional'], 'niveau' => $niveau];
         },$alerts->toArray());
 

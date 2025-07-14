@@ -71,7 +71,7 @@ const [isSubmitting, setIsSubmitting] = useState(false);
       <div className="form-choisir-fichier">
         <img src={excelIcon} alt="Excel Icon" className="file-excel" />
         <form onSubmit={handleSubmitExcel} method="post" encType="multipart/form-data">
-          <span className="text-dark">Type des données :</span>
+          <span className={darkMode ? "text-dark" : "text-light"}>Type des données :</span>
           <select
             value={typeImport}
             onChange={(e) => setTypeImport(e.target.value)}

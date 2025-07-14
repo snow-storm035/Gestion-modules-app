@@ -69,6 +69,12 @@ if (!function_exists('verifierAvancements')) {
                     "code_filiere" => $avancement['code_filiere'],
                     "code_module" => $avancement['code_module'],
                     "code_groupe" => $avancement['code_groupe'],
+                ],
+                [
+                    "avancement_id" => $avancement['id'],
+                    "code_filiere" => $avancement['code_filiere'],
+                    "code_module" => $avancement['code_module'],
+                    "code_groupe" => $avancement['code_groupe'],
                     "etat" => "en retard",
                     "mhrestante" => $mhrestante,
                     "date_fin_prevu" => moduleEnRetard($mhrestante, $avancement) // this either will get a 0 or certain date
@@ -78,16 +84,24 @@ if (!function_exists('verifierAvancements')) {
                     $user->notify(new ModuleEnRetard($avancement));
                 }
             } else if (modulePresqueFinis($mhrestante, $avancement)) {
-                $alert = Alert::firstOrCreate([
-                    "avancement_id" => $avancement['id'],
-                    "code_filiere" => $avancement['code_filiere'],
-                    "code_module" => $avancement['code_module'],
-                    "code_groupe" => $avancement['code_groupe'],
-                    // "matricule" => $avancement['matricule'],
-                    "date_fin_prevu" => $avancement['fin_module'],
-                    "etat" => "presque fini",
-                    "mhrestante" => $mhrestante,
-                ]);
+                $alert = Alert::firstOrCreate(
+                    [
+                        "avancement_id" => $avancement['id'],
+                        "code_filiere" => $avancement['code_filiere'],
+                        "code_module" => $avancement['code_module'],
+                        "code_groupe" => $avancement['code_groupe'],
+                    ],
+                    [
+                        "avancement_id" => $avancement['id'],
+                        "code_filiere" => $avancement['code_filiere'],
+                        "code_module" => $avancement['code_module'],
+                        "code_groupe" => $avancement['code_groupe'],
+                        // "matricule" => $avancement['matricule'],
+                        "date_fin_prevu" => $avancement['fin_module'],
+                        "etat" => "presque fini",
+                        "mhrestante" => $mhrestante,
+                    ]
+                );
                 if ($alert->wasRecentlyCreated) {
                     $user = auth()->user();
                     // dd($user);
