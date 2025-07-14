@@ -7,10 +7,14 @@ use App\Models\Filiere;
 use App\Models\Groupe;
 use App\Models\Module;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class GeneralAppController extends Controller
 {
     //
+    public function getAuthUser(){
+        return response()->json(Auth::user(),200);
+    }
     public function calendrierEfms(Request $request)
     {
         // dd("1234567890-sdfghjkl");

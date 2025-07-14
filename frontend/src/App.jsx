@@ -5,7 +5,7 @@ import { router } from "./router/router";
 import { AlertContext } from './context/AlertContext'; // adjust path
 // import { AlertProvider } from './context/AlertContext'; // adjust path
 import { useEffect, useState } from "react";
-
+import apiService from "./Axios/apiService";
 function App() {
   // const [count, setCount] = useState(0)
 

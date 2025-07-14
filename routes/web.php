@@ -19,6 +19,7 @@ Route::get('/', function () {
 
 Route::withoutMiddleware([VerifyCsrfToken::class])->group(function () {
 
+    Route::get('/user', [GeneralAppController::class, 'getAuthUser']);
     // Route::withoutMiddleware([VerifyCsrfToken::class])->group(function(){
     Route::get('/index', [AvancementController::class, 'index']);
     Route::post('/store', [AvancementController::class, 'store']);
