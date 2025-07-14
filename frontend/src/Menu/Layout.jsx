@@ -14,61 +14,25 @@ import { AlertContext } from "../context/AlertContext";
 import apiService from "../Axios/apiService";
 import { Loader } from "lucide-react";
 const Layout = () => {
+  const [openTrue,setOpenTrue]=useState(true);
   const navigate = useNavigate();
-  // const [notification, setNotification] = useState({
-  //   model: "devlopment",
-  //   notification: true
-  // })
+
   const [heddin, setHeddin] = useState(true)
+  const [extanded,setExtanded]=useState("");
   // const [notification2, setNotification2] = useState([]);
   const { notification2, loading, error, setNotification2, setLoading, setError } = useContext(AlertContext);
 
-  // const [loading, setLoading] = useState(true);
-  // const [error, setError] = useState(null);
-  // useEffect(() => {
-  //   const fetchAlertCounts = async () => {
-  //     try {
-  //       setLoading(true); // optional, if you track global loading
-  //       await apiService.getCsrfCookie(); // Laravel Sanctum support
 
-  //       const [notification2] = await Promise.all([
-
-  //         apiService.getNotifications(),
-  //       ]);
-
-  //       setNotification2(notification2 || []);
-  //     } catch (err) {
-  //       console.error("Erreur lors du chargement des alertes :", err);
-  //       setError("Erreur lors du chargement des alertes."); // optional
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchAlertCounts();
-  // }, []);
-
-  // useEffect(() => {
-  //   const fetchAlertCounts = async () => {
-  //     try {
-  //       setLoading(true);
-  //       await apiService.getCsrfCookie();
-
-  //       const [notification2] = await Promise.all([
-  //         apiService.getNotifications(),
-  //       ]);
-
-  //       setNotification2(notification2 || []);
-  //     } catch (err) {
-  //       console.error('Erreur lors du chargement des alertes :', err);
-  //       setError('Erreur lors du chargement des alertes.');
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchAlertCounts();
-  // },[]);
+  const hendelsetOpenTrue=()=>{
+    if(openTrue){
+      setOpenTrue(false);
+      setExtanded("extanded")
+    }else{
+    setOpenTrue(true);
+    setExtanded("")
+    }
+  }
+ 
   const hideNotifcation = () => {
     if (heddin == true) {
       setTimeout(() => {
@@ -141,7 +105,12 @@ if (loading)
   // if (error) return <div>Error: {error}</div>;
   return (
     <div className="countiner">
+        <div className="btn_hedden_menu"> 
+         <button onClick={hendelsetOpenTrue}>   {openTrue ? '>' : '<'} </button>
+        </div>
+      {openTrue &&
       <div className="menu">
+
         {/* logo this is page dashbord  */}
         <div className="logo">
           <img src={LogoOfppt} alt="Office OFPPT" /> {/* Logo added */}
@@ -152,7 +121,7 @@ if (loading)
           <nav>
             <ul>
               <li><NavLink className={({ isActive }) => isActive ? "link_dashbord active-link" : "link_dashbord"} to="/app"> <FontAwesomeIcon className="icon-fontawesome" icon={faHouse} />Acceuil</NavLink></li>
-              <li><NavLink className={({ isActive }) => isActive ? "link_dashbord active-link" : "link_dashbord"} to="/app/etatmodel"><FontAwesomeIcon className="icon-fontawesome" icon={faBook} />États modules</NavLink></li>
+             <li><NavLink className={({ isActive }) => isActive ? "link_dashbord active-link" : "link_dashbord"} to="/app/etatmodel"><FontAwesomeIcon className="icon-fontawesome" icon={faBook} />États modules</NavLink></li> 
               <li><NavLink className={({ isActive }) => isActive ? "link_dashbord active-link" : "link_dashbord"} to="/app/calendrierEfm"><FontAwesomeIcon className="icon-fontawesome" icon={faCalendar} />Calendrier EFMs</NavLink></li>
               <li className="avancements-nav">Avancements</li>
               <li><NavLink className={({ isActive }) => isActive ? "link_dashbord active-link" : "link_dashbord"} to="/app/avancemnetGroup"><FontAwesomeIcon className="icon-fontawesome" icon={faUserGroup} />Groupes</NavLink></li>
@@ -164,6 +133,7 @@ if (loading)
             </ul>
 
           </nav>
+
         </div>
 
         {/* dark mode and logout => deconection  */}
@@ -171,9 +141,11 @@ if (loading)
           <Logout />
           <DarkMode />
         </div>
+
       </div>
+}
       {/* content  */}
-      <div className={darkMode ? "contenu" : "contenu contenuDarkblack"}>
+      <div className={darkMode ? `contenu ${extanded}` :`contenu ${extanded} contenuDarkblack`}>
 
         <Outlet />
       </div>
