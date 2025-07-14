@@ -237,7 +237,7 @@ const Alerts = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {paginatedAlerts.length > 0 ? (
+                        {paginatedAlerts?.length > 0 ? (
                           paginatedAlerts.map(alert => (
                             <tr key={alert.id}>
                               <td>{alert.code_filiere}</td>

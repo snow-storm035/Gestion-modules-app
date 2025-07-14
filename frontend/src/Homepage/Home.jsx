@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {  faGreaterThan, faBook, faCodeBranch ,faUserGroup} from '@fortawesome/free-solid-svg-icons';
 // import CircularProgress from "../CircularProgress/CircularProgress";
 import downloadImage from "../image/download.png";
-import ProgressModules from "../CircularProgress/CircularProgress";
+import ProgressModules from "../Progressbars/Progressbars";
 import { useNavigate } from "react-router-dom";
 import { useDarkMode } from "../DarkModeProvider/DarkModeContext";
 import apiService from '../Axios/apiService';
@@ -163,7 +163,7 @@ if (loading)
 
           </ul>
 
-          <button className=" view-details-btn details-button-date" onClick={() => navigate("/app/calendrierEfm")}>
+          <button className="view-details-btn details-button-date" onClick={() => navigate("/app/calendrierEfm")}>
             Détails {">>"}
           </button>
         </div>
