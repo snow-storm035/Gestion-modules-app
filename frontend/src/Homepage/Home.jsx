@@ -34,6 +34,7 @@ export default function Home() {
       try {
         setLoading(true); // optional, if you track global loading
         await apiService.getCsrfCookie(); // Laravel Sanctum support
+        console.log('hi! i am console')
 
         const [presque, retard, numberGroup, numberFiliere, notification, calendrierEfms1] = await Promise.all([
           apiService.getAlertsCountpresquefinie(),

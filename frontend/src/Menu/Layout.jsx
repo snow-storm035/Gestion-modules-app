@@ -3,7 +3,7 @@ import { NavLink, Outlet } from "react-router-dom";
 import "./styleLayout.css";
 import LogoOfppt from "../image/logo.png"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouse, faCodeBranch, faBook, faUserGroup, faCalendar, faCircleExclamation, faBell, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import { faHouse, faCodeBranch, faBook, faUserGroup, faCalendar, faCircleExclamation, faBell, faCircleXmark, faTrash } from '@fortawesome/free-solid-svg-icons';
 import Logout from "./Logout";
 import DarkMode from "./DarkMode";
 import { useDarkMode } from '../DarkModeProvider/DarkModeContext';
@@ -21,7 +21,33 @@ const Layout = () => {
   // })
   const [heddin, setHeddin] = useState(true)
   // const [notification2, setNotification2] = useState([]);
-  const { notification2, loading, error, setNotification2, setLoading, setError } = useContext(AlertContext);
+  const { notification2, loading, setNotification2 } = useContext(AlertContext);
+  const [showTruncateModal, setShowTruncateModal] = useState(false);
+  const [truncateLoading, setTruncateLoading] = useState(false);
+  const [truncateError, setTruncateError] = useState(null);
+
+  const handleTruncateClick = () => {
+    setShowTruncateModal(true);
+    setTruncateError(null);
+  };
+
+  const handleTruncateCancel = () => {
+    setShowTruncateModal(false);
+    setTruncateError(null);
+  };
+
+  const handleTruncateConfirm = async () => {
+    setShowTruncateModal(false); // Close modal immediately
+    setTruncateLoading(true);
+    setTruncateError(null);
+    try {
+      await apiService.truncateCustomTables();
+    } catch {
+      setTruncateError('Erreur lors de la suppression des données.');
+    } finally {
+      setTruncateLoading(false);
+    }
+  };
 
   // const [loading, setLoading] = useState(true);
   // const [error, setError] = useState(null);
@@ -161,6 +187,24 @@ if (loading)
 
               </div>
               <li><NavLink className={({ isActive }) => isActive ? "link_dashbord active-link" : "link_dashbord"} to="/app/alerts"><FontAwesomeIcon className="icon-fontawesome" icon={faCircleExclamation} />Alerts</NavLink></li>
+              
+              {/* <li>
+                <button
+                  className="link_dashbord"
+                  style={{ background: 'none', border: 'none', padding: 0, margin: 0, cursor: 'pointer', display: 'flex', alignItems: 'center', fontSize: 'inherit' }}
+                  onClick={async () => {
+                    try {
+                      const result = await apiService.checkProgressState();
+                      alert('Résultat: ' + (typeof result === 'object' ? JSON.stringify(result) : result));
+                    } catch (err) {
+                      alert('Erreur: ' + (typeof err === 'object' ? JSON.stringify(err) : err));
+                    }
+                  }}
+                >
+                  <FontAwesomeIcon className="icon-fontawesome" icon={faBook} />Vérifier Avancement
+                </button>
+              </li> */}
+
             </ul>
 
           </nav>
@@ -168,6 +212,30 @@ if (loading)
 
         {/* dark mode and logout => deconection  */}
         <div className="darkModeAndlogout">
+          {/* Truncate Button */}
+          <button
+            style={{
+              background: '#d32f2f',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              padding: '10px 16px',
+              marginBottom: '12px',
+              width: '100%',
+              fontWeight: 'bold',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px',
+              fontSize: '1rem',
+              boxShadow: '0 2px 8px rgba(211,47,47,0.08)'
+            }}
+            onClick={handleTruncateClick}
+          >
+            <FontAwesomeIcon icon={faTrash} />
+            Vider la base (danger)
+          </button>
           <Logout />
           <DarkMode />
         </div>
@@ -226,6 +294,76 @@ if (loading)
           :
           ""
       }
+      {/* Truncate Modal */}
+      {showTruncateModal && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          background: 'rgba(0,0,0,0.4)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 9999
+        }}>
+          <div style={{
+            background: 'white',
+            borderRadius: '8px',
+            padding: '2rem',
+            boxShadow: '0 4px 32px rgba(211,47,47,0.25)',
+            border: '2px solid #d32f2f',
+            minWidth: '340px',
+            maxWidth: '90vw',
+            textAlign: 'center',
+            color: '#d32f2f',
+            fontWeight: 'bold',
+            position: 'relative'
+          }}>
+            <div style={{fontSize: '2.5rem', marginBottom: '1rem'}}>
+              <FontAwesomeIcon icon={faTrash} />
+            </div>
+            <div style={{fontSize: '1.2rem', marginBottom: '1.5rem'}}>
+              Cette action supprimera <b>toutes les données personnalisées</b> (hors utilisateurs et tables système Laravel).<br />
+              Êtes-vous sûr de vouloir continuer ?
+            </div>
+            {truncateError && <div style={{color: '#b71c1c', marginBottom: '1rem'}}>{truncateError}</div>}
+            <div style={{display: 'flex', justifyContent: 'center', gap: '1rem'}}>
+              <button
+                onClick={handleTruncateConfirm}
+                style={{
+                  background: '#d32f2f',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '4px',
+                  padding: '10px 24px',
+                  fontWeight: 'bold',
+                  cursor: truncateLoading ? 'not-allowed' : 'pointer',
+                  opacity: truncateLoading ? 0.7 : 1
+                }}
+                disabled={truncateLoading}
+              >
+                {truncateLoading ? 'Suppression...' : 'OK'}
+              </button>
+              <button
+                onClick={handleTruncateCancel}
+                style={{
+                  background: 'white',
+                  color: '#d32f2f',
+                  border: '2px solid #d32f2f',
+                  borderRadius: '4px',
+                  padding: '10px 24px',
+                  fontWeight: 'bold',
+                  cursor: 'pointer'
+                }}
+              >
+                Annuler
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
 
   );

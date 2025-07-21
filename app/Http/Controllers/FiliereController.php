@@ -76,8 +76,6 @@ class FiliereController extends Controller
 
     public function totalNbrFilieres()
     {
-     
-
         try {
             $nbrfilieres = count(Filiere::all()->toArray());
            
@@ -105,9 +103,7 @@ class FiliereController extends Controller
             $jsonData = ExcelServices::convertExcelToJson($request);
 
             $data = json_decode($jsonData, true);
-
-            // dd($data);
-
+            
             $filieres = array_map(function ($item) {
                 return [
                     'code_filiere' => $item['code_filiere'],

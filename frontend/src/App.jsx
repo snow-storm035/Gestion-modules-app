@@ -3,8 +3,8 @@ import { RouterProvider } from "react-router-dom";
 import './App.css'
 import { router } from "./router/router";
 import { AlertContext } from './context/AlertContext'; // adjust path
-// import { AlertProvider } from './context/AlertContext'; // adjust path
-import { useEffect, useState } from "react";
+// import { AlertProvider } from './context/lmAlertContext'; // adjust path
+import { useEffect, useState, useMemo } from "react";
 import apiService from "./Axios/apiService";
 function App() {
   // const [count, setCount] = useState(0)
@@ -13,11 +13,18 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  // Fetch CSRF cookie globally on app mount
+  useEffect(() => {
+    apiService.getCsrfCookie();
+    console.log('hi! i am console')
+    apiService.getUser()
+  }, []);
+
   useEffect(() => {
     const fetchAlertCounts = async () => {
       try {
         setLoading(true);
-        await apiService.getCsrfCookie();
+        // await apiService.getCsrfCookie(); // This line is now redundant as it's handled globally
 
         const [notification2] = await Promise.all([
           apiService.getNotifications(),
@@ -35,9 +42,18 @@ function App() {
     fetchAlertCounts();
   }, []);
 
+  const contextValue = useMemo(() => ({
+    notification2,
+    setNotification2,
+    setLoading,
+    setError,
+    loading,
+    error
+  }), [notification2, loading, error]);
+
   return (
     <>
-      <AlertContext.Provider value={{ notification2, setNotification2, setLoading, setError, loading, error }}>
+      <AlertContext.Provider value={contextValue}>
         <RouterProvider router={router} />
       </AlertContext.Provider>
     </>

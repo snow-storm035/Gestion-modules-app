@@ -48,7 +48,6 @@ if (!function_exists('calculerTauxMoyenFiliere')) {
                     ['code_module', '=', $m->code_module]
                 ])->get()
             ];
-
         }
 
         $avancements_filiere = [];
@@ -59,9 +58,9 @@ if (!function_exists('calculerTauxMoyenFiliere')) {
                 $taux = array_map(function ($avancement) {
                     return calculerTauxAvancement($avancement);
                 }, [...$item]);
-                if(count($taux) > 0){
+                if (count($taux) > 0) {
                     $moyenne = array_sum($taux) / count($taux);
-                }else{
+                } else {
                     $moyenne = 0;
                 }
                 // dd($moyenne);
@@ -93,25 +92,36 @@ if (!function_exists('verifierEtatModule')) {
 
 
 
-if(!function_exists('updateTauxAvancement')){
-    function updateTauxAvancement(){
+if (!function_exists('updateTauxAvancement')) {
+    function updateTauxAvancement()
+    {
         $avancements = Avancement::all();
-        foreach($avancements as $avancement){
-            $taux = number_format(calculerTauxAvancement($avancement),2);
-            $avancement->update(['taux_total_realisee' => $taux]);
+        foreach ($avancements as $avancement) {
+
+            $taux = number_format(calculerTauxAvancement($avancement), 2);
+            global $dateEfmPrevu;
+            if ($avancement->debut_module) {
+                $module = Module::where('code_module', $avancement->code_module)
+                    ->where('code_filiere', $avancement->code_filiere)
+                    ->first();
+                $mh_total = $module->nbh_p_total + $module->nbh_sync_total;
+                $dateEfmPrevu = calculerDateEFMPrevu($mh_total, $avancement->nbh_par_semaine_total, $avancement->debut_module);
+            }
+            $avancement->update(['taux_total_realisee' => $taux, 'date_efm_prevu' => $dateEfmPrevu]);
         }
     }
 }
 
-if(!function_exists('getModuleState')){
-    function getModuleState(array $avancement, Module $module){
-        if($avancement['nbh_total_realisee'] >= $module['nbh_total_global'] && $avancement['efm_realise'] === "oui"){
+if (!function_exists('getModuleState')) {
+    function getModuleState(array $avancement, Module $module)
+    {
+        if ($avancement['nbh_total_realisee'] >= $module['nbh_total_global'] && $avancement['efm_realise'] === "oui") {
             return "achevé";
-        } else if($avancement['nbh_total_realisee'] >= $module['nbh_total_global']){
+        } else if ($avancement['nbh_total_realisee'] >= $module['nbh_total_global']) {
             return "masse horaire terminée";
-        } else if($avancement['nbh_total_realisee'] > 0){
+        } else if ($avancement['nbh_total_realisee'] > 0) {
             return "en cours";
-        }else{
+        } else {
             return "pas encore commencé";
         }
     }

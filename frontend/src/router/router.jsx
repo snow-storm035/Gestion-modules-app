@@ -15,6 +15,7 @@ import Welcome from "../login/welcome";
 import ResetPasswordPage from "../login/ResetPasswordPage";
 import ForgotPasswordPage from "../login/ForgotPasswordPage";
 import { createBrowserRouter } from "react-router-dom";
+import RequireAuth from "./RequireAuth";
 
 export const dashbord = "/student/dashbord";
 
@@ -48,7 +49,11 @@ export const router = createBrowserRouter([
   // Protected routes (with layout)
   {
     path: "/app", // Base path for all layout-wrapped routes
-    element: <Layout />,
+    element: (
+      <RequireAuth>
+        <Layout />
+      </RequireAuth>
+    ),
     children: [
       {
         index: true, // Automatically renders Home when /app is accessed

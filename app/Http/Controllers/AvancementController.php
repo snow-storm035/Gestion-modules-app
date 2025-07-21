@@ -361,12 +361,12 @@ class AvancementController extends Controller
             })->toArray();
 
         $formateurs = Formateur::select('matricule', 'nom_formateur')->distinct()->get()->toArray();
-            // dd($formateurs);
+        // dd($formateurs);
 
         $annees_unique = Groupe::distinct()->orderBy('annee_formation')->pluck('annee_formation');
         $niveaux_unique = Filiere::distinct()->orderBy('niveau')->pluck('niveau');
         $semestres = Module::distinct()->orderBy('semestre')->pluck('semestre');
-        
+
 
         // Paginate results
         // $avancements = $avancementsQuery->get();
@@ -506,12 +506,20 @@ class AvancementController extends Controller
     {
         //
         // dd($groupe, $module);
-        $recommandedMh = $request->input('recommandedMh');
+
+
         // dd($recommandedMh);
         $avancement = Avancement::where([
             ['code_groupe', $groupe],
             ['code_module', $module]
         ])->first();
+
+        $isModuleEnRetard = moduleEnRetard(mhrestante($avancement), $avancement);
+        $recommandedMh = ($isModuleEnRetard) ?
+            proposerNbHeuresParSemaines(Carbon::parse($avancement->date_efm_reelle), mhrestante($avancement))
+            : 0;
+
+        // dd($recommandedMh,proposerNbHeuresParSemaines(Carbon::parse($avancement->date_efm_reelle), mhrestante($avancement)),moduleEnRetard(mhrestante($avancement), $avancement));
 
         $module = Module::where('code_module', $avancement->code_module)
             ->where('code_filiere', $avancement->code_filiere)
@@ -535,7 +543,6 @@ class AvancementController extends Controller
     public function edit(Avancement $avancement)
     {
         //
-
     }
 
     /**
@@ -552,6 +559,10 @@ class AvancementController extends Controller
             ]);
 
             $min_nbhparsemaine = proposerNbHeuresParSemaines(Carbon::parse($avancement['date_efm_prevu']), mhrestante($avancement));
+
+            if ($min_nbhparsemaine === null || $min_nbhparsemaine === 0) {
+                throw new Exception('Impossible de calculer la recommandation : la date EFM est passée ou invalide.');
+            }
 
             if ($validated) {
                 $new_nbh_par_semaine_total = $request->input('nbhparsemainetotal');

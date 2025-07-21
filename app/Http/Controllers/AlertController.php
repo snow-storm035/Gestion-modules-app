@@ -61,7 +61,6 @@ class AlertController extends Controller
         ], 200);
     }
 
-
     public function alertsCount(Request $request)
     {
         try {

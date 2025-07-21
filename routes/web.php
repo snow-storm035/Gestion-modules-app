@@ -11,6 +11,7 @@ use App\Http\Controllers\ModuleController;
 // use App\Models\Avancement;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -43,12 +44,12 @@ Route::withoutMiddleware([VerifyCsrfToken::class])->group(function () {
 
     Route::get('/avancements/{groupe}/{module}', [AvancementController::class, 'show']);
 
-    Route::get('/trailswitch', function () {
-        return redirect()->route('groupes.show', 'GE101');
-    });
+    // Route::get('/trailswitch', function () {
+    //     return redirect()->route('groupes.show', 'GE101');
+    // });
 
     Route::get('/testing', function (Request $request) {
-        dd($request->input('test'));
+        // dd($request->input('test'));
         return $request->input('test');
     });
 
@@ -69,12 +70,20 @@ Route::withoutMiddleware([VerifyCsrfToken::class])->group(function () {
     Route::post('/uploadstats',[ExcelFileController::class,'extractAllData']);
 
     Route::get('/notifications', function (Request $request) {
-      
+      $user = auth()->user();
+      if (!$user) {
         return response()->json([
-            'notifications' =>auth()->user()->notifications,
-            'unread_count' => auth()->user()->unreadNotifications->count(),
-        ]);
-    }); 
+          'notifications' => [],
+          'unread_count' => 0,
+        ], 401);
+      }
+      return response()->json([
+        'notifications' => $user->notifications,
+        'unread_count' => $user->unreadNotifications->count(),
+      ]);
+    })->middleware('auth'); 
+
+    Route::get('/checkProgress', [GeneralAppController::class, 'checkProgressState']);
  });
 
 

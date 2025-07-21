@@ -10,7 +10,7 @@ import {  Loader } from "lucide-react";
 export default function ImporterFichierExcel() {
   const { darkMode } = useDarkMode();
   const [excelFile, setExcelFile] = useState(null);
-  const [typeImport, setTypeImport] = useState("dates_modules"); // valeur par défaut
+  const [typeImport, setTypeImport] = useState("avancements"); // valeur par défaut
    const { notification2,setNotification2,setLoading,setError, loading, error } = useContext(AlertContext);
 const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -77,8 +77,8 @@ const [isSubmitting, setIsSubmitting] = useState(false);
             onChange={(e) => setTypeImport(e.target.value)}
             className="select-type form-select"
           >
-            <option value="dates_modules">Dates Modules</option>
             <option value="avancements">Avancements</option>
+            <option value="dates_modules">Dates Modules</option>
           </select>
 
           <input

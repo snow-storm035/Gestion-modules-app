@@ -16,14 +16,22 @@ const AvancementDetails = () => {
   const [nweHoures, setNweHoures] = useState(0);
   const [isEditing, setIsEditing] = useState(false);
 
+  const [recommandedMh, setRecommandedMh] = useState(0)
+
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
         // await apiService.getCsrfCookie();
+
         const response = await apiService.getAvancement(groupe, module);
         setAvancement(response.avancement);
         setNweHoures(response.avancement.nbh_par_semaine_total);
+        console.log(response)
+        if (response.recommandation !== 0) {
+          setRecommandedMh(response.recommandation)
+        }
       } catch (err) {
         setError(err.message);
       } finally {
@@ -31,13 +39,13 @@ const AvancementDetails = () => {
       }
     };
     fetchData();
-      // Then set up polling
+    // Then set up polling
 
   }, [groupe, module]);
 
-  
+
   const handlesouvgarder = async () => {
- 
+
     if (!isNaN(nweHoures) && nweHoures !== 0) {
       try {
         await apiService.getCsrfCookie();
@@ -49,13 +57,13 @@ const AvancementDetails = () => {
           },
           nbh_par_semaine: nweHoures,
         });
-  
+
         // Fetch the updated data
         await apiService.getCsrfCookie();
         const response = await apiService.getAvancement(groupe, module);
         setAvancement(response.avancement);
         setNweHoures(response.avancement.nbh_par_semaine_total);
-  
+
         setIsEditing(false);
         alert('Les heures ont été mises à jour avec succès.');
       } catch (err) {
@@ -64,9 +72,9 @@ const AvancementDetails = () => {
       }
     }
   };
-  
-  
-  
+
+
+
 
   // const handlesouvgarder = () => {
   //   if (!(isNaN(nweHoures) && nweHoures !== 0)) {
@@ -81,63 +89,65 @@ const AvancementDetails = () => {
   };
 
   if (loading)
-  return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        height: "100vh", // Full height center
-        flexDirection: "column",
-        gap: "1rem",
-        fontSize: "1.2rem",
-        color: "#555",
-      }}
-    >
-      <Loader className="animate-spin" size={48} />
-      <span>Chargement de la page détail avancement ...</span>
-    </div>
-  );
+    return (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "100vh", // Full height center
+          flexDirection: "column",
+          gap: "1rem",
+          fontSize: "1.2rem",
+          color: "#555",
+        }}
+      >
+        <Loader className="animate-spin" size={48} />
+        <span>Chargement de la page détail avancement ...</span>
+      </div>
+    );
   if (error) return <div className="avancement-container">Error: {error}</div>;
   if (!avancement) return <div className="avancement-container">No data found</div>;
 
   return (
     <div className="avancement-container">
+
+
       <div className={darkMode ? "top-section" : "top-section top-section-dark-mode-section"}>
         <h1 className="page-title color-all-text">Groupe : {avancement.code_groupe}</h1>
 
         <div className="stats-grid">
-    {/* Module Information */}
-<div className="stat-card">
-  <div className="stat-icon">
-    <FaBook />
-  </div>
-  <div className="stat-content">
-    <h3 className='color-all-text'>Module</h3>
-    <p className='color-all-text'>
-      code: {avancement.code_module || 'Code non spécifié'}
-    </p>
-    <p className='color-all-text'>
-      nom: {avancement.nom_module || 'Nom non spécifié'}
-    </p>
-  </div>
-</div>
+          {/* Module Information */}
+          <div className="stat-card">
+            <div className="stat-icon">
+              <FaBook />
+            </div>
+            <div className="stat-content">
+              <h3 className='color-all-text'>Module</h3>
+              <p className='color-all-text'>
+                code: {avancement.code_module || 'Code non spécifié'}
+              </p>
+              <p className='color-all-text'>
+                nom: {avancement.nom_module || 'Nom non spécifié'}
+              </p>
+            </div>
+          </div>
 
-{/* Filière Information */}
-<div className="stat-card">
-  <div className="stat-icon">
-    <FaChalkboardTeacher />
-  </div>
-  <div className="stat-content">
-    <h3 className='color-all-text'>Filière</h3>
-    <p className='color-all-text'>
-     code: {avancement.code_filiere || 'Code non spécifié'}
-    </p>
-    <p className='color-all-text'>
-     nom: {avancement.nom_filiere || 'Nom non spécifié'}
-    </p>
-  </div>
-</div>
+          {/* Filière Information */}
+          <div className="stat-card">
+            <div className="stat-icon">
+              <FaChalkboardTeacher />
+            </div>
+            <div className="stat-content">
+              <h3 className='color-all-text'>Filière</h3>
+              <p className='color-all-text'>
+                code: {avancement.code_filiere || 'Code non spécifié'}
+              </p>
+              <p className='color-all-text'>
+                nom: {avancement.nom_filiere || 'Nom non spécifié'}
+              </p>
+            </div>
+          </div>
 
 
           {/* Groupe Information */}
@@ -251,6 +261,12 @@ const AvancementDetails = () => {
                 </>
               )}
             </div>
+          </div>
+
+          <div className='test text-dark pt-4' style={{
+            gridColumnStart: 3
+          }}>
+          {(recommandedMh && recommandedMh !== 0) ? <div className='alert alert-danger'>la masse horaire par semaine doit être au moins : {recommandedMh} heures</div> : ""}
           </div>
         </div>
       </div>

@@ -50,6 +50,7 @@ const apiService = {
   getUser: async () => {
     try {
       const response = await axiosClient.get('/api/user');
+      console.log(response)
       return response.data;
     } catch (error) {
       throw error.response?.data || error.message;
@@ -284,6 +285,24 @@ const apiService = {
         },
         withCredentials: true // utile si tu utilises Laravel Sanctum
       });
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+
+  truncateCustomTables: async () => {
+    try {
+      const response = await axiosClient.post('/api/truncate-custom-tables');
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error.message;
+    }
+  },
+
+  checkProgressState: async () => {
+    try {
+      const response = await axiosClient.get('/checkProgress');
       return response.data;
     } catch (error) {
       throw error.response?.data || error.message;

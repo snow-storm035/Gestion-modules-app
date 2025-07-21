@@ -6,110 +6,129 @@ use App\Models\Avancement;
 use App\Models\User;
 use App\Notifications\ModuleEnRetard;
 use App\Notifications\ModulePrequeFini;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+
+// Alert state constants
+const ALERT_STATE_LATE = 'en retard';
+const ALERT_STATE_ALMOST_DONE = 'presque fini';
 
 if (!function_exists('moduleEnRetard')) {
-    // function moduleEnRetard(float $mhrestante, float $nbhparsemaine, Carbon $dateEfmPrevu)
+    /**
+     * Check if a module is late and return the predicted end date if so.
+     */
     function moduleEnRetard(float $mhrestante, Avancement $avancement, float $new_nbhparsemaine = 0)
     {
-        // in case of update we might want to check before updating
-        // dd($avancement);
         $main_nbhparsemaine = $new_nbhparsemaine != 0 ? $new_nbhparsemaine : $avancement['nbh_par_semaine_total'];
-        // dd($main_nbhparsemaine);
         if ($main_nbhparsemaine != 0) {
             $nbrSemaines = ceil($mhrestante / $main_nbhparsemaine);
-            // dd($nbrSemaines);
             $dateFinPrevu = Carbon::now()->addWeeks($nbrSemaines);
-            $dates_gape = $dateFinPrevu->diffInDays(Carbon::parse($avancement['date_efm_prevu'])); // -> dateefm - datefinprevu > 0
-            // dd($dates_gape,$dateFinPrevu->toDateString());
-            // dd($dateFinPrevu->toDateString(),$avancement['dateEfmPrevu']);
-            // dd('hi?');
+            $dates_gape = $dateFinPrevu->diffInDays(Carbon::parse($avancement['date_efm_prevu']));
             if ($dates_gape < 0) {
-                // dd("inside",($dates_gape < 0));
-                // Alert::create([
-                //     "code_module" => $avancement['code_module'],
-                //     "code_groupe" => $avancement['code_groupe'],
-                //     "matricule" => $avancement['matricule'],
-                //     "etat" => "en retard",
-                //     "mhrestante" => $mhrestante ,
-                // ]);
-                return $dateFinPrevu; // càd en retard
+                return $dateFinPrevu->toDateString(); // Module is late
             }
         }
         return false;
     }
 }
+
 if (!function_exists('modulePresqueFinis')) {
+    /**
+     * Check if a module is almost finished.
+     */
     function modulePresqueFinis(float $mhrestante, Avancement $avancement)
     {
-        // dd(calculerTauxAvancement($avancement));
-        if (calculerTauxAvancement($avancement) > 90 && strtolower($avancement['efm_realise']) === "non") {
-            // dd('hi?46');
+        if (function_exists('calculerTauxAvancement') && calculerTauxAvancement($avancement) > 90 && strtolower($avancement['efm_realise']) === "non") {
             return true;
-            // Alert::create([
-            //     "code_module" => $avancement['code_module'],
-            //     "code_groupe" => $avancement['code_groupe'],
-            //     "matricule" => $avancement['matricule'],
-            //     "etat" => "en retard",
-            //     "mhrestante" => $mhrestante ,
-            // ]);
         }
         return false;
     }
 }
+
 if (!function_exists('verifierAvancements')) {
+    /**
+     * Loop through all Avancements and create alerts/notifications as needed.
+     * Note: For large datasets, consider chunking/batching for performance.
+     */
     function verifierAvancements()
     {
-        $avancements = Avancement::all();
-        foreach ($avancements as $avancement) {
-            $mhrestante = mhrestante($avancement);
-            // dd($avancement);
-            if (moduleEnRetard($mhrestante, $avancement)) {
-                $alert = Alert::firstOrCreate([
-                    "avancement_id" => $avancement['id'],
-                    "code_filiere" => $avancement['code_filiere'],
-                    "code_module" => $avancement['code_module'],
-                    "code_groupe" => $avancement['code_groupe'],
-                ],
-                [
-                    "avancement_id" => $avancement['id'],
-                    "code_filiere" => $avancement['code_filiere'],
-                    "code_module" => $avancement['code_module'],
-                    "code_groupe" => $avancement['code_groupe'],
-                    "etat" => "en retard",
-                    "mhrestante" => $mhrestante,
-                    "date_fin_prevu" => moduleEnRetard($mhrestante, $avancement) // this either will get a 0 or certain date
-                ]);
-                if ($alert->wasRecentlyCreated) {
-                    $user = auth()->user();
-                    $user->notify(new ModuleEnRetard($avancement));
+        try {
+            $avancements = Avancement::all();
+            foreach ($avancements as $avancement) {
+                try {
+                    // Validate required fields
+                    if (!isset($avancement['code_filiere'], $avancement['code_module'], $avancement['code_groupe'], $avancement['id'])) {
+                        continue;
+                    }
+                    $mhrestante = function_exists('mhrestante') ? mhrestante($avancement) : null;
+                    if ($mhrestante === null) continue;
+
+                    // Check for late module
+                    $lateDate = moduleEnRetard($mhrestante, $avancement);
+                    if ($lateDate) {
+                        $alert = Alert::updateOrCreate([
+                            "avancement_id" => $avancement['id'],
+                            "code_filiere" => $avancement['code_filiere'],
+                            "code_module" => $avancement['code_module'],
+                            "code_groupe" => $avancement['code_groupe'],
+                        ],
+                        [
+                            "avancement_id" => $avancement['id'],
+                            "code_filiere" => $avancement['code_filiere'],
+                            "code_module" => $avancement['code_module'],
+                            "code_groupe" => $avancement['code_groupe'],
+                            "etat" => ALERT_STATE_LATE,
+                            "mhrestante" => $mhrestante,
+                            "date_fin_prevu" => $lateDate
+                        ]);
+                        if ($alert->wasRecentlyCreated) {
+                            $user = Auth::user();
+                            if ($user) {
+                                try {
+                                    $user->notify(new ModuleEnRetard($avancement));
+                                } catch (\Exception $e) {
+                                    Log::error('Notification error (ModuleEnRetard): ' . $e->getMessage());
+                                }
+                            }
+                        }
+                    } else if (modulePresqueFinis($mhrestante, $avancement)) {
+                        $alert = Alert::updateOrCreate(
+                            [
+                                "avancement_id" => $avancement['id'],
+                                "code_filiere" => $avancement['code_filiere'],
+                                "code_module" => $avancement['code_module'],
+                                "code_groupe" => $avancement['code_groupe'],
+                            ],
+                            [
+                                "avancement_id" => $avancement['id'],
+                                "code_filiere" => $avancement['code_filiere'],
+                                "code_module" => $avancement['code_module'],
+                                "code_groupe" => $avancement['code_groupe'],
+                                "date_fin_prevu" => $avancement['fin_module'],
+                                "etat" => ALERT_STATE_ALMOST_DONE,
+                                "mhrestante" => $mhrestante,
+                            ]
+                        );
+                        if ($alert->wasRecentlyCreated) {
+                            $user = Auth::user();
+                            if ($user) {
+                                try {
+                                    $user->notify(new ModulePrequeFini($avancement));
+                                } catch (\Exception $e) {
+                                    Log::error('Notification error (ModulePrequeFini): ' . $e->getMessage());
+                                }
+                            }
+                        }
+                    } else {
+                        continue;
+                    }
+                } catch (\Exception $e) {
+                    Log::error('Error processing avancement: ' . $e->getMessage());
+                    continue;
                 }
-            } else if (modulePresqueFinis($mhrestante, $avancement)) {
-                $alert = Alert::firstOrCreate(
-                    [
-                        "avancement_id" => $avancement['id'],
-                        "code_filiere" => $avancement['code_filiere'],
-                        "code_module" => $avancement['code_module'],
-                        "code_groupe" => $avancement['code_groupe'],
-                    ],
-                    [
-                        "avancement_id" => $avancement['id'],
-                        "code_filiere" => $avancement['code_filiere'],
-                        "code_module" => $avancement['code_module'],
-                        "code_groupe" => $avancement['code_groupe'],
-                        // "matricule" => $avancement['matricule'],
-                        "date_fin_prevu" => $avancement['fin_module'],
-                        "etat" => "presque fini",
-                        "mhrestante" => $mhrestante,
-                    ]
-                );
-                if ($alert->wasRecentlyCreated) {
-                    $user = auth()->user();
-                    // dd($user);
-                    $user->notify(new ModulePrequeFini($avancement));
-                }
-            } else {
-                continue;
             }
+        } catch (\Exception $e) {
+            Log::error('verifierAvancements failed: ' . $e->getMessage());
         }
     }
 }

@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
-    return $request->user();
-});
 
 
 
@@ -25,6 +22,7 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 
 
 use App\Models\User;
+use App\Http\Controllers\GeneralAppController;
 
 Route::middleware('auth:sanctum')->group(function () {
     // Add this new route
@@ -35,4 +33,5 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     
     // Your existing API routes...
+    Route::post('/truncate-custom-tables', [GeneralAppController::class, 'truncateCustomTables']);
 });

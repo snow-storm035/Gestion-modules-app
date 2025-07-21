@@ -9,6 +9,8 @@ use App\Models\Module;
 use App\Models\Formateur;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class GeneralAppController extends Controller
 {
@@ -202,11 +204,37 @@ class GeneralAppController extends Controller
         ], 200);
     }
 
-    public function deleteAllData(){
-        $filiere = Filiere::first();
-        $groupe = Groupe::first();
-        $module = Module::first();
-        $formateur = Formateur::first();
-        $avancement = Avancement::first();
+    public function truncateCustomTables()
+    {
+        $tables = [
+            'alerts',
+            'groupe_formateur_module',
+            'effs',
+            'modules',
+            'groupes',
+            'formateurs',
+            'filieres',
+            'notifications'
+        ];
+    
+        try {
+            DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+            foreach ($tables as $table) {
+                DB::statement("TRUNCATE TABLE `$table`;");
+            }
+            DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+            return response()->json(['message' => 'Custom tables truncated successfully.'], 200);
+        } catch (\Exception $e) {
+            Log::error('Truncate error: ' . $e->getMessage(), ['exception' => $e]);
+            return response()->json([
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ], 500);
+        }
+    }
+    
+
+    public function checkProgressState(){
+        verifierAvancements();
     }
 }

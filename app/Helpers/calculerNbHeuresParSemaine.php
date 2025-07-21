@@ -9,7 +9,9 @@
         function proposerNbHeuresParSemaines(Carbon $dateEfm, float $mhrestante)
         {
             $nbrSemaines = Carbon::now()->diffInWeeks($dateEfm);
-            return ceil($mhrestante / $nbrSemaines ) + 2; // majoration de 2h plus      
+            if($nbrSemaines > 0){
+                return ceil($mhrestante / $nbrSemaines ) + 2; // majoration de 2h plus      
+            }
         }
     }
 ?>
