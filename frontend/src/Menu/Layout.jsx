@@ -3,7 +3,7 @@ import { NavLink, Outlet } from "react-router-dom";
 import "./styleLayout.css";
 import LogoOfppt from "../image/logo.png"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouse, faCodeBranch, faBook, faUserGroup, faCalendar, faCircleExclamation, faBell, faCircleXmark, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faHouse, faCodeBranch, faBook, faUserGroup, faCalendar, faCircleExclamation, faBell, faCircleXmark, faTrash, faFile } from '@fortawesome/free-solid-svg-icons';
 import Logout from "./Logout";
 import DarkMode from "./DarkMode";
 import { useDarkMode } from '../DarkModeProvider/DarkModeContext';
@@ -156,6 +156,7 @@ if (loading)
 
               </div>
               <li><NavLink className={({ isActive }) => isActive ? "link_dashbord active-link" : "link_dashbord"} to="/app/alerts"><FontAwesomeIcon className="icon-fontawesome" icon={faCircleExclamation} />Alerts</NavLink></li>
+              <li><NavLink className={({ isActive }) => isActive ? "link_dashbord active-link" : "link_dashbord"} to="/app/importerfichierexcel"><FontAwesomeIcon className="icon-fontawesome" icon={faFile} />Importer Excel</NavLink></li>
               
               {/* <li>
                 <button

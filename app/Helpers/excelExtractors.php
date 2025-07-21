@@ -184,7 +184,7 @@ if (!function_exists('getAvancements')) {
                 }
             }
             updateTauxAvancement();
-            verifierAvancements();
+            synchroniserAlerts();
         });
     }
 }
